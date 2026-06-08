@@ -17,5 +17,7 @@ public class DashboardResponse {
 
     private Long completedTasks;
 
+    private Long inProgressTasks;
+
     private Long todoTasks;
 }

@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DashboardServiceImpl implements DashboardService {
+public class DashboardServiceImpl
+        implements DashboardService {
 
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
@@ -23,8 +24,21 @@ public class DashboardServiceImpl implements DashboardService {
                 .totalUsers(userRepository.count())
                 .totalProjects(projectRepository.count())
                 .totalTasks(taskRepository.count())
-                .completedTasks(taskRepository.countByStatus("DONE"))
-                .todoTasks(taskRepository.countByStatus("TODO"))
+
+                .completedTasks(
+                        taskRepository.countByStatus("DONE")
+                )
+
+                .inProgressTasks(
+                        taskRepository.countByStatus(
+                                "IN_PROGRESS"
+                        )
+                )
+
+                .todoTasks(
+                        taskRepository.countByStatus("TODO")
+                )
+
                 .build();
     }
 }
