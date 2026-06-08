@@ -1,16 +1,15 @@
 package com.phong.taskmanagement.controller;
 
 import com.phong.taskmanagement.dto.request.CreateUserRequest;
-import com.phong.taskmanagement.entity.User;
+import com.phong.taskmanagement.dto.response.UserResponse;
 import com.phong.taskmanagement.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
@@ -20,46 +19,75 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public User createUser(@Valid @RequestBody CreateUserRequest request) {
+    public UserResponse createUser(
+            @Valid @RequestBody CreateUserRequest request) {
+
         return userService.createUser(request);
     }
 
     @PostMapping("/{userId}/roles/{roleId}")
-    public User assignRole(
+    public UserResponse assignRole(
             @PathVariable Long userId,
-            @PathVariable Long roleId
-    ) {
-        return userService.assignRole(userId, roleId);
+            @PathVariable Long roleId) {
+
+        return userService.assignRole(
+                userId,
+                roleId
+        );
     }
 
     @PostMapping("/{userId}/positions/{positionId}")
-    public User assignPosition(
+    public UserResponse assignPosition(
             @PathVariable Long userId,
-            @PathVariable Long positionId
-    ) {
-        return userService.assignPosition(userId, positionId);
+            @PathVariable Long positionId) {
+
+        return userService.assignPosition(
+                userId,
+                positionId
+        );
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
+
         return userService.getAllUsers();
     }
 
+    @GetMapping("/search")
+    public Page<UserResponse> searchUsers(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        return userService.searchUsers(
+                keyword,
+                page,
+                size
+        );  
+    }
+
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
+    public UserResponse getUser(
+            @PathVariable Long id) {
+
         return userService.getUserById(id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteUser(
+            @PathVariable Long id) {
+
         userService.deleteUser(id);
     }
 
     @PutMapping("/{id}")
-    public User updateUser(
+    public UserResponse updateUser(
             @PathVariable Long id,
             @Valid @RequestBody CreateUserRequest request) {
 
-        return userService.updateUser(id, request);
+        return userService.updateUser(
+                id,
+                request
+        );
     }
 }
