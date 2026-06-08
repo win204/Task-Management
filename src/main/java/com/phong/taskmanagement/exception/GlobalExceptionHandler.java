@@ -1,34 +1,64 @@
 package com.phong.taskmanagement.exception;
 
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationException(
-            MethodArgumentNotValidException ex) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, Object> handleNotFound(
+            ResourceNotFoundException ex) {
 
-        Map<String, String> errors = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
 
-        ex.getBindingResult()
-                .getFieldErrors()
-                .forEach(error ->
-                        errors.put(
-                                error.getField(),
-                                error.getDefaultMessage()
-                        ));
+        response.put("success", false);
+        response.put("message", ex.getMessage());
+        response.put("timestamp", LocalDateTime.now());
 
-        return errors;
+        return response;
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public String handleRuntimeException(RuntimeException ex) {
-        return ex.getMessage();
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, Object> handleValidation(
+            MethodArgumentNotValidException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("success", false);
+
+        response.put(
+                "message",
+                ex.getBindingResult()
+                        .getFieldError()
+                        .getDefaultMessage()
+        );
+
+        response.put("timestamp", LocalDateTime.now());
+
+        return response;
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, Object> handleException(
+            Exception ex) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("success", false);
+        response.put("message", ex.getMessage());
+        response.put("timestamp", LocalDateTime.now());
+
+        return response;
     }
 }
