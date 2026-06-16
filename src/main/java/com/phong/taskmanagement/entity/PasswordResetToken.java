@@ -24,6 +24,10 @@ public class PasswordResetToken {
     @Column(nullable = false)
     private Instant expiryDate;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean used = false;
+
     @Column(
             nullable = false,
             updatable = false,

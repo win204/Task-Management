@@ -8,7 +8,7 @@ public interface RefreshTokenService {
 
     RefreshToken verifyExpiration(String token);
 
-    String refreshAccessToken(String refreshToken);
+    com.phong.taskmanagement.dto.response.RefreshTokenResponse refreshAccessToken(String refreshToken);
 
     void logout(Long userId);
 }

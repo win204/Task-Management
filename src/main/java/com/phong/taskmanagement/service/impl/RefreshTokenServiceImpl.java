@@ -28,6 +28,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Override
     @Transactional
     public RefreshToken createRefreshToken(Long userId) {
+
         deleteExpiredTokens();
 
         User user = userRepository.findById(userId)
@@ -38,6 +39,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                 .token(UUID.randomUUID().toString())
                 .expiryDate(Instant.now().plusMillis(REFRESH_TOKEN_DURATION_MS))
                 .user(user)
+                .revoked(false)
                 .build();
 
         return refreshTokenRepository.save(refreshToken);
@@ -61,10 +63,32 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     @Transactional
-    public String refreshAccessToken(String refreshToken) {
-        RefreshToken token = verifyExpiration(refreshToken);
+    public com.phong.taskmanagement.dto.response.RefreshTokenResponse refreshAccessToken(String refreshTokenString) {
+        RefreshToken token = refreshTokenRepository.findByToken(refreshTokenString)
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                        org.springframework.http.HttpStatus.UNAUTHORIZED, "Refresh token not found"));
+
+        if (token.isRevoked()) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.UNAUTHORIZED, "Refresh token has been revoked");
+        }
+
+        if (token.getExpiryDate().isBefore(Instant.now())) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.UNAUTHORIZED, "Refresh token has expired");
+        }
+
+        // Revoke old token
+        token.setRevoked(true);
+        refreshTokenRepository.save(token);
+
+        // Generate new tokens
+        String newAccessToken = jwtService.generateToken(token.getUser());
+        RefreshToken newRefreshToken = createRefreshToken(token.getUser().getId());
+
         deleteExpiredTokens();
-        return jwtService.generateToken(token.getUser());
+        
+        return new com.phong.taskmanagement.dto.response.RefreshTokenResponse(newAccessToken, newRefreshToken.getToken());
     }
 
     @Override
@@ -74,7 +98,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "User not found with id: " + userId));
 
-        refreshTokenRepository.deleteByUser(user);
+        java.util.List<RefreshToken> tokens = refreshTokenRepository.findAllByUser(user);
+        tokens.forEach(t -> t.setRevoked(true));
+        refreshTokenRepository.saveAll(tokens);
     }
 
     private void deleteExpiredTokens() {

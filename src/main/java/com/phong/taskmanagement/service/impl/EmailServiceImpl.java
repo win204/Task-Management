@@ -43,13 +43,14 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendPasswordResetEmail(String to, String resetToken) {
+        String resetUrl = "http://localhost:5173/reset-password?token=" + resetToken;
         sendEmail(
                 to,
                 "Password Reset Request",
                 "You have requested to reset your password.\n" +
-                "Please use the following token to reset your password:\n\n" +
-                resetToken + "\n\n" +
-                "This token will expire in 15 minutes."
+                "Please click the link below to reset your password:\n\n" +
+                resetUrl + "\n\n" +
+                "This link will expire in 30 minutes."
         );
     }
 

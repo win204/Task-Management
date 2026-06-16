@@ -15,5 +15,7 @@
     <include file="db/changelog/008-update-admin-password.xml"/>
     <include file="db/changelog/009-create-refresh-tokens.xml"/>
     <include file="db/changelog/010-create-password-reset-tokens.xml"/>
+    <include file="db/changelog/011-update-password-reset-tokens.xml"/>
+    <include file="db/changelog/012-update-refresh-tokens.xml"/>
 
 </databaseChangeLog>

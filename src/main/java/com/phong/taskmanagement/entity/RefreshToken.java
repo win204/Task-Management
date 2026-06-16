@@ -24,6 +24,10 @@ public class RefreshToken {
     @Column(nullable = false)
     private Instant expiryDate;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean revoked = false;
+
     @Column(
             nullable = false,
             updatable = false,

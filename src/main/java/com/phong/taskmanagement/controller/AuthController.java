@@ -97,12 +97,9 @@ public class AuthController {
         public ApiResponse<RefreshTokenResponse> refreshToken(
                         @RequestBody RefreshTokenRequest request) {
 
-                String accessToken = refreshTokenService
+                RefreshTokenResponse response = refreshTokenService
                                 .refreshAccessToken(
                                                 request.getRefreshToken());
-
-                RefreshTokenResponse response = new RefreshTokenResponse(
-                                accessToken);
 
                 return ApiResponse.success(
                                 response,
@@ -128,12 +125,11 @@ public class AuthController {
                 User user = userRepository.findByEmail(request.getEmail())
                                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Email not found"));
 
-                passwordResetTokenRepository.deleteByUser(user);
-
                 PasswordResetToken token = PasswordResetToken.builder()
                                 .token(UUID.randomUUID().toString())
-                                .expiryDate(Instant.now().plusSeconds(15 * 60))
+                                .expiryDate(Instant.now().plusSeconds(30 * 60))
                                 .user(user)
+                                .used(false)
                                 .build();
 
                 passwordResetTokenRepository.save(token);
@@ -150,8 +146,11 @@ public class AuthController {
                 PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(request.getToken())
                                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid token"));
 
+                if (resetToken.isUsed()) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token has already been used");
+                }
+
                 if (resetToken.getExpiryDate().isBefore(Instant.now())) {
-                        passwordResetTokenRepository.delete(resetToken);
                         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token has expired");
                 }
 
@@ -159,7 +158,8 @@ public class AuthController {
                 user.setPassword(passwordEncoder.encode(request.getNewPassword()));
                 userRepository.save(user);
 
-                passwordResetTokenRepository.delete(resetToken);
+                resetToken.setUsed(true);
+                passwordResetTokenRepository.save(resetToken);
 
                 return ApiResponse.success(null, "Password reset successfully");
         }
