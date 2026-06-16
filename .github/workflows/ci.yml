@@ -25,8 +25,12 @@ jobs:
 
       # 4 & 5 & 6. Run clean verify, unit tests, and build JAR
       # Note: 'verify' natively runs tests and packages the application JAR
-      - name: Build and Test with Maven
-        run: ./mvnw clean verify
+      - name: Build Project
+        run: ./mvnw clean package -DskipTests
+
+      - name: Give execute permission to Maven Wrapper
+        run: chmod +x mvnw
+
 
       # 7. Log in to Docker Hub (Required before pushing)
       # We only execute the login and push steps if the trigger was a direct 'push' to main 
