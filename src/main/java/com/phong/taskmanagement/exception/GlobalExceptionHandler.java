@@ -1,8 +1,6 @@
 package com.phong.taskmanagement.exception;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import com.phong.taskmanagement.dto.response.ApiResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,50 +13,45 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, Object> handleNotFound(
+    public ApiResponse<Object> handleNotFound(
             ResourceNotFoundException ex) {
 
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("success", false);
-        response.put("message", ex.getMessage());
-        response.put("timestamp", LocalDateTime.now());
-
-        return response;
+        return ApiResponse.failure(ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, Object> handleValidation(
+    public ApiResponse<Object> handleValidation(
             MethodArgumentNotValidException ex) {
 
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("success", false);
-
-        response.put(
-                "message",
+        return ApiResponse.failure(
                 ex.getBindingResult()
                         .getFieldError()
                         .getDefaultMessage()
         );
+    }
 
-        response.put("timestamp", LocalDateTime.now());
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<Object> handleIllegalArgument(
+            IllegalArgumentException ex) {
 
-        return response;
+        return ApiResponse.failure(ex.getMessage());
+    }
+
+    @ExceptionHandler(org.springframework.security.authentication.BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiResponse<Object> handleBadCredentials(
+            org.springframework.security.authentication.BadCredentialsException ex) {
+
+        return ApiResponse.failure(ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, Object> handleException(
+    public ApiResponse<Object> handleException(
             Exception ex) {
 
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("success", false);
-        response.put("message", ex.getMessage());
-        response.put("timestamp", LocalDateTime.now());
-
-        return response;
+        return ApiResponse.failure("Internal server error");
     }
 }

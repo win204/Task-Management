@@ -1,93 +1,146 @@
 package com.phong.taskmanagement.controller;
 
 import com.phong.taskmanagement.dto.request.CreateUserRequest;
+import com.phong.taskmanagement.dto.response.ApiResponse;
 import com.phong.taskmanagement.dto.response.UserResponse;
 import com.phong.taskmanagement.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@Tag(
+        name = "User API",
+        description = "APIs for managing users"
+)
 public class UserController {
 
     private final UserService userService;
 
+    @Operation(
+            summary = "Create new user",
+            description = "Create a new user"
+    )
     @PostMapping
-    public UserResponse createUser(
-            @Valid @RequestBody CreateUserRequest request) {
+    public ApiResponse<UserResponse> createUser(
+            @Valid
+            @RequestBody
+            CreateUserRequest request) {
 
-        return userService.createUser(request);
+        UserResponse response = userService.createUser(request);
+        return ApiResponse.success(response, "User created successfully");
     }
 
+    @Operation(
+            summary = "Assign role to user",
+            description = "Assign a role to a specific user"
+    )
     @PostMapping("/{userId}/roles/{roleId}")
-    public UserResponse assignRole(
+    public ApiResponse<UserResponse> assignRole(
             @PathVariable Long userId,
             @PathVariable Long roleId) {
 
-        return userService.assignRole(
+        UserResponse response = userService.assignRole(
                 userId,
                 roleId
         );
+        return ApiResponse.success(response, "Role assigned successfully");
     }
 
+    @Operation(
+            summary = "Assign position to user",
+            description = "Assign a position to a specific user"
+    )
     @PostMapping("/{userId}/positions/{positionId}")
-    public UserResponse assignPosition(
+    public ApiResponse<UserResponse> assignPosition(
             @PathVariable Long userId,
             @PathVariable Long positionId) {
 
-        return userService.assignPosition(
+        UserResponse response = userService.assignPosition(
                 userId,
                 positionId
         );
+        return ApiResponse.success(response, "Position assigned successfully");
     }
 
+    @Operation(
+            summary = "Get all users",
+            description = "Retrieve all users"
+    )
     @GetMapping
-    public List<UserResponse> getAllUsers() {
+    public ApiResponse<List<UserResponse>> getAllUsers() {
 
-        return userService.getAllUsers();
+        List<UserResponse> response = userService.getAllUsers();
+        return ApiResponse.success(response, "Users retrieved successfully");
     }
 
+    @Operation(
+            summary = "Search users",
+            description = "Search users by username with pagination"
+    )
     @GetMapping("/search")
-    public Page<UserResponse> searchUsers(
+    public ApiResponse<Page<UserResponse>> searchUsers(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
 
-        return userService.searchUsers(
+        Page<UserResponse> response = userService.searchUsers(
                 keyword,
                 page,
                 size
-        );  
+        );
+        return ApiResponse.success(response, "Users searched successfully");
     }
 
+    @Operation(
+            summary = "Get user by id",
+            description = "Retrieve a user by id"
+    )
     @GetMapping("/{id}")
-    public UserResponse getUser(
+    public ApiResponse<UserResponse> getUserById(
             @PathVariable Long id) {
 
-        return userService.getUserById(id);
+        UserResponse response = userService.getUserById(id);
+        return ApiResponse.success(response, "User retrieved successfully");
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(
-            @PathVariable Long id) {
-
-        userService.deleteUser(id);
-    }
-
+    @Operation(
+            summary = "Update user",
+            description = "Update user information"
+    )
     @PutMapping("/{id}")
-    public UserResponse updateUser(
+    public ApiResponse<UserResponse> updateUser(
             @PathVariable Long id,
-            @Valid @RequestBody CreateUserRequest request) {
+            @Valid
+            @RequestBody
+            CreateUserRequest request) {
 
-        return userService.updateUser(
+        UserResponse response = userService.updateUser(
                 id,
                 request
         );
+        return ApiResponse.success(response, "User updated successfully");
+    }
+
+    @Operation(
+            summary = "Delete user",
+            description = "Delete a user by id"
+    )
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> deleteUser(
+            @PathVariable Long id) {
+
+        userService.deleteUser(id);
+        return ApiResponse.success(null, "User deleted successfully");
     }
 }

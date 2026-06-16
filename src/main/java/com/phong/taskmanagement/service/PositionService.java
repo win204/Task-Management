@@ -1,13 +1,17 @@
 package com.phong.taskmanagement.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
 import com.phong.taskmanagement.dto.request.CreatePositionRequest;
 import com.phong.taskmanagement.entity.Position;
 
-import java.util.List;
-
 public interface PositionService {
 
-    Position createPosition(CreatePositionRequest request);
+    Position createPosition(
+            CreatePositionRequest request
+    );
 
     List<Position> getAllPositions();
 
@@ -15,5 +19,19 @@ public interface PositionService {
 
     void deletePosition(Long id);
 
-    Position updatePosition(Long id, CreatePositionRequest request);
+    Position updatePosition(
+            Long id,
+            CreatePositionRequest request
+    );
+
+    Page<Position> searchPositions(
+            String keyword,
+            int page,
+            int size
+    );
+
+    Page<Position> getPositionsWithPaging(
+            int page,
+            int size
+    );
 }

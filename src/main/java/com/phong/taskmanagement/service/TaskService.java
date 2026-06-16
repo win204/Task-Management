@@ -1,23 +1,54 @@
 package com.phong.taskmanagement.service;
 
-import com.phong.taskmanagement.dto.request.CreateTaskRequest;
-import com.phong.taskmanagement.entity.Task;
-import org.springframework.data.domain.Page;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+
+import com.phong.taskmanagement.dto.request.CreateTaskRequest;
+import com.phong.taskmanagement.dto.request.TaskSearchRequest;
+import com.phong.taskmanagement.dto.response.TaskResponse;
 
 public interface TaskService {
 
-    Task createTask(CreateTaskRequest request);
+    TaskResponse createTask(CreateTaskRequest request);
 
-    List<Task> getAllTasks();
+    List<TaskResponse> getAllTasks();
 
-    Task getTaskById(Long id);
+    TaskResponse getTaskById(Long id);
 
     void deleteTask(Long id);
 
-    Task updateTask(Long id, CreateTaskRequest request);   
-    
-    List<Task> searchTasks(String keyword);
+    TaskResponse updateTask(
+            Long id,
+            CreateTaskRequest request
+    );
 
-    Page<Task> getTasksWithPaging(int page, int size);
+    Page<TaskResponse> searchTasks(
+            String keyword,
+            int page,
+            int size
+    );
+
+    Page<TaskResponse> searchTasks(
+            TaskSearchRequest request,
+            int page,
+            int size
+    );
+
+    Page<TaskResponse> getTasksByStatus(
+            String status,
+            int page,
+            int size
+    );
+
+    Page<TaskResponse> getTasksByPriority(
+            String priority,
+            int page,
+            int size
+    );
+
+    Page<TaskResponse> getTasksWithPaging(
+            int page,
+            int size
+    );
 }

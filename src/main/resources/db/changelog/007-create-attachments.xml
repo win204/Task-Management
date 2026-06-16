@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="7" author="phong">
+        <createTable tableName="attachments">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="file_name" type="NVARCHAR(255)"/>
+            <column name="file_path" type="NVARCHAR(500)"/>
+            <column name="uploaded_at" type="DATETIME2(6)"/>
+            <column name="task_id" type="BIGINT"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="task_id"
+                                 baseTableName="attachments"
+                                 constraintName="FKq4u9ne3x0xtpc5d2jdddv1ii7"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tasks"/>
+
+        <!-- <insert tableName="attachments">
+            <column name="file_name" value="database.sql"/>
+            <column name="file_path" value="uploads/database.sql"/>
+            <column name="uploaded_at" valueDate="2026-06-04T16:40:56.5858730"/>
+            <column name="task_id" valueNumeric="1"/>
+        </insert> -->
+    </changeSet>
+
+</databaseChangeLog>

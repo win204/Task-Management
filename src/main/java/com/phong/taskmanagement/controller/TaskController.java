@@ -1,61 +1,204 @@
 package com.phong.taskmanagement.controller;
 
-import com.phong.taskmanagement.dto.request.CreateTaskRequest;
-import com.phong.taskmanagement.entity.Task;
-import com.phong.taskmanagement.service.TaskService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
-
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
+
+import com.phong.taskmanagement.dto.request.CreateTaskRequest;
+import com.phong.taskmanagement.dto.request.TaskSearchRequest;
+import com.phong.taskmanagement.dto.response.ApiResponse;
+import com.phong.taskmanagement.dto.response.TaskResponse;
+import com.phong.taskmanagement.service.TaskService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/tasks")
 @RequiredArgsConstructor
+@Tag(
+        name = "Task API",
+        description = "APIs for managing tasks"
+)
 public class TaskController {
 
     private final TaskService taskService;
 
+    @Operation(
+            summary = "Create new task",
+            description = "Create a new task"
+    )
     @PostMapping
-    public Task createTask(@RequestBody CreateTaskRequest request) {
-        return taskService.createTask(request);
+    public ApiResponse<TaskResponse> createTask(
+            @RequestBody CreateTaskRequest request) {
+
+        TaskResponse response = taskService.createTask(request);
+        return ApiResponse.success(response, "Task created successfully");
     }
 
+    @Operation(
+            summary = "Get all tasks",
+            description = "Retrieve all tasks"
+    )
     @GetMapping
-    public List<Task> getAllTasks() {
-        return taskService.getAllTasks();
+    public ApiResponse<List<TaskResponse>> getAllTasks() {
+
+        List<TaskResponse> response = taskService.getAllTasks();
+        return ApiResponse.success(response, "Tasks retrieved successfully");
     }
 
+    @Operation(
+            summary = "Get task by id",
+            description = "Retrieve a task by id"
+    )
     @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id);
+    public ApiResponse<TaskResponse> getTaskById(
+            @PathVariable Long id) {
+
+        TaskResponse response = taskService.getTaskById(id);
+        return ApiResponse.success(response, "Task retrieved successfully");
     }
 
+    @Operation(
+            summary = "Search tasks",
+            description = "Search tasks by keyword with pagination"
+    )
     @GetMapping("/search")
-    public List<Task> searchTasks(
-            @RequestParam String keyword) {
+    public ApiResponse<Page<TaskResponse>> searchTasks(
 
-        return taskService.searchTasks(keyword);
+            @RequestParam String keyword,
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "5")
+            int size) {
+
+        Page<TaskResponse> response = taskService.searchTasks(
+                keyword,
+                page,
+                size
+        );
+        return ApiResponse.success(response, "Tasks searched successfully");
     }
 
+    @Operation(
+            summary = "Advanced task search",
+            description = "Search tasks using dynamic filters and pagination"
+    )
+    @PostMapping("/advanced-search")
+    public ApiResponse<Page<TaskResponse>> advancedSearchTasks(
+
+            @RequestBody TaskSearchRequest request,
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "5")
+            int size) {
+
+        Page<TaskResponse> response = taskService.searchTasks(
+                request,
+                page,
+                size
+        );
+        return ApiResponse.success(response, "Advanced task search completed successfully");
+    }
+
+    @Operation(
+            summary = "Get tasks by status",
+            description = "Retrieve tasks filtered by status with pagination"
+    )
+    @GetMapping("/status")
+    public ApiResponse<Page<TaskResponse>> getTasksByStatus(
+
+            @RequestParam String status,
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "5")
+            int size) {
+
+        Page<TaskResponse> response = taskService.getTasksByStatus(
+                status,
+                page,
+                size
+        );
+        return ApiResponse.success(response, "Tasks filtered by status successfully");
+    }
+
+    @Operation(
+            summary = "Get tasks by priority",
+            description = "Retrieve tasks filtered by priority with pagination"
+    )
+    @GetMapping("/priority")
+    public ApiResponse<Page<TaskResponse>> getTasksByPriority(
+
+            @RequestParam String priority,
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "5")
+            int size) {
+
+        Page<TaskResponse> response = taskService.getTasksByPriority(
+                priority,
+                page,
+                size
+        );
+        return ApiResponse.success(response, "Tasks filtered by priority successfully");
+    }
+
+    @Operation(
+            summary = "Get tasks with pagination",
+            description = "Retrieve tasks with pagination"
+    )
     @GetMapping("/paging")
-    public Page<Task> getTasksWithPaging(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
+    public ApiResponse<Page<TaskResponse>> getTasksWithPaging(
 
-        return taskService.getTasksWithPaging(page, size);
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "5")
+            int size) {
+
+        Page<TaskResponse> response = taskService.getTasksWithPaging(
+                page,
+                size
+        );
+        return ApiResponse.success(response, "Tasks retrieved with pagination successfully");
     }
 
+    @Operation(
+            summary = "Update task",
+            description = "Update task information"
+    )
     @PutMapping("/{id}")
-    public Task updateTask(
+    public ApiResponse<TaskResponse> updateTask(
             @PathVariable Long id,
-            @RequestBody CreateTaskRequest request
-    ) {
-        return taskService.updateTask(id, request);
+            @RequestBody CreateTaskRequest request) {
+
+        TaskResponse response = taskService.updateTask(
+                id,
+                request
+        );
+        return ApiResponse.success(response, "Task updated successfully");
     }
 
+    @Operation(
+            summary = "Delete task",
+            description = "Delete a task by id"
+    )
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
+    public ApiResponse<Void> deleteTask(
+            @PathVariable Long id) {
+
         taskService.deleteTask(id);
+        return ApiResponse.success(null, "Task deleted successfully");
     }
 }

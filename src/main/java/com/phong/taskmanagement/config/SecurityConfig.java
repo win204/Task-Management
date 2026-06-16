@@ -3,9 +3,15 @@ package com.phong.taskmanagement.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -14,10 +20,13 @@ import com.phong.taskmanagement.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
+@EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
@@ -48,8 +57,9 @@ public class SecurityConfig {
 
                                     response.getWriter().write("""
                                             {
-                                              "status":401,
-                                              "message":"Unauthenticated"
+                                              "success":false,
+                                              "message":"Unauthenticated",
+                                              "data":null
                                             }
                                             """);
                                 })
@@ -68,8 +78,9 @@ public class SecurityConfig {
 
                                     response.getWriter().write("""
                                             {
-                                              "status":403,
-                                              "message":"Access Denied"
+                                              "success":false,
+                                              "message":"Access Denied",
+                                              "data":null
                                             }
                                             """);
                                 })
@@ -81,11 +92,18 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+                                "/actuator/**"
                         )
                         .permitAll()
 
                         .requestMatchers("/api/users/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers("/api/roles/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers("/api/positions/**")
                         .hasRole("ADMIN")
 
                         .requestMatchers("/api/projects/**")
@@ -101,9 +119,40 @@ public class SecurityConfig {
                                 "EMPLOYEE"
                         )
 
+                        .requestMatchers("/api/export/**")
+                        .hasAnyRole(
+                                "ADMIN",
+                                "MANAGER"
+                        )
+
+                        .requestMatchers("/api/reports/**")
+                        .hasAnyRole(
+                                "ADMIN",
+                                "MANAGER"
+                        )
+
+                        .requestMatchers("/api/activity-logs/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers("/api/attachments/**")
+                        .hasAnyRole(
+                                "ADMIN",
+                                "MANAGER",
+                                "EMPLOYEE"
+                        )
+
+                        .requestMatchers("/api/dashboard/**")
+                        .hasAnyRole(
+                                "ADMIN",
+                                "MANAGER",
+                                "EMPLOYEE"
+                        )
+
                         .anyRequest()
                         .authenticated()
                 )
+
+                .authenticationProvider(authenticationProvider())
 
                 .addFilterBefore(
                         jwtAuthenticationFilter,
@@ -113,5 +162,20 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

@@ -21,6 +21,11 @@ public class Attachment {
     @Column(columnDefinition = "NVARCHAR(255)")
     private String fileName;
 
+    @Column(length = 100)
+    private String fileType;
+
+    private Long fileSize;
+
     @Column(columnDefinition = "NVARCHAR(500)")
     private String filePath;
 

@@ -1,13 +1,26 @@
 package com.phong.taskmanagement.service;
 
-import com.phong.taskmanagement.dto.request.CreateAttachmentRequest;
-import com.phong.taskmanagement.entity.Attachment;
-
 import java.util.List;
+
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.phong.taskmanagement.dto.response.AttachmentResponse;
 
 public interface AttachmentService {
 
-    Attachment createAttachment(CreateAttachmentRequest request);
+    AttachmentResponse uploadFile(
+            MultipartFile file,
+            Long taskId
+    );
 
-    List<Attachment> getAllAttachments();
+    Resource downloadFile(Long id);
+
+    void deleteAttachment(Long id);
+
+    List<AttachmentResponse> getAttachmentsByTask(Long taskId);
+
+    AttachmentResponse getAttachmentById(Long id);
+
+    List<AttachmentResponse> getAllAttachments();
 }

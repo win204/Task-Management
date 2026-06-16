@@ -1,19 +1,47 @@
 package com.phong.taskmanagement.service;
 
-import com.phong.taskmanagement.dto.request.CreateProjectRequest;
-import com.phong.taskmanagement.entity.Project;
-
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+
+import com.phong.taskmanagement.dto.request.CreateProjectRequest;
+import com.phong.taskmanagement.dto.response.ProjectResponse;
 
 public interface ProjectService {
 
-    Project createProject(CreateProjectRequest request);
+    ProjectResponse createProject(
+            CreateProjectRequest request
+    );
 
-    List<Project> getAllProjects();
+    List<ProjectResponse> getAllProjects();
 
-    Project getProjectById(Long id);
+    ProjectResponse getProjectById(
+            Long id
+    );
 
-    void deleteProject(Long id);
+    void deleteProject(
+            Long id
+    );
 
-    Project updateProject(Long id, CreateProjectRequest request);
+    ProjectResponse updateProject(
+            Long id,
+            CreateProjectRequest request
+    );
+
+    Page<ProjectResponse> searchProjects(
+            String keyword,
+            int page,
+            int size
+    );
+
+    Page<ProjectResponse> getProjectsByStatus(
+            String status,
+            int page,
+            int size
+    );
+
+    Page<ProjectResponse> getProjectsWithPaging(
+            int page,
+            int size
+    );
 }

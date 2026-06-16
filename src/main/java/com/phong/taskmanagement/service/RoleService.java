@@ -1,9 +1,11 @@
 package com.phong.taskmanagement.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
 import com.phong.taskmanagement.dto.request.CreateRoleRequest;
 import com.phong.taskmanagement.entity.Role;
-
-import java.util.List;
 
 public interface RoleService {
 
@@ -15,5 +17,20 @@ public interface RoleService {
 
     void deleteRole(Long id);
 
-    Role updateRole(Long id, CreateRoleRequest request);
+    Role updateRole(
+            Long id,
+            CreateRoleRequest request
+    );
+
+    Page<Role> searchRoles(
+            String keyword,
+            int page,
+            int size
+    );
+
+    Page<Role> getRolesWithPaging(
+            int page,
+            int size
+    );
 }
+

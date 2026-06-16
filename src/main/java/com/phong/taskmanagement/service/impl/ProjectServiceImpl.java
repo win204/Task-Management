@@ -1,23 +1,45 @@
 package com.phong.taskmanagement.service.impl;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.phong.taskmanagement.dto.request.CreateProjectRequest;
+import com.phong.taskmanagement.dto.response.ProjectResponse;
 import com.phong.taskmanagement.entity.Project;
 import com.phong.taskmanagement.exception.ResourceNotFoundException;
 import com.phong.taskmanagement.repository.ProjectRepository;
 import com.phong.taskmanagement.service.ProjectService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProjectServiceImpl implements ProjectService {
+public class ProjectServiceImpl
+        implements ProjectService {
 
     private final ProjectRepository projectRepository;
 
+    private ProjectResponse mapToResponse(
+            Project project) {
+
+        return ProjectResponse.builder()
+                .id(project.getId())
+                .projectCode(project.getProjectCode())
+                .projectName(project.getProjectName())
+                .description(project.getDescription())
+                .startDate(project.getStartDate())
+                .endDate(project.getEndDate())
+                .status(project.getStatus())
+                .build();
+    }
+
     @Override
-    public Project createProject(CreateProjectRequest request) {
+    public ProjectResponse createProject(
+            CreateProjectRequest request) {
 
         Project project = Project.builder()
                 .projectCode(request.getProjectCode())
@@ -28,38 +50,132 @@ public class ProjectServiceImpl implements ProjectService {
                 .status(request.getStatus())
                 .build();
 
-        return projectRepository.save(project);
+        return mapToResponse(
+                projectRepository.save(project)
+        );
     }
 
     @Override
-    public List<Project> getAllProjects() {
-        return projectRepository.findAll();
+    public List<ProjectResponse> getAllProjects() {
+
+        return projectRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
     @Override
-    public Project getProjectById(Long id) {
-        return projectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+    public ProjectResponse getProjectById(
+            Long id) {
+
+        Project project = projectRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Project not found"
+                        ));
+
+        return mapToResponse(project);
     }
 
     @Override
     public void deleteProject(Long id) {
+
+        if (!projectRepository.existsById(id)) {
+
+            throw new ResourceNotFoundException(
+                    "Project not found"
+            );
+        }
+
         projectRepository.deleteById(id);
     }
 
     @Override
-    public Project updateProject(Long id, CreateProjectRequest request) {
+    public ProjectResponse updateProject(
+            Long id,
+            CreateProjectRequest request) {
 
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+        Project project = projectRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Project not found"
+                        ));
 
-        project.setProjectCode(request.getProjectCode());
-        project.setProjectName(request.getProjectName());
-        project.setDescription(request.getDescription());
-        project.setStartDate(request.getStartDate());
-        project.setEndDate(request.getEndDate());
-        project.setStatus(request.getStatus());
+        project.setProjectCode(
+                request.getProjectCode()
+        );
 
-        return projectRepository.save(project);
+        project.setProjectName(
+                request.getProjectName()
+        );
+
+        project.setDescription(
+                request.getDescription()
+        );
+
+        project.setStartDate(
+                request.getStartDate()
+        );
+
+        project.setEndDate(
+                request.getEndDate()
+        );
+
+        project.setStatus(
+                request.getStatus()
+        );
+
+        return mapToResponse(
+                projectRepository.save(project)
+        );
+    }
+
+    @Override
+    public Page<ProjectResponse> searchProjects(
+            String keyword,
+            int page,
+            int size) {
+
+        Pageable pageable =
+                PageRequest.of(page, size);
+
+        return projectRepository
+                .findByProjectNameContainingIgnoreCase(
+                        keyword,
+                        pageable
+                )
+                .map(this::mapToResponse);
+    }
+
+    @Override
+    public Page<ProjectResponse> getProjectsByStatus(
+            String status,
+            int page,
+            int size) {
+
+        Pageable pageable =
+                PageRequest.of(page, size);
+
+        return projectRepository
+                .findByStatus(
+                        status,
+                        pageable
+                )
+                .map(this::mapToResponse);
+    }
+
+    @Override
+    public Page<ProjectResponse> getProjectsWithPaging(
+            int page,
+            int size) {
+
+        Pageable pageable =
+                PageRequest.of(page, size);
+
+        return projectRepository
+                .findAll(pageable)
+                .map(this::mapToResponse);
     }
 }

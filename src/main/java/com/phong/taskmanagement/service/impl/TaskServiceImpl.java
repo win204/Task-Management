@@ -1,6 +1,18 @@
 package com.phong.taskmanagement.service.impl;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
 import com.phong.taskmanagement.dto.request.CreateTaskRequest;
+import com.phong.taskmanagement.dto.request.TaskSearchRequest;
+import com.phong.taskmanagement.dto.response.TaskResponse;
 import com.phong.taskmanagement.entity.Project;
 import com.phong.taskmanagement.entity.Task;
 import com.phong.taskmanagement.entity.User;
@@ -8,14 +20,12 @@ import com.phong.taskmanagement.exception.ResourceNotFoundException;
 import com.phong.taskmanagement.repository.ProjectRepository;
 import com.phong.taskmanagement.repository.TaskRepository;
 import com.phong.taskmanagement.repository.UserRepository;
+import com.phong.taskmanagement.service.ActivityLogService;
+import com.phong.taskmanagement.service.EmailService;
+import com.phong.taskmanagement.service.NotificationService;
 import com.phong.taskmanagement.service.TaskService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -24,15 +34,50 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final ActivityLogService activityLogService;
+    private final NotificationService notificationService;
+    private final EmailService emailService;
+
+    private TaskResponse mapToResponse(Task task) {
+
+        return TaskResponse.builder()
+                .id(task.getId())
+                .title(task.getTitle())
+                .description(task.getDescription())
+                .priority(task.getPriority())
+                .status(task.getStatus())
+                .startDate(task.getStartDate())
+                .dueDate(task.getDueDate())
+                .projectName(
+                        task.getProject() != null
+                        ? task.getProject().getProjectName()
+                        : null
+                )
+                .assigneeName(
+                        task.getAssignee() != null
+                        ? task.getAssignee().getFullName()
+                        : "Unassigned"
+                )
+                .build();
+    }
 
     @Override
-    public Task createTask(CreateTaskRequest request) {
+    public TaskResponse createTask(
+            CreateTaskRequest request) {
 
-        Project project = projectRepository.findById(request.getProjectId())
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+        Project project = projectRepository
+                .findById(request.getProjectId())
+                .orElseThrow(()
+                        -> new ResourceNotFoundException(
+                        "Project not found"
+                ));
 
-        User assignee = userRepository.findById(request.getAssigneeId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User assignee = userRepository
+                .findById(request.getAssigneeId())
+                .orElseThrow(()
+                        -> new ResourceNotFoundException(
+                        "User not found"
+                ));
 
         Task task = Task.builder()
                 .title(request.getTitle())
@@ -45,36 +90,104 @@ public class TaskServiceImpl implements TaskService {
                 .assignee(assignee)
                 .build();
 
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+
+        activityLogService.log(
+                assignee.getId(),
+                savedTask.getId(),
+                "CREATE_TASK",
+                "Created task: " + savedTask.getTitle()
+        );
+
+        // Create notification for assignee
+        notificationService.createNotification(
+                assignee.getId(),
+                "New Task Assigned",
+                "You have been assigned task: " + savedTask.getTitle(),
+                "TASK_ASSIGN"
+        );
+
+        // Send task assignment email
+        if (assignee.getEmail() != null && !assignee.getEmail().isBlank()) {
+            emailService.sendTaskAssignedEmail(
+                    assignee.getEmail(),
+                    savedTask.getTitle()
+            );
+        }
+
+        return mapToResponse(savedTask);
     }
 
     @Override
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    public List<TaskResponse> getAllTasks() {
+
+        return taskRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
     @Override
-    public Task getTaskById(Long id) {
-        return taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER') or (hasRole('EMPLOYEE') and @taskServiceImpl.isTaskOwner(#id))")
+    public TaskResponse getTaskById(Long id) {
+
+        Task task = taskRepository.findById(id)
+                .orElseThrow(()
+                        -> new ResourceNotFoundException(
+                        "Task not found"
+                ));
+
+        return mapToResponse(task);
     }
 
     @Override
     public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
+
+        Task task = taskRepository.findById(id)
+                .orElseThrow(()
+                        -> new ResourceNotFoundException(
+                        "Task not found"
+                ));
+
+        activityLogService.log(
+                task.getAssignee().getId(),
+                task.getId(),
+                "DELETE_TASK",
+                "Deleted task: " + task.getTitle()
+        );
+
+        taskRepository.delete(task);
     }
 
     @Override
-    public Task updateTask(Long id, CreateTaskRequest request) {
+    public TaskResponse updateTask(
+            Long id,
+            CreateTaskRequest request) {
 
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+                .orElseThrow(()
+                        -> new ResourceNotFoundException(
+                        "Task not found"
+                ));
 
-        Project project = projectRepository.findById(request.getProjectId())
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+        // capture old values for notifications
+        User oldAssignee = task.getAssignee();
+        String oldStatus = task.getStatus();
 
-        User assignee = userRepository.findById(request.getAssigneeId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Project project = projectRepository
+                .findById(request.getProjectId())
+                .orElseThrow(()
+                        -> new ResourceNotFoundException(
+                        "Project not found"
+                ));
+
+        User assignee = userRepository
+                .findById(request.getAssigneeId())
+                .orElseThrow(()
+                        -> new ResourceNotFoundException(
+                        "User not found"
+                ));
 
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
@@ -85,19 +198,129 @@ public class TaskServiceImpl implements TaskService {
         task.setProject(project);
         task.setAssignee(assignee);
 
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+
+        activityLogService.log(
+                assignee.getId(),
+                savedTask.getId(),
+                "UPDATE_TASK",
+                "Updated task: " + savedTask.getTitle()
+        );
+
+        // Notify if assignee changed
+        if (oldAssignee == null || !oldAssignee.getId().equals(assignee.getId())) {
+            notificationService.createNotification(
+                    assignee.getId(),
+                    "Task Assigned",
+                    "You have been assigned task: " + savedTask.getTitle(),
+                    "TASK_ASSIGN"
+            );
+        }
+
+        // Notify if status changed
+        if (oldStatus == null || !oldStatus.equals(savedTask.getStatus())) {
+            Long notifyUserId = savedTask.getAssignee() != null ? savedTask.getAssignee().getId() : null;
+            if (notifyUserId != null) {
+                notificationService.createNotification(
+                        notifyUserId,
+                        "Task Status Updated",
+                        "Status for task '" + savedTask.getTitle() + "' changed to " + savedTask.getStatus(),
+                        "TASK_STATUS"
+                );
+            }
+        }
+
+        return mapToResponse(savedTask);
     }
 
     @Override
-    public List<Task> searchTasks(String keyword) {
-        return taskRepository.findByTitleContainingIgnoreCase(keyword);
+    public Page<TaskResponse> searchTasks(
+            String keyword,
+            int page,
+            int size) {
+
+        Pageable pageable
+                = PageRequest.of(page, size);
+
+        return taskRepository
+                .findByTitleContainingIgnoreCase(
+                        keyword,
+                        pageable
+                )
+                .map(this::mapToResponse);
     }
 
     @Override
-    public Page<Task> getTasksWithPaging(int page, int size) {
+    public Page<TaskResponse> searchTasks(
+            TaskSearchRequest request,
+            int page,
+            int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        return taskRepository.findAll(pageable);
+        return taskRepository
+                .searchTasks(request, pageable)
+                .map(this::mapToResponse);
+    }
+
+    @Override
+    public Page<TaskResponse> getTasksByStatus(
+            String status,
+            int page,
+            int size) {
+
+        Pageable pageable
+                = PageRequest.of(page, size);
+
+        return taskRepository
+                .findByStatus(status, pageable)
+                .map(this::mapToResponse);
+    }
+
+    @Override
+    public Page<TaskResponse> getTasksByPriority(
+            String priority,
+            int page,
+            int size) {
+
+        Pageable pageable
+                = PageRequest.of(page, size);
+
+        return taskRepository
+                .findByPriority(priority, pageable)
+                .map(this::mapToResponse);
+    }
+
+    @Override
+    public Page<TaskResponse> getTasksWithPaging(
+            int page,
+            int size) {
+
+        Pageable pageable
+                = PageRequest.of(page, size);
+
+        return taskRepository
+                .findAll(pageable)
+                .map(this::mapToResponse);
+    }
+
+    public boolean isTaskOwner(Long taskId) {
+        String username = getCurrentUsername();
+        return taskRepository.findById(taskId)
+                .map(task -> task.getAssignee() != null
+                        && username.equals(task.getAssignee().getUsername()))
+                .orElse(false);
+    }
+
+    private String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        if (authentication == null || authentication.getName() == null) {
+            return null;
+        }
+
+        return authentication.getName();
     }
 }

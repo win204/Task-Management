@@ -1,0 +1,13 @@
+# Removing the manual hostPath PersistentVolume. 
+# Docker Desktop Kubernetes will automatically provision a PersistentVolume 
+# correctly when using just the PersistentVolumeClaim, resolving permission issues!
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sql-server-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

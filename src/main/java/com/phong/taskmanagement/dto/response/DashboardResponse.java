@@ -20,4 +20,8 @@ public class DashboardResponse {
     private Long inProgressTasks;
 
     private Long todoTasks;
+
+    private Long overdueTasks;
+
+    private Double completionRate;
 }

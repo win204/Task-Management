@@ -1,13 +1,22 @@
 package com.phong.taskmanagement.service;
 
-import com.phong.taskmanagement.dto.request.CreateActivityLogRequest;
-import com.phong.taskmanagement.entity.ActivityLog;
-
 import java.util.List;
+
+import com.phong.taskmanagement.dto.request.CreateActivityLogRequest;
+import com.phong.taskmanagement.dto.response.ActivityLogResponse;
 
 public interface ActivityLogService {
 
-    ActivityLog createLog(CreateActivityLogRequest request);
+    ActivityLogResponse createLog(
+            CreateActivityLogRequest request
+    );
 
-    List<ActivityLog> getAllLogs();
+    List<ActivityLogResponse> getAllLogs();
+
+    ActivityLogResponse log(
+            Long userId,
+            Long taskId,
+            String action,
+            String description
+    );
 }

@@ -34,6 +34,7 @@ public class JwtService {
         List<String> roles = user.getRoles()
                 .stream()
                 .map(Role::getName)
+                .map(this::normalizeRole)
                 .toList();
 
         return Jwts.builder()
@@ -78,6 +79,19 @@ public class JwtService {
             return List.of();
         }
 
-        return (List<String>) roles;
+        return ((List<String>) roles).stream()
+                .map(this::normalizeRole)
+                .toList();
+    }
+
+    private String normalizeRole(String role) {
+        if (role == null || role.isBlank()) {
+            return "";
+        }
+        String normalized = role.trim();
+        if (normalized.startsWith("ROLE_")) {
+            normalized = normalized.substring(5);
+        }
+        return normalized.toUpperCase();
     }
 }
