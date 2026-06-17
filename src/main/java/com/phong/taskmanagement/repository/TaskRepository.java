@@ -1,6 +1,8 @@
 package com.phong.taskmanagement.repository;
 
 import com.phong.taskmanagement.dto.response.TaskPriorityResponse;
+import com.phong.taskmanagement.dto.response.TaskStatusChartResponse;
+import com.phong.taskmanagement.dto.response.TaskPriorityChartResponse;
 import com.phong.taskmanagement.entity.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +38,17 @@ public interface TaskRepository
     @Query("SELECT new com.phong.taskmanagement.dto.response.TaskPriorityResponse(t.priority, COUNT(t)) " +
             "FROM Task t GROUP BY t.priority")
     List<TaskPriorityResponse> countTasksByPriority();
+
+    @Query("SELECT new com.phong.taskmanagement.dto.response.TaskStatusChartResponse(t.status, COUNT(t)) " +
+            "FROM Task t GROUP BY t.status")
+    List<TaskStatusChartResponse> countTasksByStatusChart();
+
+    @Query("SELECT new com.phong.taskmanagement.dto.response.TaskPriorityChartResponse(t.priority, COUNT(t)) " +
+            "FROM Task t GROUP BY t.priority")
+    List<TaskPriorityChartResponse> countTasksByPriorityChart();
+
+    @Query("SELECT t.startDate, COUNT(t) FROM Task t WHERE t.startDate IS NOT NULL GROUP BY t.startDate ORDER BY t.startDate ASC")
+    List<Object[]> getTaskCountsByStartDate();
 
     Page<Task> findByTitleContainingIgnoreCase(
             String keyword,

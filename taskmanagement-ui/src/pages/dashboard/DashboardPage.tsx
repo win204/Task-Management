@@ -9,6 +9,9 @@ import {
 } from 'lucide-react';
 import { useDashboard } from '../../hooks/useDashboard';
 import { StatisticCard } from '../../components/dashboard/StatisticCard';
+import { TaskStatusPieChart } from '../../components/dashboard/TaskStatusPieChart';
+import { TaskPriorityBarChart } from '../../components/dashboard/TaskPriorityBarChart';
+import { TaskMonthlyLineChart } from '../../components/dashboard/TaskMonthlyLineChart';
 
 export default function DashboardPage() {
   const { data, isLoading, isError, error } = useDashboard();
@@ -83,6 +86,15 @@ export default function DashboardPage() {
           iconColor="text-slate-600"
           isLoading={isLoading}
         />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <TaskStatusPieChart />
+        <TaskPriorityBarChart />
+      </div>
+      
+      <div className="grid grid-cols-1 gap-6">
+        <TaskMonthlyLineChart />
       </div>
     </div>
   );
