@@ -29,4 +29,5 @@ export const API_ENDPOINTS = {
   TASKS_SEARCH: '/api/tasks/search',
   TASKS_PAGING: '/api/tasks/paging',
   TASK_BY_ID: (taskId: number) => `/api/tasks/${taskId}`,
+  DASHBOARD_STATS: '/api/dashboard',
 } as const;

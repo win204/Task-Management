@@ -81,6 +81,12 @@ public class GlobalExceptionHandler {
         return ApiResponse.failure("Internal server error: A lazy collection was accessed outside of an active transaction.");
     }
 
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiResponse<Object> handleNoResourceFound(org.springframework.web.servlet.resource.NoResourceFoundException ex) {
+        return ApiResponse.failure("API endpoint not found: " + ex.getResourcePath());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiResponse<Object> handleException(

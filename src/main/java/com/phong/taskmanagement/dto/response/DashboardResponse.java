@@ -8,20 +8,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class DashboardResponse {
-
     private Long totalUsers;
-
     private Long totalProjects;
-
     private Long totalTasks;
-
     private Long completedTasks;
-
-    private Long inProgressTasks;
-
     private Long todoTasks;
-
-    private Long overdueTasks;
-
-    private Double completionRate;
+    private Long inProgressTasks;
 }
