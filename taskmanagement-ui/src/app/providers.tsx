@@ -1,5 +1,16 @@
 import type { ReactNode } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// Create a global query client instance for React Query
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1, // Retry failed requests once before showing an error
+      refetchOnWindowFocus: false, // Prevent refetching when switching browser tabs
+    },
+  },
+});
 
 interface ProvidersProps {
   children: ReactNode;
@@ -7,11 +18,11 @@ interface ProvidersProps {
 
 /**
  * Global provider shell. Encapsulates UI providers (like alerts/notifications)
- * to keep App.tsx clean and maintainable.
+ * and state providers (like React Query) to keep App.tsx clean and maintainable.
  */
 export default function Providers({ children }: ProvidersProps) {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Toaster
         position="top-right"
         toastOptions={{
@@ -40,6 +51,6 @@ export default function Providers({ children }: ProvidersProps) {
         }}
       />
       {children}
-    </>
+    </QueryClientProvider>
   );
 }

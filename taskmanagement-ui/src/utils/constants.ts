@@ -19,4 +19,10 @@ export const API_ENDPOINTS = {
   FORGOT_PASSWORD: '/api/auth/forgot-password',
   RESET_PASSWORD: '/api/auth/reset-password',
   USER_BY_ID: (userId: number) => `/api/users/${userId}`,
+  USERS: '/api/users',
+  USERS_SEARCH: '/api/users/search',
+  PROJECTS: '/api/projects',
+  PROJECTS_SEARCH: '/api/projects/search',
+  PROJECTS_PAGING: '/api/projects/paging',
+  PROJECT_BY_ID: (projectId: number) => `/api/projects/${projectId}`,
 } as const;
