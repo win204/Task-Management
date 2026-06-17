@@ -20,6 +20,8 @@ import com.phong.taskmanagement.exception.ResourceNotFoundException;
 import com.phong.taskmanagement.repository.ProjectRepository;
 import com.phong.taskmanagement.repository.TaskRepository;
 import com.phong.taskmanagement.repository.UserRepository;
+import com.phong.taskmanagement.repository.ActivityLogRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import com.phong.taskmanagement.service.ActivityLogService;
 import com.phong.taskmanagement.service.EmailService;
 import com.phong.taskmanagement.service.NotificationService;
@@ -27,13 +29,17 @@ import com.phong.taskmanagement.service.TaskService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final ActivityLogRepository activityLogRepository;
     private final ActivityLogService activityLogService;
     private final NotificationService notificationService;
     private final EmailService emailService;
@@ -119,16 +125,23 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     public List<TaskResponse> getAllTasks() {
+        List<Task> tasks = taskRepository.findAll();
+        System.out.println("TASK ENTITY SIZE = " + tasks.size());
 
-        return taskRepository.findAll()
-                .stream()
+        List<TaskResponse> dtoList = tasks.stream()
                 .map(this::mapToResponse)
                 .toList();
+        
+        System.out.println("TASK DTO SIZE = " + dtoList.size());
+        
+        return dtoList;
     }
 
     @Override
+    @Transactional(readOnly = true)
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER') or (hasRole('EMPLOYEE') and @taskServiceImpl.isTaskOwner(#id))")
     public TaskResponse getTaskById(Long id) {
 
@@ -150,13 +163,7 @@ public class TaskServiceImpl implements TaskService {
                         "Task not found"
                 ));
 
-        activityLogService.log(
-                task.getAssignee().getId(),
-                task.getId(),
-                "DELETE_TASK",
-                "Deleted task: " + task.getTitle()
-        );
-
+        activityLogRepository.deleteByTaskId(id);
         taskRepository.delete(task);
     }
 
@@ -234,13 +241,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<TaskResponse> searchTasks(
             String keyword,
             int page,
             int size) {
 
         Pageable pageable
-                = PageRequest.of(page, size);
+                = PageRequest.of(page, size, org.springframework.data.domain.Sort.by("id").descending());
 
         return taskRepository
                 .findByTitleContainingIgnoreCase(
@@ -251,12 +259,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<TaskResponse> searchTasks(
             TaskSearchRequest request,
             int page,
             int size) {
 
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, org.springframework.data.domain.Sort.by("id").descending());
 
         return taskRepository
                 .searchTasks(request, pageable)
@@ -264,13 +273,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<TaskResponse> getTasksByStatus(
             String status,
             int page,
             int size) {
 
         Pageable pageable
-                = PageRequest.of(page, size);
+                = PageRequest.of(page, size, org.springframework.data.domain.Sort.by("id").descending());
 
         return taskRepository
                 .findByStatus(status, pageable)
@@ -278,13 +288,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<TaskResponse> getTasksByPriority(
             String priority,
             int page,
             int size) {
 
         Pageable pageable
-                = PageRequest.of(page, size);
+                = PageRequest.of(page, size, org.springframework.data.domain.Sort.by("id").descending());
 
         return taskRepository
                 .findByPriority(priority, pageable)
@@ -292,12 +303,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<TaskResponse> getTasksWithPaging(
             int page,
             int size) {
 
         Pageable pageable
-                = PageRequest.of(page, size);
+                = PageRequest.of(page, size, org.springframework.data.domain.Sort.by("id").descending());
 
         return taskRepository
                 .findAll(pageable)

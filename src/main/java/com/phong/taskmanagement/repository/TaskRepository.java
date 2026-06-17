@@ -5,6 +5,7 @@ import com.phong.taskmanagement.entity.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
@@ -12,6 +13,18 @@ import java.util.List;
 
 public interface TaskRepository
         extends JpaRepository<Task, Long>, TaskRepositoryCustom {
+
+    boolean existsByProjectId(Long projectId);
+
+    boolean existsByAssigneeId(Long assigneeId);
+
+    @Modifying
+    @Query("UPDATE Task t SET t.assignee = null WHERE t.assignee.id = :assigneeId")
+    void updateAssigneeToNull(Long assigneeId);
+
+    @Modifying
+    @Query("DELETE FROM Task t WHERE t.project.id = :projectId")
+    void deleteByProjectId(Long projectId);
 
     long countByStatus(String status);
 

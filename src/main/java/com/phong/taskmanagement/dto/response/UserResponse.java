@@ -20,4 +20,6 @@ public class UserResponse {
     private String phone;
 
     private Boolean active;
+
+    private java.util.Set<String> roles;
 }

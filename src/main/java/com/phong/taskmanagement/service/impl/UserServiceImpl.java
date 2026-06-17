@@ -6,6 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.phong.taskmanagement.dto.request.CreateUserRequest;
+import com.phong.taskmanagement.dto.request.UpdateUserRequest;
+import com.phong.taskmanagement.dto.request.ChangePasswordRequest;
 import com.phong.taskmanagement.dto.response.UserResponse;
 import com.phong.taskmanagement.entity.Position;
 import com.phong.taskmanagement.entity.Role;
@@ -14,6 +16,10 @@ import com.phong.taskmanagement.exception.ResourceNotFoundException;
 import com.phong.taskmanagement.repository.PositionRepository;
 import com.phong.taskmanagement.repository.RoleRepository;
 import com.phong.taskmanagement.repository.UserRepository;
+import com.phong.taskmanagement.repository.TaskRepository;
+import com.phong.taskmanagement.repository.ActivityLogRepository;
+import com.phong.taskmanagement.repository.RefreshTokenRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import com.phong.taskmanagement.service.UserService;
 
 import org.springframework.data.domain.Page;
@@ -22,13 +28,20 @@ import org.springframework.data.domain.Pageable;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.transaction.annotation.Transactional;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PositionRepository positionRepository;
+    private final TaskRepository taskRepository;
+    private final ActivityLogRepository activityLogRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
 
     private UserResponse mapToResponse(User user) {
@@ -40,6 +53,11 @@ public class UserServiceImpl implements UserService {
                 .fullName(user.getFullName())
                 .phone(user.getPhone())
                 .active(user.getActive())
+                .roles(
+                        user.getRoles() != null
+                                ? user.getRoles().stream().map(Role::getName).collect(Collectors.toSet())
+                                : java.util.Collections.emptySet()
+                )
                 .build();
     }
 
@@ -56,8 +74,16 @@ public class UserServiceImpl implements UserService {
                 .email(request.getEmail())
                 .fullName(request.getFullName())
                 .phone(request.getPhone())
-                .active(true)
+                .active(request.getActive() != null ? request.getActive() : true)
                 .build();
+
+        if (request.getRoles() != null && !request.getRoles().isEmpty()) {
+            java.util.Set<Role> roles = new java.util.HashSet<>();
+            for (String roleName : request.getRoles()) {
+                roleRepository.findByName(roleName).ifPresent(roles::add);
+            }
+            user.setRoles(roles);
+        }
 
         user = userRepository.save(user);
 
@@ -65,6 +91,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserResponse> getAllUsers() {
 
         return userRepository.findAll()
@@ -74,6 +101,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponse getUserById(Long id) {
 
         User user = userRepository.findById(id)
@@ -88,12 +116,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
 
-        if (!userRepository.existsById(id)) {
+        User user = userRepository.findById(id)
+                .orElseThrow(()
+                        -> new ResourceNotFoundException(
+                        "Id not found"
+                ));
 
-            throw new ResourceNotFoundException(
-                    "Id not found"
-            );
-        }
+        taskRepository.updateAssigneeToNull(id);
+        activityLogRepository.updateUserToNull(id);
+        refreshTokenRepository.deleteByUser(user);
 
         userRepository.deleteById(id);
     }
@@ -148,6 +179,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<UserResponse> searchUsers(
             String keyword,
             int page,
@@ -167,7 +199,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse updateUser(
             Long id,
-            CreateUserRequest request) {
+            UpdateUserRequest request) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(()
@@ -175,20 +207,42 @@ public class UserServiceImpl implements UserService {
                         "Id not found"
                 ));
 
-        user.setUsername(request.getUsername());
-
-        user.setPassword(
-                passwordEncoder.encode(
-                        request.getPassword()
-                )
-        );
-
         user.setEmail(request.getEmail());
         user.setFullName(request.getFullName());
         user.setPhone(request.getPhone());
+        user.setActive(request.getActive());
+
+        if (request.getRoles() != null) {
+            java.util.Set<Role> roles = new java.util.HashSet<>();
+            for (String roleName : request.getRoles()) {
+                roleRepository.findByName(roleName).ifPresent(roles::add);
+            }
+            if (user.getRoles() == null) {
+                user.setRoles(roles);
+            } else {
+                user.getRoles().clear();
+                user.getRoles().addAll(roles);
+            }
+        }
 
         user = userRepository.save(user);
 
         return mapToResponse(user);
+    }
+
+    @Override
+    public void changePassword(Long id, ChangePasswordRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(()
+                        -> new ResourceNotFoundException(
+                        "Id not found"
+                ));
+
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Mật khẩu cũ không chính xác");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
     }
 }

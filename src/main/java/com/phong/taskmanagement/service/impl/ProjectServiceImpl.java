@@ -12,16 +12,24 @@ import com.phong.taskmanagement.dto.response.ProjectResponse;
 import com.phong.taskmanagement.entity.Project;
 import com.phong.taskmanagement.exception.ResourceNotFoundException;
 import com.phong.taskmanagement.repository.ProjectRepository;
+import com.phong.taskmanagement.repository.TaskRepository;
+import com.phong.taskmanagement.repository.ActivityLogRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import com.phong.taskmanagement.service.ProjectService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProjectServiceImpl
         implements ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final TaskRepository taskRepository;
+    private final ActivityLogRepository activityLogRepository;
 
     private ProjectResponse mapToResponse(
             Project project) {
@@ -56,6 +64,7 @@ public class ProjectServiceImpl
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ProjectResponse> getAllProjects() {
 
         return projectRepository.findAll()
@@ -65,6 +74,7 @@ public class ProjectServiceImpl
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProjectResponse getProjectById(
             Long id) {
 
@@ -88,6 +98,8 @@ public class ProjectServiceImpl
             );
         }
 
+        activityLogRepository.deleteByTaskProjectId(id);
+        taskRepository.deleteByProjectId(id);
         projectRepository.deleteById(id);
     }
 
@@ -133,6 +145,7 @@ public class ProjectServiceImpl
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<ProjectResponse> searchProjects(
             String keyword,
             int page,
@@ -150,6 +163,7 @@ public class ProjectServiceImpl
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<ProjectResponse> getProjectsByStatus(
             String status,
             int page,
@@ -167,6 +181,7 @@ public class ProjectServiceImpl
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<ProjectResponse> getProjectsWithPaging(
             int page,
             int size) {

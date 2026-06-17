@@ -66,7 +66,8 @@ export const UserForm = (props: UserFormProps) => {
     if (defaultValues) {
       reset(defaultValues);
     }
-  }, [defaultValues, reset]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultValues ? JSON.stringify(defaultValues) : null, reset]);
 
   const handleFormSubmit = async (data: any) => {
     await onSubmit(data);

@@ -1,6 +1,8 @@
 package com.phong.taskmanagement.service;
 
 import com.phong.taskmanagement.dto.request.CreateUserRequest;
+import com.phong.taskmanagement.dto.request.UpdateUserRequest;
+import com.phong.taskmanagement.dto.request.ChangePasswordRequest;
 import com.phong.taskmanagement.dto.response.UserResponse;
 import org.springframework.data.domain.Page;
 
@@ -28,6 +30,11 @@ public interface UserService {
 
     UserResponse updateUser(
             Long id,
-            CreateUserRequest request
+            UpdateUserRequest request
+    );
+
+    void changePassword(
+            Long id,
+            ChangePasswordRequest request
     );
 }

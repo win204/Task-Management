@@ -58,7 +58,9 @@ export const ProjectForm = (props: ProjectFormProps) => {
     if (defaultValues) {
       reset(defaultValues);
     }
-  }, [defaultValues, reset]);
+    // Deep compare to prevent infinite resets when parent re-renders and passes a new object reference
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultValues ? JSON.stringify(defaultValues) : null, reset]);
 
   const handleFormSubmit = async (data: ProjectFormValues) => {
     // Ensure empty string endDate is parsed as null for the backend

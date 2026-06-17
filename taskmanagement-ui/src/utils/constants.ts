@@ -25,4 +25,8 @@ export const API_ENDPOINTS = {
   PROJECTS_SEARCH: '/api/projects/search',
   PROJECTS_PAGING: '/api/projects/paging',
   PROJECT_BY_ID: (projectId: number) => `/api/projects/${projectId}`,
+  TASKS: '/api/tasks',
+  TASKS_SEARCH: '/api/tasks/search',
+  TASKS_PAGING: '/api/tasks/paging',
+  TASK_BY_ID: (taskId: number) => `/api/tasks/${taskId}`,
 } as const;

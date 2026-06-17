@@ -1,6 +1,8 @@
 package com.phong.taskmanagement.controller;
 
 import com.phong.taskmanagement.dto.request.CreateUserRequest;
+import com.phong.taskmanagement.dto.request.UpdateUserRequest;
+import com.phong.taskmanagement.dto.request.ChangePasswordRequest;
 import com.phong.taskmanagement.dto.response.ApiResponse;
 import com.phong.taskmanagement.dto.response.UserResponse;
 import com.phong.taskmanagement.service.UserService;
@@ -123,13 +125,28 @@ public class UserController {
             @PathVariable Long id,
             @Valid
             @RequestBody
-            CreateUserRequest request) {
+            UpdateUserRequest request) {
 
         UserResponse response = userService.updateUser(
                 id,
                 request
         );
         return ApiResponse.success(response, "User updated successfully");
+    }
+
+    @Operation(
+            summary = "Change password",
+            description = "Change the password for a specific user"
+    )
+    @PostMapping("/{id}/change-password")
+    public ApiResponse<Void> changePassword(
+            @PathVariable Long id,
+            @Valid
+            @RequestBody
+            ChangePasswordRequest request) {
+
+        userService.changePassword(id, request);
+        return ApiResponse.success(null, "Password changed successfully");
     }
 
     @Operation(
