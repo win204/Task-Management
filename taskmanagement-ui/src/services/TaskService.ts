@@ -61,4 +61,15 @@ export const TaskService = {
   async deleteTask(taskId: number): Promise<void> {
     await apiClient.delete<ApiResponse<void>>(API_ENDPOINTS.TASK_BY_ID(taskId));
   },
+
+  /**
+   * Update the status of a task via PATCH (optimized for Kanban).
+   */
+  async updateTaskStatus(taskId: number, status: string): Promise<Task> {
+    const response = await apiClient.patch<ApiResponse<Task>>(
+      `${API_ENDPOINTS.TASK_BY_ID(taskId)}/status`,
+      { status }
+    );
+    return response.data.data;
+  },
 };
