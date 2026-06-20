@@ -1,12 +1,18 @@
 package com.phong.taskmanagement.service;
 
+import com.phong.taskmanagement.entity.Task;
+
 public interface EmailService {
 
-    void sendTaskAssignedEmail(String to, String taskTitle);
+    void sendSimpleEmail(String to, String subject, String text);
 
-    void sendTaskReminderEmail(String to, String taskTitle);
+    void sendTaskAssignedEmail(Task task);
+
+    void sendTaskReminderEmail(Task task);
 
     void sendTaskOverdueEmail(String to, String taskTitle);
+
+    void sendTaskCompletedEmail(Task task);
 
     void sendPasswordResetEmail(String to, String resetToken);
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.phong.taskmanagement.dto.request.CreateTaskRequest;
 import com.phong.taskmanagement.dto.request.TaskSearchRequest;
+import com.phong.taskmanagement.dto.request.UpdateTaskStatusRequest;
 import com.phong.taskmanagement.dto.response.ApiResponse;
 import com.phong.taskmanagement.dto.response.TaskResponse;
 import com.phong.taskmanagement.service.TaskService;
@@ -188,6 +189,22 @@ public class TaskController {
                 request
         );
         return ApiResponse.success(response, "Task updated successfully");
+    }
+
+    @Operation(
+            summary = "Update task status",
+            description = "Update the status of a task using a dedicated DTO (Optimized for Kanban)"
+    )
+    @PatchMapping("/{id}/status")
+    public ApiResponse<TaskResponse> updateTaskStatus(
+            @PathVariable Long id,
+            @RequestBody UpdateTaskStatusRequest request) {
+
+        TaskResponse response = taskService.updateTaskStatus(
+                id,
+                request
+        );
+        return ApiResponse.success(response, "Task status updated successfully");
     }
 
     @Operation(

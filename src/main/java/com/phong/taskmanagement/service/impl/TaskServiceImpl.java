@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.phong.taskmanagement.dto.request.CreateTaskRequest;
 import com.phong.taskmanagement.dto.request.TaskSearchRequest;
+import com.phong.taskmanagement.dto.request.UpdateTaskStatusRequest;
 import com.phong.taskmanagement.dto.response.TaskResponse;
 import com.phong.taskmanagement.entity.Project;
 import com.phong.taskmanagement.entity.Task;
@@ -114,12 +115,7 @@ public class TaskServiceImpl implements TaskService {
         );
 
         // Send task assignment email
-        if (assignee.getEmail() != null && !assignee.getEmail().isBlank()) {
-            emailService.sendTaskAssignedEmail(
-                    assignee.getEmail(),
-                    savedTask.getTitle()
-            );
-        }
+        emailService.sendTaskAssignedEmail(savedTask);
 
         return mapToResponse(savedTask);
     }
@@ -222,6 +218,9 @@ public class TaskServiceImpl implements TaskService {
                     "You have been assigned task: " + savedTask.getTitle(),
                     "TASK_ASSIGN"
             );
+            
+            // Send task assignment email for the new assignee
+            emailService.sendTaskAssignedEmail(savedTask);
         }
 
         // Notify if status changed
@@ -234,6 +233,52 @@ public class TaskServiceImpl implements TaskService {
                         "Status for task '" + savedTask.getTitle() + "' changed to " + savedTask.getStatus(),
                         "TASK_STATUS"
                 );
+            }
+        }
+
+        return mapToResponse(savedTask);
+    }
+
+    @Override
+    public TaskResponse updateTaskStatus(
+            Long id,
+            UpdateTaskStatusRequest request) {
+
+        Task task = taskRepository.findById(id)
+                .orElseThrow(()
+                        -> new ResourceNotFoundException(
+                        "Task not found"
+                ));
+
+        String oldStatus = task.getStatus();
+        String newStatus = request.getStatus().name();
+
+        task.setStatus(newStatus);
+        Task savedTask = taskRepository.save(task);
+
+        Long actorId = (savedTask.getAssignee() != null) ? savedTask.getAssignee().getId() : 0L;
+
+        activityLogService.log(
+                actorId,
+                savedTask.getId(),
+                "UPDATE_TASK_STATUS",
+                "Updated task status from " + oldStatus + " to " + newStatus
+        );
+
+        if (oldStatus == null || !oldStatus.equals(newStatus)) {
+            Long notifyUserId = savedTask.getAssignee() != null ? savedTask.getAssignee().getId() : null;
+            if (notifyUserId != null) {
+                notificationService.createNotification(
+                        notifyUserId,
+                        "Task Status Updated",
+                        "Status for task '" + savedTask.getTitle() + "' changed to " + newStatus,
+                        "TASK_STATUS"
+                );
+            }
+            
+            // Phase 3: Task Completion Email
+            if (!"DONE".equals(oldStatus) && "DONE".equals(newStatus)) {
+                emailService.sendTaskCompletedEmail(savedTask);
             }
         }
 

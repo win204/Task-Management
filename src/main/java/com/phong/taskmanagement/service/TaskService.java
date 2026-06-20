@@ -23,6 +23,11 @@ public interface TaskService {
             CreateTaskRequest request
     );
 
+    TaskResponse updateTaskStatus(
+            Long id,
+            com.phong.taskmanagement.dto.request.UpdateTaskStatusRequest request
+    );
+
     Page<TaskResponse> searchTasks(
             String keyword,
             int page,
