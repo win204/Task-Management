@@ -84,9 +84,13 @@ public class EmailServiceImpl implements EmailService {
                 "The following task has been marked as completed.\n\n" +
                 "Task Title: %s\n" +
                 "Project Name: %s\n" +
-                "Completed By: %s\n",
+                "Priority: %s\n" +
+                "Completion Date: %s\n" +
+                "Assignee Name: %s\n",
                 task.getTitle(),
                 task.getProject() != null ? task.getProject().getProjectName() : "N/A",
+                task.getPriority() != null ? task.getPriority() : "N/A",
+                java.time.LocalDate.now().toString(),
                 task.getAssignee().getFullName()
         );
         sendEmail(task.getAssignee().getEmail(), subject, text);

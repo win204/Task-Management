@@ -267,17 +267,29 @@ public class TaskServiceImpl implements TaskService {
 
         if (oldStatus == null || !oldStatus.equals(newStatus)) {
             Long notifyUserId = savedTask.getAssignee() != null ? savedTask.getAssignee().getId() : null;
+            
+            boolean isJustCompleted = !"DONE".equals(oldStatus) && "DONE".equals(newStatus);
+            
             if (notifyUserId != null) {
-                notificationService.createNotification(
-                        notifyUserId,
-                        "Task Status Updated",
-                        "Status for task '" + savedTask.getTitle() + "' changed to " + newStatus,
-                        "TASK_STATUS"
-                );
+                if (isJustCompleted) {
+                    notificationService.createNotification(
+                            notifyUserId,
+                            "Task Completed",
+                            "Task '" + savedTask.getTitle() + "' has been successfully completed.",
+                            "TASK_COMPLETED"
+                    );
+                } else {
+                    notificationService.createNotification(
+                            notifyUserId,
+                            "Task Status Updated",
+                            "Status for task '" + savedTask.getTitle() + "' changed to " + newStatus,
+                            "TASK_STATUS"
+                    );
+                }
             }
             
             // Phase 3: Task Completion Email
-            if (!"DONE".equals(oldStatus) && "DONE".equals(newStatus)) {
+            if (isJustCompleted) {
                 emailService.sendTaskCompletedEmail(savedTask);
             }
         }
