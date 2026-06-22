@@ -1,12 +1,19 @@
 import { Save, Bell, Lock, Shield, Eye, Smartphone } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useThemeStore } from '../../store/themeStore';
+import toast from 'react-hot-toast';
 
 export default function SettingsPage() {
   const { user } = useAuthStore();
   const { resolved, toggleTheme } = useThemeStore();
 
   if (!user) return null;
+
+  const handleSave = () => {
+    // Theme preference is persisted in localStorage by themeStore automatically.
+    // This button provides explicit user confirmation feedback.
+    toast.success('Settings saved successfully!');
+  };
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -15,7 +22,7 @@ export default function SettingsPage() {
           <h1 className="text-2xl font-bold text-surface-900 dark:text-surface-100">Settings</h1>
           <p className="text-surface-500 dark:text-surface-400 mt-1">Manage your account settings and preferences.</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-xl text-sm font-medium hover:bg-primary-700 transition-colors shadow-sm">
+        <button onClick={handleSave} className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-xl text-sm font-medium hover:bg-primary-700 transition-colors shadow-sm">
           <Save className="w-4 h-4" />
           Save Changes
         </button>

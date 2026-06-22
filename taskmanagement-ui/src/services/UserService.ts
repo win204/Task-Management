@@ -11,51 +11,14 @@ import type {
 
 export const UserService = {
   /**
-   * Fetch a paginated list of users.
+   * Fetch a paginated list of users from server-side paged endpoint.
    */
   async getUsers(params: UserSearchParams): Promise<PageResponse<User>> {
-    console.log('[DEBUG - UserService] Fetching all users...');
-    const response = await apiClient.get<ApiResponse<User[]>>(
+    const response = await apiClient.get<ApiResponse<PageResponse<User>>>(
       API_ENDPOINTS.USERS,
-      { params }
+      { params: { page: params.page, size: params.size } }
     );
-    
-    console.log('[DEBUG - UserService] Raw Axios Response:', response);
-    console.log('[DEBUG - UserService] Backend data structure:', response.data.data);
-
-    // ROOT CAUSE FIX: The backend `GET /api/users` returns a flat List (Array).
-    // It DOES NOT return a Spring Data `Page` object like the `/search` endpoint does.
-    // We must intercept it here in the Adapter layer and shim it into a PageResponse 
-    // so that the generic `UsersPage` and `UserTable` do not crash looking for `.content`.
-    
-    const users = response.data.data;
-    const { page = 0, size = 10 } = params;
-    
-    // Implementing client-side pagination since backend doesn't support it for this endpoint
-    const start = page * size;
-    const end = start + size;
-    const paginatedUsers = users.slice(start, end);
-
-    return {
-      content: paginatedUsers,
-      totalElements: users.length,
-      totalPages: Math.ceil(users.length / size),
-      size: size,
-      number: page,
-      first: page === 0,
-      last: page >= Math.ceil(users.length / size) - 1,
-      numberOfElements: paginatedUsers.length,
-      empty: paginatedUsers.length === 0,
-      sort: { sorted: false, unsorted: true, empty: true },
-      pageable: {
-        sort: { sorted: false, unsorted: true, empty: true },
-        offset: start,
-        pageNumber: page,
-        pageSize: size,
-        paged: true,
-        unpaged: false,
-      }
-    };
+    return response.data.data;
   },
 
   /**
