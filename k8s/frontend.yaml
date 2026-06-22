@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: taskmanagement
+  labels:
+    app.kubernetes.io/name: taskmanagement
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: taskmanagement-ui:v6
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          env:
+            # Nginx entrypoint reads this to proxy /api/ to the backend
+            # Kubernetes: uses ClusterIP service name
+            - name: BACKEND_HOST
+              value: "taskapp-service:80"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: taskmanagement
+  labels:
+    app.kubernetes.io/name: taskmanagement
+spec:
+  type: NodePort
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30080

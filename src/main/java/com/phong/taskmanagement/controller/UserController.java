@@ -76,13 +76,15 @@ public class UserController {
     }
 
     @Operation(
-            summary = "Get all users",
-            description = "Retrieve all users"
+            summary = "Get all users (paginated)",
+            description = "Retrieve all users with server-side pagination"
     )
     @GetMapping
-    public ApiResponse<List<UserResponse>> getAllUsers() {
+    public ApiResponse<Page<UserResponse>> getAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
-        List<UserResponse> response = userService.getAllUsers();
+        Page<UserResponse> response = userService.getUsersPaged(page, size);
         return ApiResponse.success(response, "Users retrieved successfully");
     }
 

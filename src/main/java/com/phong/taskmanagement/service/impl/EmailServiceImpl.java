@@ -2,6 +2,7 @@ package com.phong.taskmanagement.service.impl;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -19,6 +20,12 @@ import lombok.extern.slf4j.Slf4j;
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
+
+    @Value("${spring.mail.username}")
+    private String fromEmail;
+
+    @Value("${app.reset-url:http://localhost:5173}")
+    private String appResetUrl;
 
     @Async
     @Override
@@ -109,7 +116,7 @@ public class EmailServiceImpl implements EmailService {
     @Async
     @Override
     public void sendPasswordResetEmail(String to, String resetToken) {
-        String resetUrl = "http://localhost:5173/reset-password?token=" + resetToken;
+        String resetUrl = appResetUrl + "/reset-password?token=" + resetToken;
         sendEmail(
                 to,
                 "Password Reset Request",
@@ -124,6 +131,7 @@ public class EmailServiceImpl implements EmailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom(fromEmail);
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(text, false);

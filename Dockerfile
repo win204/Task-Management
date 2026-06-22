@@ -1,40 +1,29 @@
-# Build stage: compile the application with Maven using Eclipse Temurin JDK 21
-FROM maven:3.9.9-eclipse-temurin-21 AS build
+# ─── Stage 1: Build Spring Boot JAR ─────────────────────────────────────────
+FROM maven:3.9-eclipse-temurin-21 AS build
 
-# Use /workspace as working dir
 WORKDIR /workspace
 
-# Copy pom first to leverage Docker layer caching for dependencies
-COPY pom.xml ./
-
-# Resolve dependencies (will be cached unless pom.xml changes)
-RUN mvn -B -DskipTests dependency:resolve
+# Cache Maven dependencies separately from source (Docker layer caching)
+COPY pom.xml .
+RUN mvn -B dependency:go-offline
 
 # Copy source and package application
 COPY src ./src
-RUN mvn -B -DskipTests package
+RUN mvn -B -DskipTests clean package
 
-# Runtime stage: small image with only JRE
+# ─── Stage 2: Minimal JRE runtime ────────────────────────────────────────────
 FROM eclipse-temurin:21-jre
 
-# Create non-root user
-RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+# Non-root user for security
+RUN groupadd -r appgroup && useradd -r -g appgroup appuser
 
 WORKDIR /app
 
-# Copy the executable jar from the build stage; rename to a stable name
-COPY --from=build /workspace/target/*.jar ./taskmanagement.jar
-
-# Ensure non-root ownership
+COPY --from=build /workspace/target/*.jar taskmanagement.jar
 RUN chown appuser:appgroup /app/taskmanagement.jar
 
 USER appuser
 
-# Expose service port
 EXPOSE 8080
 
-# Set sensible default Java options (can be overridden at runtime)
-ENV JAVA_OPTS="-Xms256m -Xmx512m -Djava.security.egd=file:/dev/./urandom"
-
-# Start the application
-ENTRYPOINT ["sh","-c","java $JAVA_OPTS -jar /app/taskmanagement.jar"]
+ENTRYPOINT ["java", "-jar", "taskmanagement.jar"]

@@ -123,7 +123,8 @@ public class AuthController {
         @Transactional
         public ApiResponse<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
                 User user = userRepository.findByEmail(request.getEmail())
-                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Email not found"));
+                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                                "Email not found"));
 
                 PasswordResetToken token = PasswordResetToken.builder()
                                 .token(UUID.randomUUID().toString())
@@ -144,7 +145,8 @@ public class AuthController {
         @Transactional
         public ApiResponse<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
                 PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(request.getToken())
-                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid token"));
+                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                "Invalid token"));
 
                 if (resetToken.isUsed()) {
                         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token has already been used");

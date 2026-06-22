@@ -17,5 +17,7 @@
     <include file="db/changelog/010-create-password-reset-tokens.xml"/>
     <include file="db/changelog/011-update-password-reset-tokens.xml"/>
     <include file="db/changelog/012-update-refresh-tokens.xml"/>
+    <include file="db/changelog/013-create-notifications.xml"/>
+    <include file="db/changelog/014-seed-data.xml"/>
 
 </databaseChangeLog>

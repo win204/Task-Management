@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { UserSearchBar } from '../../components/users/UserSearchBar';
 import { UserTable } from '../../components/users/UserTable';
 import { Pagination } from '../../components/users/Pagination';
@@ -24,9 +24,17 @@ export default function UsersPage() {
 
   const { data, isLoading, error } = useUsersQuery(searchParams);
 
-  const handleSearch = (keyword: string) => {
+  // Page clamping: if a delete leaves us on a now-nonexistent page, go back one.
+  // e.g. we're on page 2 (0-indexed), but after delete totalPages=2, last valid page=1.
+  useEffect(() => {
+    if (data && data.totalPages > 0 && searchParams.page >= data.totalPages) {
+      setSearchParams(prev => ({ ...prev, page: data.totalPages - 1 }));
+    }
+  }, [data?.totalPages, searchParams.page]);
+
+  const handleSearch = useCallback((keyword: string) => {
     setSearchParams(prev => ({ ...prev, keyword, page: 0 }));
-  };
+  }, []);
 
   const handlePageChange = (page: number) => {
     setSearchParams(prev => ({ ...prev, page }));

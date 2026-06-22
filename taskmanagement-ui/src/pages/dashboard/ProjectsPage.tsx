@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { ProjectSearchBar } from '../../components/projects/ProjectSearchBar';
 import { ProjectTable } from '../../components/projects/ProjectTable';
 import { Pagination } from '../../components/users/Pagination';
@@ -24,9 +24,9 @@ export default function ProjectsPage() {
 
   const { data, isLoading, error } = useProjectsQuery(searchParams);
 
-  const handleSearch = (keyword: string) => {
+  const handleSearch = useCallback((keyword: string) => {
     setSearchParams(prev => ({ ...prev, keyword, page: 0 }));
-  };
+  }, []);
 
   const handlePageChange = (page: number) => {
     setSearchParams(prev => ({ ...prev, page }));

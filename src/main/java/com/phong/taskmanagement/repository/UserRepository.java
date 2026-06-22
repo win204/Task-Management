@@ -23,4 +23,12 @@ public interface UserRepository
             String keyword,
             Pageable pageable
     );
+
+    Page<User> findByUsernameContainingIgnoreCaseOrFullNameContainingIgnoreCase(
+            String username,
+            String fullName,
+            Pageable pageable
+    );
+
+    Page<User> findAll(Pageable pageable);
 }

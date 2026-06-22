@@ -93,11 +93,18 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public List<UserResponse> getAllUsers() {
-
         return userRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<UserResponse> getUsersPaged(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable)
+                .map(this::mapToResponse);
     }
 
     @Override
@@ -185,11 +192,11 @@ public class UserServiceImpl implements UserService {
             int page,
             int size) {
 
-        Pageable pageable
-                = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size);
 
         return userRepository
-                .findByUsernameContainingIgnoreCase(
+                .findByUsernameContainingIgnoreCaseOrFullNameContainingIgnoreCase(
+                        keyword,
                         keyword,
                         pageable
                 )

@@ -5,21 +5,22 @@ import toast from 'react-hot-toast';
 
 export const USER_QUERY_KEYS = {
   all: ['users'] as const,
+  // Single key shape including ALL params so page+keyword+size are always part of the cache key
   list: (params: UserSearchParams) => ['users', 'list', params] as const,
-  search: (params: UserSearchParams) => ['users', 'search', params] as const,
 };
 
 export const useUsersQuery = (params: UserSearchParams) => {
   return useQuery({
-    queryKey: params.keyword 
-      ? USER_QUERY_KEYS.search(params) 
-      : USER_QUERY_KEYS.list(params),
+    // Always use the same key structure — params object includes page, size, keyword
+    queryKey: USER_QUERY_KEYS.list(params),
     queryFn: () => {
+      console.log('[useUsersQuery] Fetching:', params);
       if (params.keyword) {
         return UserService.searchUsers(params);
       }
       return UserService.getUsers(params);
     },
+    // Keep previous data visible while next page loads (no flash of empty)
     placeholderData: (previousData) => previousData,
   });
 };
@@ -31,6 +32,7 @@ export const useCreateUserMutation = () => {
     mutationFn: (payload: CreateUserPayload) => UserService.createUser(payload),
     onSuccess: () => {
       toast.success('User created successfully');
+      // Invalidate all user queries so any page/search combo refreshes
       queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.all });
     },
     onError: (error: any) => {

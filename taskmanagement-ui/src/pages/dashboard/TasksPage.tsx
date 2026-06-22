@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { TaskSearchBar } from '../../components/tasks/TaskSearchBar';
 import { TaskTable } from '../../components/tasks/TaskTable';
 import { Pagination } from '../../components/users/Pagination';
@@ -27,9 +27,16 @@ export default function TasksPage() {
 
   const { data, isLoading, error } = useTasksQuery(searchParams);
 
-  const handleSearch = (keyword: string) => {
+  // Page clamping: if delete reduces totalPages, step back to the last valid page
+  useEffect(() => {
+    if (data && data.totalPages > 0 && searchParams.page >= data.totalPages) {
+      setSearchParams(prev => ({ ...prev, page: data.totalPages - 1 }));
+    }
+  }, [data?.totalPages, searchParams.page]);
+
+  const handleSearch = useCallback((keyword: string) => {
     setSearchParams(prev => ({ ...prev, keyword, page: 0 }));
-  };
+  }, []);
 
   const handlePageChange = (page: number) => {
     setSearchParams(prev => ({ ...prev, page }));

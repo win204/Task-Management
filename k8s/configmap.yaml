@@ -2,6 +2,15 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: taskapp-config
+  namespace: taskmanagement
+  labels:
+    app.kubernetes.io/name: taskmanagement
 data:
   db-username: "sa"
   db-url: "jdbc:sqlserver://sql-server:1433;databaseName=task_management;encrypt=true;trustServerCertificate=true"
+  server-port: "8080"
+  mail-host: "smtp.gmail.com"
+  mail-port: "587"
+  mail-username: "phonghuuho204@gmail.com"
+  app-reset-url: "http://taskmanagement.local"
+  jpa-ddl-auto: "none"

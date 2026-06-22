@@ -94,6 +94,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers(
+                                "/",
+                                "/favicon.ico",
                                 "/api/auth/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
@@ -147,6 +149,13 @@ public class SecurityConfig {
                         )
 
                         .requestMatchers("/api/dashboard/**")
+                        .hasAnyRole(
+                                "ADMIN",
+                                "MANAGER",
+                                "EMPLOYEE"
+                        )
+
+                        .requestMatchers("/api/notifications/**")
                         .hasAnyRole(
                                 "ADMIN",
                                 "MANAGER",

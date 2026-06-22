@@ -18,17 +18,16 @@ export const UserService = {
       API_ENDPOINTS.USERS,
       { params: { page: params.page, size: params.size } }
     );
+    console.log(`[UserService.getUsers] page=${params.page} size=${params.size} → totalPages=${response.data.data?.totalPages}`);
     return response.data.data;
   },
 
-  /**
-   * Search users by keyword with pagination.
-   */
   async searchUsers(params: UserSearchParams): Promise<PageResponse<User>> {
     const response = await apiClient.get<ApiResponse<PageResponse<User>>>(
       API_ENDPOINTS.USERS_SEARCH,
-      { params }
+      { params: { keyword: params.keyword, page: params.page, size: params.size } }
     );
+    console.log(`[UserService.searchUsers] keyword="${params.keyword}" page=${params.page} → totalPages=${response.data.data?.totalPages}`);
     return response.data.data;
   },
 
