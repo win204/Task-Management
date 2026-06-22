@@ -4,8 +4,7 @@ interface StatisticCardProps {
   title: string;
   value?: number | string;
   icon: ReactNode;
-  iconBgColor?: string;
-  iconColor?: string;
+  gradient?: string;
   isLoading?: boolean;
 }
 
@@ -13,26 +12,34 @@ export function StatisticCard({
   title,
   value,
   icon,
-  iconBgColor = 'bg-slate-100',
-  iconColor = 'text-slate-600',
+  gradient = 'from-primary-500 to-primary-700',
   isLoading = false,
 }: StatisticCardProps) {
   return (
-    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4 transition-all hover:shadow-md">
-      <div
-        className={`p-4 rounded-full ${iconBgColor} ${iconColor} flex-shrink-0`}
-      >
-        {icon}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-slate-500 truncate">{title}</p>
-        {isLoading ? (
-          <div className="mt-2 h-8 w-20 bg-slate-200 rounded animate-pulse" />
-        ) : (
-          <p className="mt-1 text-3xl font-bold text-slate-900 truncate">
-            {value}
+    <div className="group relative overflow-hidden rounded-2xl bg-white dark:bg-surface-800/50 border border-surface-200 dark:border-surface-700/50 shadow-sm hover:shadow-lg dark:hover:shadow-2xl transition-all duration-300 hover:-translate-y-0.5">
+      {/* Gradient accent strip */}
+      <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${gradient}`} />
+
+      <div className="p-5 flex items-center gap-4">
+        {/* Icon container with gradient background */}
+        <div className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center text-white shadow-lg opacity-90 group-hover:opacity-100 transition-opacity`}>
+          {icon}
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-semibold uppercase tracking-wider text-surface-400 dark:text-surface-500 mb-1">
+            {title}
           </p>
-        )}
+          {isLoading ? (
+            <div className="space-y-2">
+              <div className="h-7 w-16 bg-surface-200 dark:bg-surface-700 rounded-lg animate-pulse" />
+            </div>
+          ) : (
+            <p className="text-2xl font-extrabold text-surface-900 dark:text-white tracking-tight">
+              {value?.toLocaleString() ?? '—'}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

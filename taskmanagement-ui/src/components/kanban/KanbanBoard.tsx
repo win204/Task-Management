@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import { 
-  DndContext, 
-  DragOverlay, 
-  closestCorners, 
-  KeyboardSensor, 
-  PointerSensor, 
-  useSensor, 
+import {
+  DndContext,
+  DragOverlay,
+  closestCorners,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
   useSensors
 } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
@@ -37,7 +37,7 @@ export function KanbanBoard({ tasks, isLoading, isError }: KanbanBoardProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 5, // Requires 5px movement before dragging starts
+        distance: 5,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -68,12 +68,10 @@ export function KanbanBoard({ tasks, isLoading, isError }: KanbanBoardProps) {
 
     if (!over) return;
 
-    // If dropped over a column
     const activeTaskData = active.data.current?.task as Task;
     const newStatus = over.data.current?.status as string;
 
     if (activeTaskData && newStatus && activeTaskData.status !== newStatus) {
-      // Optimistically update via hook
       updateTaskStatus({
         taskId: activeTaskData.id,
         newStatus: newStatus
@@ -84,15 +82,15 @@ export function KanbanBoard({ tasks, isLoading, isError }: KanbanBoardProps) {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-96">
-        <Loader2 className="w-10 h-10 text-indigo-600 animate-spin" />
-        <span className="ml-3 text-slate-600 font-medium">Loading board...</span>
+        <Loader2 className="w-10 h-10 text-primary-600 animate-spin" />
+        <span className="ml-3 text-surface-600 dark:text-surface-400 font-medium">Loading board...</span>
       </div>
     );
   }
 
   if (isError) {
     return (
-      <div className="flex flex-col items-center justify-center h-96 text-red-500 bg-red-50 rounded-xl border border-red-100">
+      <div className="flex flex-col items-center justify-center h-96 text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-500/10 rounded-2xl border border-red-100 dark:border-red-500/20">
         <AlertCircle className="w-12 h-12 mb-4" />
         <h3 className="text-lg font-bold">Failed to load tasks</h3>
         <p className="text-sm font-medium opacity-80">Please check your connection and try again.</p>
@@ -101,7 +99,7 @@ export function KanbanBoard({ tasks, isLoading, isError }: KanbanBoardProps) {
   }
 
   return (
-    <div className="flex gap-6 overflow-x-auto pb-4 h-[calc(100vh-200px)] items-start">
+    <div className="flex gap-4 overflow-x-auto pb-4 h-[calc(100vh-260px)] items-start">
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
@@ -120,7 +118,7 @@ export function KanbanBoard({ tasks, isLoading, isError }: KanbanBoardProps) {
         {/* Overlay shown while dragging */}
         <DragOverlay>
           {activeTask ? (
-            <div className="opacity-90 rotate-2 scale-105 shadow-xl cursor-grabbing">
+            <div className="opacity-90 rotate-2 scale-105 shadow-2xl cursor-grabbing">
               <KanbanCard task={activeTask} />
             </div>
           ) : null}

@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TaskService } from '../services/TaskService';
 import type { Task } from '../types/task';
-import type { PageResponse } from '../types/user';
 
 interface UpdateStatusPayload {
   taskId: number;
@@ -52,7 +51,7 @@ export const useKanban = () => {
     },
     
     // If the mutation fails, use the context we returned above
-    onError: (err, newTodo, context) => {
+    onError: (err, _variables, context) => {
       console.error('Optimistic update failed, rolling back.', err);
       if (context?.previousTasks) {
         queryClient.setQueryData(['tasks'], context.previousTasks);

@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Download, FileText, FileSpreadsheet, Loader2 } from 'lucide-react';
 import { ReportService } from '../../services/ReportService';
+import { TaskStatusPieChart } from '../../components/dashboard/TaskStatusPieChart';
+import { TaskPriorityBarChart } from '../../components/dashboard/TaskPriorityBarChart';
 
 export default function ReportsPage() {
   const [exportingTasksExcel, setExportingTasksExcel] = useState(false);
@@ -32,95 +34,80 @@ export default function ReportsPage() {
     }
   };
 
+  const reportCards = [
+    {
+      title: 'Tasks Report',
+      description: 'Export all tasks data into an Excel spreadsheet.',
+      icon: FileSpreadsheet,
+      iconBg: 'from-emerald-500 to-emerald-700',
+      action: () => handleDownload(ReportService.exportTasksToExcel, setExportingTasksExcel, 'tasks_report.xlsx'),
+      loading: exportingTasksExcel,
+      buttonLabel: 'Export Excel',
+    },
+    {
+      title: 'Projects Report',
+      description: 'Export all projects data into an Excel spreadsheet.',
+      icon: FileSpreadsheet,
+      iconBg: 'from-blue-500 to-blue-700',
+      action: () => handleDownload(ReportService.exportProjectsToExcel, setExportingProjectsExcel, 'projects_report.xlsx'),
+      loading: exportingProjectsExcel,
+      buttonLabel: 'Export Excel',
+    },
+    {
+      title: 'Users Report',
+      description: 'Export user directory and status into an Excel spreadsheet.',
+      icon: FileSpreadsheet,
+      iconBg: 'from-violet-500 to-violet-700',
+      action: () => handleDownload(ReportService.exportUsersToExcel, setExportingUsersExcel, 'users_report.xlsx'),
+      loading: exportingUsersExcel,
+      buttonLabel: 'Export Excel',
+    },
+    {
+      title: 'Tasks PDF',
+      description: 'Export a formatted PDF report of all system tasks.',
+      icon: FileText,
+      iconBg: 'from-red-500 to-red-700',
+      action: () => handleDownload(ReportService.exportTasksToPdf, setExportingTasksPdf, 'tasks_report.pdf'),
+      loading: exportingTasksPdf,
+      buttonLabel: 'Export PDF',
+    },
+  ];
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">Analytics & Reports</h1>
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold text-surface-900 dark:text-white tracking-tight">Analytics & Reports</h1>
+        <p className="text-sm text-surface-500 dark:text-surface-400 mt-1">Export data and view analytics summaries.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {/* Task Excel Export */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center text-center">
-          <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-4">
-            <FileSpreadsheet className="w-6 h-6 text-green-600" />
-          </div>
-          <h3 className="font-semibold text-slate-800 mb-2">Tasks Report</h3>
-          <p className="text-sm text-slate-500 mb-4">Export all tasks data into an Excel spreadsheet.</p>
-          <button
-            onClick={() => handleDownload(ReportService.exportTasksToExcel, setExportingTasksExcel, 'tasks_report.xlsx')}
-            disabled={exportingTasksExcel}
-            className="mt-auto w-full inline-flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
+      {/* Export Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {reportCards.map((card) => (
+          <div
+            key={card.title}
+            className="bg-white dark:bg-surface-800/50 p-5 rounded-2xl border border-surface-200 dark:border-surface-700/50 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center"
           >
-            {exportingTasksExcel ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-            {exportingTasksExcel ? 'Exporting...' : 'Export Excel'}
-          </button>
-        </div>
-
-        {/* Projects Excel Export */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center text-center">
-          <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-4">
-            <FileSpreadsheet className="w-6 h-6 text-green-600" />
+            <div className={`w-12 h-12 bg-gradient-to-br ${card.iconBg} rounded-xl flex items-center justify-center mb-4 shadow-lg`}>
+              <card.icon className="w-5 h-5 text-white" />
+            </div>
+            <h3 className="font-semibold text-surface-800 dark:text-surface-100 mb-1">{card.title}</h3>
+            <p className="text-xs text-surface-500 dark:text-surface-400 mb-4 leading-relaxed">{card.description}</p>
+            <button
+              onClick={card.action}
+              disabled={card.loading}
+              className="mt-auto w-full inline-flex items-center justify-center gap-2 bg-surface-50 dark:bg-surface-700/50 hover:bg-surface-100 dark:hover:bg-surface-700 text-surface-700 dark:text-surface-200 border border-surface-200 dark:border-surface-600 px-4 py-2.5 rounded-xl font-medium text-sm transition-colors disabled:opacity-50"
+            >
+              {card.loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+              {card.loading ? 'Exporting...' : card.buttonLabel}
+            </button>
           </div>
-          <h3 className="font-semibold text-slate-800 mb-2">Projects Report</h3>
-          <p className="text-sm text-slate-500 mb-4">Export all projects data into an Excel spreadsheet.</p>
-          <button
-            onClick={() => handleDownload(ReportService.exportProjectsToExcel, setExportingProjectsExcel, 'projects_report.xlsx')}
-            disabled={exportingProjectsExcel}
-            className="mt-auto w-full inline-flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
-          >
-            {exportingProjectsExcel ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-            {exportingProjectsExcel ? 'Exporting...' : 'Export Excel'}
-          </button>
-        </div>
-
-        {/* Users Excel Export */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center text-center">
-          <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-4">
-            <FileSpreadsheet className="w-6 h-6 text-green-600" />
-          </div>
-          <h3 className="font-semibold text-slate-800 mb-2">Users Report</h3>
-          <p className="text-sm text-slate-500 mb-4">Export user directory and status into an Excel spreadsheet.</p>
-          <button
-            onClick={() => handleDownload(ReportService.exportUsersToExcel, setExportingUsersExcel, 'users_report.xlsx')}
-            disabled={exportingUsersExcel}
-            className="mt-auto w-full inline-flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
-          >
-            {exportingUsersExcel ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-            {exportingUsersExcel ? 'Exporting...' : 'Export Excel'}
-          </button>
-        </div>
-
-        {/* Task PDF Export */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center text-center">
-          <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mb-4">
-            <FileText className="w-6 h-6 text-red-600" />
-          </div>
-          <h3 className="font-semibold text-slate-800 mb-2">Tasks PDF</h3>
-          <p className="text-sm text-slate-500 mb-4">Export a formatted PDF report of all system tasks.</p>
-          <button
-            onClick={() => handleDownload(ReportService.exportTasksToPdf, setExportingTasksPdf, 'tasks_report.pdf')}
-            disabled={exportingTasksPdf}
-            className="mt-auto w-full inline-flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
-          >
-            {exportingTasksPdf ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-            {exportingTasksPdf ? 'Exporting...' : 'Export PDF'}
-          </button>
-        </div>
+        ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 h-80 flex flex-col">
-          <h2 className="text-lg font-semibold text-slate-800 mb-4">Task Completion Rate</h2>
-          <div className="flex-1 border-2 border-dashed border-slate-100 rounded-lg flex items-center justify-center text-slate-400">
-            Chart Component
-          </div>
-        </div>
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 h-80 flex flex-col">
-          <h2 className="text-lg font-semibold text-slate-800 mb-4">Workload Distribution</h2>
-          <div className="flex-1 border-2 border-dashed border-slate-100 rounded-lg flex items-center justify-center text-slate-400">
-            Chart Component
-          </div>
-        </div>
+      {/* Chart Analytics */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <TaskStatusPieChart />
+        <TaskPriorityBarChart />
       </div>
     </div>
   );

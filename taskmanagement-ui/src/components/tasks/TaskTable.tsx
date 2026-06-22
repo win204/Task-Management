@@ -15,8 +15,8 @@ interface TaskTableProps {
 export const TaskTable = ({ tasks, isLoading, error, onView, onEdit, onDelete }: TaskTableProps) => {
   if (error) {
     return (
-      <div className="p-8 text-center bg-red-50 border-b border-red-100">
-        <p className="text-red-600 font-medium">Failed to load tasks.</p>
+      <div className="p-8 text-center bg-red-50 dark:bg-red-500/10 border-b border-red-100 dark:border-red-500/20">
+        <p className="text-red-600 dark:text-red-400 font-medium">Failed to load tasks.</p>
         <p className="text-sm text-red-500 mt-1">{error.message}</p>
       </div>
     );
@@ -26,13 +26,13 @@ export const TaskTable = ({ tasks, isLoading, error, onView, onEdit, onDelete }:
     return (
       <div className="animate-pulse flex flex-col">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="flex border-b border-slate-100 p-4 space-x-4">
+          <div key={i} className="flex border-b border-surface-100 dark:border-surface-700/50 p-4 space-x-4">
             <div className="flex-1 space-y-2 py-1">
-              <div className="h-4 bg-slate-200 rounded w-1/3"></div>
-              <div className="h-3 bg-slate-200 rounded w-1/2"></div>
+              <div className="h-4 bg-surface-200 dark:bg-surface-700 rounded w-1/3"></div>
+              <div className="h-3 bg-surface-200 dark:bg-surface-700 rounded w-1/2"></div>
             </div>
-            <div className="h-8 w-16 bg-slate-200 rounded"></div>
-            <div className="h-8 w-24 bg-slate-200 rounded"></div>
+            <div className="h-8 w-16 bg-surface-200 dark:bg-surface-700 rounded"></div>
+            <div className="h-8 w-24 bg-surface-200 dark:bg-surface-700 rounded"></div>
           </div>
         ))}
       </div>
@@ -42,30 +42,30 @@ export const TaskTable = ({ tasks, isLoading, error, onView, onEdit, onDelete }:
   if (tasks.length === 0) {
     return (
       <div className="p-12 text-center flex flex-col items-center">
-        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-          <LayoutList className="w-8 h-8 text-slate-400" />
+        <div className="w-16 h-16 bg-surface-100 dark:bg-surface-800 rounded-full flex items-center justify-center mb-4">
+          <LayoutList className="w-8 h-8 text-surface-400 dark:text-surface-500" />
         </div>
-        <h3 className="text-lg font-medium text-slate-900">No tasks found</h3>
-        <p className="text-slate-500 mt-1">Get started by creating a new task.</p>
+        <h3 className="text-lg font-medium text-surface-900 dark:text-surface-100">No tasks found</h3>
+        <p className="text-surface-500 dark:text-surface-400 mt-1">Get started by creating a new task.</p>
       </div>
     );
   }
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-slate-200">
-        <thead className="bg-slate-50">
+      <table className="min-w-full divide-y divide-surface-200 dark:divide-surface-700/50 relative">
+        <thead className="bg-surface-50 dark:bg-surface-800/80 sticky top-0 z-10 backdrop-blur-sm">
           <tr>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-surface-500 dark:text-surface-400 uppercase tracking-wider">
               Task
             </th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-surface-500 dark:text-surface-400 uppercase tracking-wider">
               Project & Assignee
             </th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-surface-500 dark:text-surface-400 uppercase tracking-wider">
               Priority
             </th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-surface-500 dark:text-surface-400 uppercase tracking-wider">
               Status
             </th>
             <th scope="col" className="relative px-6 py-3">
@@ -73,22 +73,22 @@ export const TaskTable = ({ tasks, isLoading, error, onView, onEdit, onDelete }:
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-slate-200">
+        <tbody className="bg-white dark:bg-surface-900/20 divide-y divide-surface-200 dark:divide-surface-700/50">
           {tasks.map((task) => (
-            <tr key={task.id} className="hover:bg-slate-50 transition-colors">
+            <tr key={task.id} className="hover:bg-surface-50 dark:hover:bg-surface-800/50 transition-colors">
               <td className="px-6 py-4">
-                <div className="text-sm font-medium text-slate-900 truncate max-w-[250px]" title={task.title}>
+                <div className="text-sm font-medium text-surface-900 dark:text-surface-100 truncate max-w-[250px]" title={task.title}>
                   {task.title}
                 </div>
-                <div className="text-xs text-slate-500 mt-1 flex items-center gap-1">
-                  <span className="text-slate-400">Due:</span> {task.dueDate}
+                <div className="text-xs text-surface-500 dark:text-surface-400 mt-1 flex items-center gap-1">
+                  <span className="text-surface-400 dark:text-surface-500">Due:</span> {task.dueDate}
                 </div>
               </td>
               <td className="px-6 py-4">
-                <div className="text-sm text-slate-900 font-medium">
+                <div className="text-sm text-surface-900 dark:text-surface-100 font-medium">
                   {task.projectName}
                 </div>
-                <div className="text-xs text-slate-500 mt-1">
+                <div className="text-xs text-surface-500 dark:text-surface-400 mt-1">
                   {task.assigneeName}
                 </div>
               </td>
@@ -102,21 +102,21 @@ export const TaskTable = ({ tasks, isLoading, error, onView, onEdit, onDelete }:
                 <div className="flex justify-end gap-2">
                   <button
                     onClick={() => onView(task)}
-                    className="text-slate-600 hover:text-slate-900 bg-slate-50 p-1.5 rounded-md hover:bg-slate-100 transition-colors"
+                    className="text-surface-600 hover:text-surface-900 bg-surface-50 p-1.5 rounded-md hover:bg-surface-100 dark:text-surface-400 dark:hover:text-surface-200 dark:bg-surface-800 dark:hover:bg-surface-700 transition-colors"
                     title="View Details"
                   >
                     <Eye className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => onEdit(task)}
-                    className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-1.5 rounded-md hover:bg-indigo-100 transition-colors"
+                    className="text-primary-600 hover:text-primary-900 bg-primary-50 p-1.5 rounded-md hover:bg-primary-100 dark:text-primary-400 dark:hover:text-primary-300 dark:bg-primary-900/20 dark:hover:bg-primary-900/40 transition-colors"
                     title="Edit Task"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => onDelete(task)}
-                    className="text-red-600 hover:text-red-900 bg-red-50 p-1.5 rounded-md hover:bg-red-100 transition-colors"
+                    className="text-red-600 hover:text-red-900 bg-red-50 p-1.5 rounded-md hover:bg-red-100 dark:text-red-400 dark:hover:text-red-300 dark:bg-red-500/10 dark:hover:bg-red-500/20 transition-colors"
                     title="Delete Task"
                   >
                     <Trash2 className="w-4 h-4" />

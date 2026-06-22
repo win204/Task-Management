@@ -17,18 +17,14 @@ export default function UsersPage() {
   });
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  
-  // State for View/Edit/Delete actions
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  // Fetch users using custom hook (automatically refetches when searchParams change)
   const { data, isLoading, error } = useUsersQuery(searchParams);
 
   const handleSearch = (keyword: string) => {
-    // Reset to page 0 whenever we perform a new search
     setSearchParams(prev => ({ ...prev, keyword, page: 0 }));
   };
 
@@ -54,30 +50,33 @@ export default function UsersPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-slate-900">User Management</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-surface-900 dark:text-white tracking-tight">User Management</h1>
+          <p className="text-sm text-surface-500 dark:text-surface-400 mt-1">Manage team members and their roles.</p>
+        </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col min-h-[600px]">
+      <div className="bg-white dark:bg-surface-800/50 rounded-2xl border border-surface-200 dark:border-surface-700/50 shadow-sm overflow-hidden flex flex-col min-h-[600px]">
         {/* Toolbar Container */}
-        <div className="p-4 border-b border-slate-200 bg-slate-50">
+        <div className="p-4 border-b border-surface-200 dark:border-surface-700/50 bg-surface-50/50 dark:bg-surface-800/30">
           <UserSearchBar onSearch={handleSearch} onAddUser={() => setIsCreateModalOpen(true)} />
         </div>
 
         {/* Data Table Viewport */}
         <div className="flex-1 overflow-auto">
-          <UserTable 
-            users={data?.content || []} 
-            isLoading={isLoading} 
-            error={error as Error} 
+          <UserTable
+            users={data?.content || []}
+            isLoading={isLoading}
+            error={error as Error}
             onView={handleView}
-            onEdit={handleEdit} 
-            onDelete={handleDelete} 
+            onEdit={handleEdit}
+            onDelete={handleDelete}
           />
         </div>
 
         {/* Pagination Footer */}
         {data && (
-           <Pagination 
+           <Pagination
              currentPage={data.number}
              totalPages={data.totalPages}
              totalElements={data.totalElements}
@@ -88,27 +87,27 @@ export default function UsersPage() {
       </div>
 
       {/* Global Modals & Dialogs for this view */}
-      <CreateUserModal 
-        isOpen={isCreateModalOpen} 
-        onClose={() => setIsCreateModalOpen(false)} 
-      />
-      
-      <UserDetailModal 
-        isOpen={isDetailModalOpen} 
-        onClose={() => { setIsDetailModalOpen(false); setSelectedUser(null); }} 
-        user={selectedUser} 
+      <CreateUserModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
       />
 
-      <EditUserModal 
-        isOpen={isEditModalOpen} 
-        onClose={() => { setIsEditModalOpen(false); setSelectedUser(null); }} 
-        user={selectedUser} 
+      <UserDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={() => { setIsDetailModalOpen(false); setSelectedUser(null); }}
+        user={selectedUser}
       />
-      
-      <DeleteUserDialog 
-        isOpen={isDeleteDialogOpen} 
-        onClose={() => { setIsDeleteDialogOpen(false); setSelectedUser(null); }} 
-        user={selectedUser} 
+
+      <EditUserModal
+        isOpen={isEditModalOpen}
+        onClose={() => { setIsEditModalOpen(false); setSelectedUser(null); }}
+        user={selectedUser}
+      />
+
+      <DeleteUserDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => { setIsDeleteDialogOpen(false); setSelectedUser(null); }}
+        user={selectedUser}
       />
     </div>
   );

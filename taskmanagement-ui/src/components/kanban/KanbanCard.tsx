@@ -1,4 +1,3 @@
-import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import type { Task } from '../../types/task';
 import { TaskPriorityBadge } from '../tasks/TaskPriorityBadge';
@@ -8,6 +7,13 @@ import { format } from 'date-fns';
 interface KanbanCardProps {
   task: Task;
 }
+
+const PRIORITY_STRIPE: Record<string, string> = {
+  HIGH: 'bg-red-500',
+  MEDIUM: 'bg-amber-500',
+  LOW: 'bg-emerald-500',
+  CRITICAL: 'bg-red-700',
+};
 
 export function KanbanCard({ task }: KanbanCardProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
@@ -29,38 +35,43 @@ export function KanbanCard({ task }: KanbanCardProps) {
       {...listeners}
       {...attributes}
       className={`
-        bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-grab active:cursor-grabbing
-        hover:shadow-md transition-all
-        ${isDragging ? 'opacity-50 ring-2 ring-indigo-500 scale-105 z-50' : 'opacity-100'}
+        relative overflow-hidden bg-white dark:bg-surface-800 p-4 rounded-xl shadow-sm border border-surface-200 dark:border-surface-700/50 cursor-grab active:cursor-grabbing
+        hover:shadow-md dark:hover:shadow-lg transition-all
+        ${isDragging ? 'opacity-50 ring-2 ring-primary-500 scale-105 z-50' : 'opacity-100'}
       `}
     >
-      <div className="flex justify-between items-start mb-2">
-        <h4 className="font-semibold text-slate-800 line-clamp-2 leading-tight">
-          {task.title}
-        </h4>
-      </div>
-      
-      {task.projectName && (
-        <p className="text-xs font-medium text-slate-500 mb-3 bg-slate-100 w-fit px-2 py-0.5 rounded-full">
-          {task.projectName}
-        </p>
-      )}
+      {/* Priority color strip on left edge */}
+      <div className={`absolute left-0 top-0 bottom-0 w-1 ${PRIORITY_STRIPE[task.priority] || 'bg-surface-300 dark:bg-surface-600'}`} />
 
-      <div className="flex flex-col gap-2 mt-4">
-        <div className="flex items-center justify-between">
-          <TaskPriorityBadge priority={task.priority} />
-          {task.dueDate && (
-            <div className="flex items-center text-xs text-slate-500">
-              <Calendar className="w-3 h-3 mr-1" />
-              {format(new Date(task.dueDate), 'MMM d')}
-            </div>
-          )}
+      <div className="pl-2">
+        <div className="flex justify-between items-start mb-2">
+          <h4 className="font-semibold text-surface-800 dark:text-surface-100 line-clamp-2 leading-tight text-sm">
+            {task.title}
+          </h4>
         </div>
-        
-        <div className="flex items-center justify-between border-t border-slate-100 pt-2 mt-1">
-          <div className="flex items-center text-xs text-slate-600 bg-slate-50 px-2 py-1 rounded-md">
-            <UserCircle2 className="w-4 h-4 mr-1 text-slate-400" />
-            <span className="truncate max-w-[100px]">{task.assigneeName}</span>
+
+        {task.projectName && (
+          <p className="text-[11px] font-medium text-surface-500 dark:text-surface-400 mb-3 bg-surface-100 dark:bg-surface-700/50 w-fit px-2 py-0.5 rounded-full">
+            {task.projectName}
+          </p>
+        )}
+
+        <div className="flex flex-col gap-2 mt-3">
+          <div className="flex items-center justify-between">
+            <TaskPriorityBadge priority={task.priority} />
+            {task.dueDate && (
+              <div className="flex items-center text-xs text-surface-500 dark:text-surface-400">
+                <Calendar className="w-3 h-3 mr-1" />
+                {format(new Date(task.dueDate), 'MMM d')}
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between border-t border-surface-100 dark:border-surface-700/50 pt-2 mt-1">
+            <div className="flex items-center text-xs text-surface-600 dark:text-surface-300 bg-surface-50 dark:bg-surface-700/30 px-2 py-1 rounded-lg">
+              <UserCircle2 className="w-4 h-4 mr-1 text-surface-400 dark:text-surface-500" />
+              <span className="truncate max-w-[100px]">{task.assigneeName}</span>
+            </div>
           </div>
         </div>
       </div>

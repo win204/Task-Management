@@ -1,10 +1,11 @@
-// ProfileDropdown component
 import { useState, useRef, useEffect } from 'react';
-import { User, LogOut, ChevronDown } from 'lucide-react';
+import { User, LogOut, ChevronDown, Settings } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
+import { useNavigate } from 'react-router-dom';
 
 export const ProfileDropdown = () => {
   const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -25,52 +26,69 @@ export const ProfileDropdown = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 focus:outline-none p-1 rounded-lg hover:bg-slate-50 transition-colors"
+        className="flex items-center gap-2.5 focus:outline-none p-1.5 rounded-xl hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors"
+        aria-label="User menu"
+        aria-expanded={isOpen}
       >
-        <div className="flex flex-col items-end hidden md:flex">
-          <span className="text-sm font-semibold text-slate-700 leading-tight">
+        <div className="hidden md:flex flex-col items-end">
+          <span className="text-sm font-semibold text-surface-700 dark:text-surface-200 leading-tight">
             {user.fullName || user.username}
           </span>
-          <span className="text-xs text-slate-500 font-medium">
-            {user.roles.join(', ')}
+          <span className="text-[11px] text-surface-500 dark:text-surface-500 font-medium">
+            {user.roles?.[0] || 'Member'}
           </span>
         </div>
-        
-        <div className="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold border border-indigo-200 shadow-sm">
+
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
           {user.fullName ? user.fullName.charAt(0).toUpperCase() : user.username.charAt(0).toUpperCase()}
         </div>
-        
-        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+
+        <ChevronDown className={`w-3.5 h-3.5 text-surface-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-slate-100 py-2 z-50 transform origin-top-right transition-all">
-          <div className="px-4 py-3 border-b border-slate-100 md:hidden">
-            <p className="text-sm font-semibold text-slate-800">{user.fullName || user.username}</p>
-            <p className="text-xs text-slate-500 truncate">{user.email || user.roles.join(', ')}</p>
+        <div className="absolute right-0 mt-2 w-60 bg-white dark:bg-surface-800 rounded-xl shadow-xl dark:shadow-2xl border border-surface-100 dark:border-surface-700 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150 origin-top-right">
+          {/* User info header */}
+          <div className="px-4 py-3 border-b border-surface-100 dark:border-surface-700">
+            <p className="text-sm font-semibold text-surface-800 dark:text-surface-100">
+              {user.fullName || user.username}
+            </p>
+            <p className="text-xs text-surface-500 dark:text-surface-400 truncate mt-0.5">
+              {user.email || user.roles.join(', ')}
+            </p>
           </div>
-          
-          <button
-            onClick={() => {
-              setIsOpen(false);
-              // Future: Navigate to profile settings
-            }}
-            className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 w-full text-left transition-colors"
-          >
-            <User className="w-4 h-4 text-slate-400" />
-            My Profile
-          </button>
-          
-          <button
-            onClick={() => {
-              setIsOpen(false);
-              logout();
-            }}
-            className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-left transition-colors mt-1"
-          >
-            <LogOut className="w-4 h-4 text-red-500" />
-            Sign Out
-          </button>
+
+          {/* Menu items */}
+          <div className="py-1">
+            <button
+              onClick={() => { setIsOpen(false); navigate('/dashboard/profile'); }}
+              className="flex items-center gap-2.5 px-4 py-2 text-sm text-surface-600 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-700/50 w-full text-left transition-colors"
+            >
+              <User className="w-4 h-4 text-surface-400 dark:text-surface-500" />
+              My Profile
+            </button>
+            <button
+              onClick={() => { setIsOpen(false); navigate('/dashboard/settings'); }}
+              className="flex items-center gap-2.5 px-4 py-2 text-sm text-surface-600 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-700/50 w-full text-left transition-colors"
+            >
+              <Settings className="w-4 h-4 text-surface-400 dark:text-surface-500" />
+              Settings
+            </button>
+          </div>
+
+          {/* Logout */}
+          <div className="border-t border-surface-100 dark:border-surface-700 pt-1">
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                logout();
+              }}
+              className="flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 w-full text-left transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+              Sign Out
+            </button>
+          </div>
         </div>
       )}
     </div>

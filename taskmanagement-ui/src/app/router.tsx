@@ -11,6 +11,8 @@ import UsersPage from '../pages/dashboard/UsersPage';
 import ProjectsPage from '../pages/dashboard/ProjectsPage';
 import TasksPage from '../pages/dashboard/TasksPage';
 import ReportsPage from '../pages/dashboard/ReportsPage';
+import ProfilePage from '../pages/dashboard/ProfilePage';
+import SettingsPage from '../pages/dashboard/SettingsPage';
 
 // Guards
 import { ProtectedRoute } from '../routes/ProtectedRoute';
@@ -97,6 +99,14 @@ export const router = createBrowserRouter([
             <ReportsPage />
           </RoleProtectedRoute>
         ),
+      },
+      {
+        path: '/dashboard/profile',
+        element: <ProfilePage />,
+      },
+      {
+        path: '/dashboard/settings',
+        element: <SettingsPage />,
       },
       // Redirect workspace parent to overview
       {
