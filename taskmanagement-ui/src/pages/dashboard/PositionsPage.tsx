@@ -61,7 +61,7 @@ export default function PositionsPage() {
 
   const handleEdit = (position: Position) => {
     setIsEditing(position);
-    setPositionName(position.positionName);
+    setPositionName(position.name);
   };
 
   const handleCancel = () => {
@@ -144,7 +144,7 @@ export default function PositionsPage() {
                         <td className="px-6 py-4 text-surface-500 font-medium">#{position.id}</td>
                         <td className="px-6 py-4">
                           <span className="font-medium text-surface-900 dark:text-surface-100">
-                            {position.positionName}
+                            {position.name}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-right">

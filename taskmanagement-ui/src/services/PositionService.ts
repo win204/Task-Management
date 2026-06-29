@@ -4,7 +4,7 @@ import type { PageResponse } from '../types/user';
 
 export interface Position {
   id: number;
-  positionName: string;
+  name: string;
 }
 
 export const PositionService = {
@@ -15,13 +15,13 @@ export const PositionService = {
     return response.data.data;
   },
 
-  createPosition: async (positionName: string): Promise<Position> => {
-    const response = await apiClient.post<ApiResponse<Position>>('/api/positions', { positionName });
+  createPosition: async (name: string): Promise<Position> => {
+    const response = await apiClient.post<ApiResponse<Position>>('/api/positions', { name });
     return response.data.data;
   },
 
-  updatePosition: async (id: number, positionName: string): Promise<Position> => {
-    const response = await apiClient.put<ApiResponse<Position>>(`/api/positions/${id}`, { positionName });
+  updatePosition: async (id: number, name: string): Promise<Position> => {
+    const response = await apiClient.put<ApiResponse<Position>>(`/api/positions/${id}`, { name });
     return response.data.data;
   },
 

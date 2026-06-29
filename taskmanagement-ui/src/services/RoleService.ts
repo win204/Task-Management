@@ -4,7 +4,7 @@ import type { PageResponse } from '../types/user';
 
 export interface Role {
   id: number;
-  roleName: string;
+  name: string;
 }
 
 export const RoleService = {
@@ -15,13 +15,13 @@ export const RoleService = {
     return response.data.data;
   },
 
-  createRole: async (roleName: string): Promise<Role> => {
-    const response = await apiClient.post<ApiResponse<Role>>('/api/roles', { roleName });
+  createRole: async (name: string): Promise<Role> => {
+    const response = await apiClient.post<ApiResponse<Role>>('/api/roles', { name });
     return response.data.data;
   },
 
-  updateRole: async (id: number, roleName: string): Promise<Role> => {
-    const response = await apiClient.put<ApiResponse<Role>>(`/api/roles/${id}`, { roleName });
+  updateRole: async (id: number, name: string): Promise<Role> => {
+    const response = await apiClient.put<ApiResponse<Role>>(`/api/roles/${id}`, { name });
     return response.data.data;
   },
 

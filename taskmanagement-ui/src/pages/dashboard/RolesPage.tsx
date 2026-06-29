@@ -61,7 +61,7 @@ export default function RolesPage() {
 
   const handleEdit = (role: Role) => {
     setIsEditing(role);
-    setRoleName(role.roleName);
+    setRoleName(role.name);
   };
 
   const handleCancel = () => {
@@ -144,7 +144,7 @@ export default function RolesPage() {
                         <td className="px-6 py-4 text-surface-500 font-medium">#{role.id}</td>
                         <td className="px-6 py-4">
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400 border border-primary-200/50 dark:border-primary-800/50">
-                            {role.roleName}
+                            {role.name}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-right">
