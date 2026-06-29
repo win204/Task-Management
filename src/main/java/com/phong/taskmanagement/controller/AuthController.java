@@ -22,7 +22,10 @@ import com.phong.taskmanagement.repository.PasswordResetTokenRepository;
 import com.phong.taskmanagement.security.JwtService;
 import com.phong.taskmanagement.service.RefreshTokenService;
 import com.phong.taskmanagement.service.EmailService;
-
+import com.phong.taskmanagement.service.UserService;
+import com.phong.taskmanagement.dto.request.CreateUserRequest;
+import com.phong.taskmanagement.dto.response.UserResponse;
+import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -50,6 +53,7 @@ public class AuthController {
         private final RefreshTokenService refreshTokenService;
         private final PasswordResetTokenRepository passwordResetTokenRepository;
         private final EmailService emailService;
+        private final UserService userService;
 
         @Operation(summary = "Login", description = "User login with username and password")
         @PostMapping("/login")
@@ -90,6 +94,25 @@ public class AuthController {
                 return ApiResponse.success(
                                 response,
                                 "Login successful");
+        }
+
+        @Operation(summary = "Register", description = "Register a new user")
+        @PostMapping("/register")
+        public ApiResponse<UserResponse> register(
+                        @Valid @RequestBody com.phong.taskmanagement.dto.request.RegisterRequest request) {
+                
+                CreateUserRequest createRequest = new CreateUserRequest();
+                createRequest.setUsername(request.getUsername());
+                createRequest.setEmail(request.getEmail());
+                createRequest.setPassword(request.getPassword());
+                createRequest.setFullName(request.getFullName());
+                createRequest.setPhone("N/A");
+                createRequest.setRoles(List.of("EMPLOYEE"));
+                createRequest.setActive(true);
+
+                UserResponse response = userService.createUser(createRequest);
+
+                return ApiResponse.success(response, "User registered successfully");
         }
 
         @Operation(summary = "Refresh access token", description = "Generate a new access token using refresh token")
