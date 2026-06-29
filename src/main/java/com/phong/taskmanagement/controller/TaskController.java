@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import com.phong.taskmanagement.dto.request.CreateTaskRequest;
 import com.phong.taskmanagement.dto.request.TaskSearchRequest;
@@ -37,6 +38,7 @@ public class TaskController {
             @RequestBody CreateTaskRequest request) {
 
         TaskResponse response = taskService.createTask(request);
+        response.add(linkTo(methodOn(TaskController.class).getTaskById(response.getId())).withSelfRel());
         return ApiResponse.success(response, "Task created successfully");
     }
 
@@ -48,6 +50,7 @@ public class TaskController {
     public ApiResponse<List<TaskResponse>> getAllTasks() {
 
         List<TaskResponse> response = taskService.getAllTasks();
+        response.forEach(task -> task.add(linkTo(methodOn(TaskController.class).getTaskById(task.getId())).withSelfRel()));
         return ApiResponse.success(response, "Tasks retrieved successfully");
     }
 
@@ -60,6 +63,8 @@ public class TaskController {
             @PathVariable Long id) {
 
         TaskResponse response = taskService.getTaskById(id);
+        response.add(linkTo(methodOn(TaskController.class).getTaskById(id)).withSelfRel());
+        response.add(linkTo(methodOn(TaskController.class).getAllTasks()).withRel("tasks"));
         return ApiResponse.success(response, "Task retrieved successfully");
     }
 
@@ -83,6 +88,7 @@ public class TaskController {
                 page,
                 size
         );
+        response.forEach(task -> task.add(linkTo(methodOn(TaskController.class).getTaskById(task.getId())).withSelfRel()));
         return ApiResponse.success(response, "Tasks searched successfully");
     }
 
@@ -106,6 +112,7 @@ public class TaskController {
                 page,
                 size
         );
+        response.forEach(task -> task.add(linkTo(methodOn(TaskController.class).getTaskById(task.getId())).withSelfRel()));
         return ApiResponse.success(response, "Advanced task search completed successfully");
     }
 
@@ -129,6 +136,7 @@ public class TaskController {
                 page,
                 size
         );
+        response.forEach(task -> task.add(linkTo(methodOn(TaskController.class).getTaskById(task.getId())).withSelfRel()));
         return ApiResponse.success(response, "Tasks filtered by status successfully");
     }
 
@@ -152,6 +160,7 @@ public class TaskController {
                 page,
                 size
         );
+        response.forEach(task -> task.add(linkTo(methodOn(TaskController.class).getTaskById(task.getId())).withSelfRel()));
         return ApiResponse.success(response, "Tasks filtered by priority successfully");
     }
 
@@ -172,6 +181,7 @@ public class TaskController {
                 page,
                 size
         );
+        response.forEach(task -> task.add(linkTo(methodOn(TaskController.class).getTaskById(task.getId())).withSelfRel()));
         return ApiResponse.success(response, "Tasks retrieved with pagination successfully");
     }
 
@@ -188,6 +198,7 @@ public class TaskController {
                 id,
                 request
         );
+        response.add(linkTo(methodOn(TaskController.class).getTaskById(id)).withSelfRel());
         return ApiResponse.success(response, "Task updated successfully");
     }
 
@@ -204,6 +215,7 @@ public class TaskController {
                 id,
                 request
         );
+        response.add(linkTo(methodOn(TaskController.class).getTaskById(id)).withSelfRel());
         return ApiResponse.success(response, "Task status updated successfully");
     }
 

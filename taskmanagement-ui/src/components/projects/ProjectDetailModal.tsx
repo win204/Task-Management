@@ -1,5 +1,7 @@
 import { X, Briefcase, Calendar, Info, Clock } from 'lucide-react';
 import type { Project } from '../../types/project';
+import { ProjectMembersList } from './ProjectMembersList';
+import { useAuthStore } from '../../store/authStore';
 
 interface ProjectDetailModalProps {
   isOpen: boolean;
@@ -8,7 +10,10 @@ interface ProjectDetailModalProps {
 }
 
 export const ProjectDetailModal = ({ isOpen, onClose, project }: ProjectDetailModalProps) => {
+  const { user } = useAuthStore();
   if (!isOpen || !project) return null;
+
+  const isAdminOrManager = user?.roles?.some(r => r === 'ROLE_ADMIN' || r === 'ROLE_MANAGER') || false;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
@@ -73,6 +78,8 @@ export const ProjectDetailModal = ({ isOpen, onClose, project }: ProjectDetailMo
             <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 text-xs text-slate-500 font-mono text-center">
               Internal System ID: {project.id}
             </div>
+
+            <ProjectMembersList projectId={project.id} isAdmin={isAdminOrManager} />
           </div>
         </div>
 

@@ -4,6 +4,9 @@ import {
   Briefcase,
   CheckSquare,
   BarChart3,
+  Activity,
+  ShieldAlert,
+  Contact
 } from 'lucide-react';
 import type { MenuItem } from '../types/menu';
 import { ROUTES } from '../utils/constants';
@@ -42,5 +45,23 @@ export const SIDEBAR_MENU: MenuItem[] = [
     path: '/dashboard/reports',
     icon: BarChart3,
     roles: ['ADMIN', 'MANAGER'],
+  },
+  {
+    label: 'Activity Logs',
+    path: '/dashboard/activity-logs',
+    icon: Activity,
+    roles: ['ADMIN'],
+  },
+  {
+    label: 'Roles',
+    path: '/dashboard/roles',
+    icon: ShieldAlert,
+    roles: ['ADMIN'],
+  },
+  {
+    label: 'Positions',
+    path: '/dashboard/positions',
+    icon: Contact,
+    roles: ['ADMIN'],
   },
 ];

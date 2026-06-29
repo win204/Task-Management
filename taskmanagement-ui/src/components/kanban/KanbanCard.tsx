@@ -2,7 +2,7 @@ import { useDraggable } from '@dnd-kit/core';
 import type { Task } from '../../types/task';
 import { TaskPriorityBadge } from '../tasks/TaskPriorityBadge';
 import { Calendar, UserCircle2 } from 'lucide-react';
-import { format } from 'date-fns';
+import { formatVietnamDateOnly } from '../../utils/dateUtils';
 
 interface KanbanCardProps {
   task: Task;
@@ -62,7 +62,7 @@ export function KanbanCard({ task }: KanbanCardProps) {
             {task.dueDate && (
               <div className="flex items-center text-xs text-surface-500 dark:text-surface-400">
                 <Calendar className="w-3 h-3 mr-1" />
-                {format(new Date(task.dueDate), 'MMM d')}
+                {formatVietnamDateOnly(task.dueDate)}
               </div>
             )}
           </div>

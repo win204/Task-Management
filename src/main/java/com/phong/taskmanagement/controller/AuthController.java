@@ -2,6 +2,7 @@ package com.phong.taskmanagement.controller;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,9 @@ import com.phong.taskmanagement.service.RefreshTokenService;
 import com.phong.taskmanagement.service.EmailService;
 import com.phong.taskmanagement.service.UserService;
 import com.phong.taskmanagement.dto.request.CreateUserRequest;
+import com.phong.taskmanagement.dto.request.ChangePasswordRequest;
 import com.phong.taskmanagement.dto.response.UserResponse;
+import java.security.Principal;
 import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -145,22 +148,20 @@ public class AuthController {
         @PostMapping("/forgot-password")
         @Transactional
         public ApiResponse<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
-                User user = userRepository.findByEmail(request.getEmail())
-                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                                "Email not found"));
+                userRepository.findByEmail(request.getEmail()).ifPresent(user -> {
+                        PasswordResetToken token = PasswordResetToken.builder()
+                                        .token(UUID.randomUUID().toString())
+                                        .expiryDate(Instant.now().plusSeconds(30 * 60))
+                                        .user(user)
+                                        .used(false)
+                                        .build();
 
-                PasswordResetToken token = PasswordResetToken.builder()
-                                .token(UUID.randomUUID().toString())
-                                .expiryDate(Instant.now().plusSeconds(30 * 60))
-                                .user(user)
-                                .used(false)
-                                .build();
+                        passwordResetTokenRepository.save(token);
 
-                passwordResetTokenRepository.save(token);
+                        emailService.sendPasswordResetEmail(user.getEmail(), token.getToken());
+                });
 
-                emailService.sendPasswordResetEmail(user.getEmail(), token.getToken());
-
-                return ApiResponse.success(null, "Password reset email sent successfully");
+                return ApiResponse.success(null, "If that email is in our database, we have sent a reset link to it.");
         }
 
         @Operation(summary = "Reset Password", description = "Reset password using token")
@@ -187,6 +188,29 @@ public class AuthController {
                 passwordResetTokenRepository.save(resetToken);
 
                 return ApiResponse.success(null, "Password reset successfully");
+        }
+
+        @Operation(summary = "Get Current User", description = "Get authenticated user profile")
+        @GetMapping("/me")
+        public ApiResponse<UserResponse> getCurrentUser(Principal principal) {
+                if (principal == null) {
+                        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthenticated");
+                }
+                User user = userRepository.findByUsername(principal.getName())
+                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                return ApiResponse.success(userService.getUserById(user.getId()), "Profile retrieved successfully");
+        }
+
+        @Operation(summary = "Change Password", description = "Change current user's password")
+        @PostMapping("/change-password")
+        public ApiResponse<Void> changeCurrentPassword(Principal principal, @Valid @RequestBody ChangePasswordRequest request) {
+                if (principal == null) {
+                        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthenticated");
+                }
+                User user = userRepository.findByUsername(principal.getName())
+                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                userService.changePassword(user.getId(), request);
+                return ApiResponse.success(null, "Password changed successfully");
         }
 
 }

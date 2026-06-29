@@ -1,5 +1,6 @@
-import { Edit2, Trash2, Shield, Eye } from 'lucide-react';
+import { Edit2, Trash2, Shield, Eye, Lock, Unlock } from 'lucide-react';
 import type { User } from '../../types/user';
+import { useLockUserMutation, useUnlockUserMutation } from '../../hooks/useUsers';
 
 interface UserTableProps {
   users: User[];
@@ -11,6 +12,9 @@ interface UserTableProps {
 }
 
 export const UserTable = ({ users, isLoading, error, onView, onEdit, onDelete }: UserTableProps) => {
+  const lockMutation = useLockUserMutation();
+  const unlockMutation = useUnlockUserMutation();
+
   if (error) {
     return (
       <div className="p-8 text-center bg-red-50 dark:bg-red-500/10 border-b border-red-100 dark:border-red-500/20">
@@ -53,6 +57,18 @@ export const UserTable = ({ users, isLoading, error, onView, onEdit, onDelete }:
       case 'ADMIN': return 'bg-red-100 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20';
       case 'MANAGER': return 'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20';
       default: return 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20';
+    }
+  };
+
+  const handleToggleLock = (user: User) => {
+    if (user.active) {
+      if (confirm(`Are you sure you want to lock user ${user.username}?`)) {
+        lockMutation.mutate(user.id);
+      }
+    } else {
+      if (confirm(`Are you sure you want to unlock user ${user.username}?`)) {
+        unlockMutation.mutate(user.id);
+      }
     }
   };
 
@@ -112,12 +128,20 @@ export const UserTable = ({ users, isLoading, error, onView, onEdit, onDelete }:
                   </span>
                 ) : (
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-100 text-surface-700 dark:bg-surface-800 dark:text-surface-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-surface-400"></span> Inactive
+                    <span className="w-1.5 h-1.5 rounded-full bg-surface-400"></span> Locked
                   </span>
                 )}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <div className="flex justify-end gap-3">
+                  <button
+                    onClick={() => handleToggleLock(user)}
+                    disabled={lockMutation.isPending || unlockMutation.isPending}
+                    className="text-amber-600 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 bg-amber-50 dark:bg-amber-500/10 p-1.5 rounded-md hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-colors disabled:opacity-50"
+                    title={user.active ? "Lock User" : "Unlock User"}
+                  >
+                    {user.active ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
+                  </button>
                   <button
                     onClick={() => onView(user)}
                     className="text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-surface-200 bg-surface-50 dark:bg-surface-800 p-1.5 rounded-md hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors"

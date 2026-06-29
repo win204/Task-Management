@@ -2,11 +2,12 @@ package com.phong.taskmanagement.repository;
 
 import com.phong.taskmanagement.entity.ActivityLog;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ActivityLogRepository
-        extends JpaRepository<ActivityLog, Long> {
+        extends JpaRepository<ActivityLog, Long>, QuerydslPredicateExecutor<ActivityLog> {
 
     boolean existsByTaskId(Long taskId);
 

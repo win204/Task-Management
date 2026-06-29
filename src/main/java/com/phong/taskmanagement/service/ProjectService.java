@@ -30,6 +30,7 @@ public interface ProjectService {
 
     Page<ProjectResponse> searchProjects(
             String keyword,
+            String status,
             int page,
             int size
     );

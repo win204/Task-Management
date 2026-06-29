@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import com.phong.taskmanagement.dto.request.CreateProjectRequest;
 import com.phong.taskmanagement.dto.response.ApiResponse;
@@ -37,6 +38,7 @@ public class ProjectController {
         ProjectResponse response = projectService.createProject(
                 request
         );
+        response.add(linkTo(methodOn(ProjectController.class).getProjectById(response.getId())).withSelfRel());
         return ApiResponse.success(response, "Project created successfully");
     }
 
@@ -48,6 +50,7 @@ public class ProjectController {
     public ApiResponse<List<ProjectResponse>> getAllProjects() {
 
         List<ProjectResponse> response = projectService.getAllProjects();
+        response.forEach(project -> project.add(linkTo(methodOn(ProjectController.class).getProjectById(project.getId())).withSelfRel()));
         return ApiResponse.success(response, "Projects retrieved successfully");
     }
 
@@ -60,6 +63,8 @@ public class ProjectController {
             @PathVariable Long id) {
 
         ProjectResponse response = projectService.getProjectById(id);
+        response.add(linkTo(methodOn(ProjectController.class).getProjectById(id)).withSelfRel());
+        response.add(linkTo(methodOn(ProjectController.class).getAllProjects()).withRel("projects"));
         return ApiResponse.success(response, "Project retrieved successfully");
     }
 
@@ -70,7 +75,8 @@ public class ProjectController {
     @GetMapping("/search")
     public ApiResponse<Page<ProjectResponse>> searchProjects(
 
-            @RequestParam String keyword,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String status,
 
             @RequestParam(defaultValue = "0")
             int page,
@@ -80,10 +86,12 @@ public class ProjectController {
 
         Page<ProjectResponse> response = projectService.searchProjects(
                 keyword,
+                status,
                 page,
                 size
         );
-        return ApiResponse.success(response, "Projects searched successfully");
+        response.forEach(project -> project.add(linkTo(methodOn(ProjectController.class).getProjectById(project.getId())).withSelfRel()));
+        return ApiResponse.success(response, "Projects retrieved successfully");
     }
 
     @Operation(
@@ -106,7 +114,8 @@ public class ProjectController {
                 page,
                 size
         );
-        return ApiResponse.success(response, "Projects filtered by status successfully");
+        response.forEach(project -> project.add(linkTo(methodOn(ProjectController.class).getProjectById(project.getId())).withSelfRel()));
+        return ApiResponse.success(response, "Projects retrieved successfully");
     }
 
     @Operation(
@@ -126,6 +135,7 @@ public class ProjectController {
                 page,
                 size
         );
+        response.forEach(project -> project.add(linkTo(methodOn(ProjectController.class).getProjectById(project.getId())).withSelfRel()));
         return ApiResponse.success(response, "Projects retrieved with pagination successfully");
     }
 
@@ -142,6 +152,7 @@ public class ProjectController {
                 id,
                 request
         );
+        response.add(linkTo(methodOn(ProjectController.class).getProjectById(id)).withSelfRel());
         return ApiResponse.success(response, "Project updated successfully");
     }
 

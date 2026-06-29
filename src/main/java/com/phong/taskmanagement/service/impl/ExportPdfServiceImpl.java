@@ -3,10 +3,15 @@ package com.phong.taskmanagement.service.impl;
 import com.phong.taskmanagement.entity.Project;
 import com.phong.taskmanagement.entity.Task;
 import com.phong.taskmanagement.entity.User;
+import com.phong.taskmanagement.entity.ActivityLog;
 import com.phong.taskmanagement.repository.ProjectRepository;
 import com.phong.taskmanagement.repository.TaskRepository;
 import com.phong.taskmanagement.repository.UserRepository;
+import com.phong.taskmanagement.repository.ActivityLogRepository;
+import com.phong.taskmanagement.service.ActivityLogService;
 import com.phong.taskmanagement.service.ExportPdfService;
+import com.phong.taskmanagement.service.DashboardService;
+import com.phong.taskmanagement.dto.response.DashboardResponse;
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
@@ -31,6 +36,9 @@ public class ExportPdfServiceImpl implements ExportPdfService {
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
+    private final ActivityLogRepository activityLogRepository;
+    private final ActivityLogService activityLogService;
+    private final DashboardService dashboardService;
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -147,6 +155,86 @@ public class ExportPdfServiceImpl implements ExportPdfService {
             return baos.toByteArray();
         } catch (Exception ex) {
             throw new RuntimeException("Failed to export projects to PDF", ex);
+        }
+    }
+
+    @Override
+    public byte[] exportActivityLogsToPdf(
+            String username,
+            String module,
+            String action,
+            String result,
+            String ipAddress,
+            String startDate,
+            String endDate) {
+        
+        List<com.phong.taskmanagement.dto.response.ActivityLogResponse> logs = activityLogService.searchLogs(
+                username, module, action, result, ipAddress, startDate, endDate, org.springframework.data.domain.Pageable.unpaged()
+        ).getContent();
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            Document document = new Document(PageSize.A4.rotate());
+            PdfWriter.getInstance(document, baos);
+            document.open();
+
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
+            Paragraph title = new Paragraph("Activity Logs Report", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+            document.add(new Paragraph(" "));
+
+            PdfPTable table = new PdfPTable(6);
+            table.setWidthPercentage(100);
+
+            addTableHeader(table, new String[]{"Id","Time","Username","Module","Action","Description"});
+
+            for (com.phong.taskmanagement.dto.response.ActivityLogResponse log : logs) {
+                table.addCell(safeText(log.getId()));
+                table.addCell(log.getCreatedAt() != null ? log.getCreatedAt().format(DATE_TIME_FORMATTER) : "");
+                table.addCell(safeText(log.getUsername() != null ? log.getUsername() : "system"));
+                table.addCell(safeText(log.getModule()));
+                table.addCell(safeText(log.getAction()));
+                table.addCell(safeText(log.getDescription()));
+            }
+
+            document.add(table);
+            document.close();
+            return baos.toByteArray();
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to export activity logs to PDF", ex);
+        }
+    }
+
+    @Override
+    public byte[] exportDashboardToPdf() {
+        DashboardResponse stats = dashboardService.getDashboardStatistics();
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, baos);
+            document.open();
+
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
+            Paragraph title = new Paragraph("Dashboard Statistics", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+            document.add(new Paragraph(" "));
+
+            PdfPTable table = new PdfPTable(2);
+            table.setWidthPercentage(80);
+
+            addTableHeader(table, new String[]{"Metric", "Value"});
+
+            table.addCell("Total Users"); table.addCell(safeText(stats.getTotalUsers()));
+            table.addCell("Total Projects"); table.addCell(safeText(stats.getTotalProjects()));
+            table.addCell("Total Tasks"); table.addCell(safeText(stats.getTotalTasks()));
+            table.addCell("Completed Tasks"); table.addCell(safeText(stats.getCompletedTasks()));
+            table.addCell("Todo Tasks"); table.addCell(safeText(stats.getTodoTasks()));
+            table.addCell("In Progress Tasks"); table.addCell(safeText(stats.getInProgressTasks()));
+
+            document.add(table);
+            document.close();
+            return baos.toByteArray();
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to export dashboard to PDF", ex);
         }
     }
 

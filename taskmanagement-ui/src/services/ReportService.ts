@@ -1,4 +1,5 @@
 import { apiClient } from '../api/axios';
+import type { ActivityLogSearchParams } from './ActivityLogService';
 
 export const ReportService = {
   async exportTasksToExcel(): Promise<Blob> {
@@ -24,6 +25,22 @@ export const ReportService = {
 
   async exportTasksToPdf(): Promise<Blob> {
     const response = await apiClient.get('/api/reports/tasks/pdf', {
+      responseType: 'blob',
+    });
+    return response.data;
+  },
+
+  async exportActivityLogsToExcel(params?: ActivityLogSearchParams): Promise<Blob> {
+    const response = await apiClient.get('/api/export/activity-logs/excel', {
+      params,
+      responseType: 'blob',
+    });
+    return response.data;
+  },
+
+  async exportActivityLogsToPdf(params?: ActivityLogSearchParams): Promise<Blob> {
+    const response = await apiClient.get('/api/export/activity-logs/pdf', {
+      params,
       responseType: 'blob',
     });
     return response.data;

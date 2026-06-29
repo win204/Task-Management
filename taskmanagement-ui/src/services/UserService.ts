@@ -59,4 +59,28 @@ export const UserService = {
   async deleteUser(userId: number): Promise<void> {
     await apiClient.delete<ApiResponse<void>>(API_ENDPOINTS.USER_BY_ID(userId));
   },
+
+  async lockUser(id: number): Promise<User> {
+    const response = await apiClient.put<ApiResponse<User>>(`/api/users/${id}/lock`);
+    return response.data.data;
+  },
+
+  async unlockUser(id: number): Promise<User> {
+    const response = await apiClient.put<ApiResponse<User>>(`/api/users/${id}/unlock`);
+    return response.data.data;
+  },
+
+  /**
+   * Change password for a user.
+   * Requires oldPassword verification on the backend.
+   */
+  async changePassword(
+    userId: number,
+    payload: { oldPassword: string; newPassword: string; confirmPassword: string }
+  ): Promise<void> {
+    await apiClient.post<ApiResponse<void>>(
+      API_ENDPOINTS.CHANGE_PASSWORD,
+      payload
+    );
+  },
 };

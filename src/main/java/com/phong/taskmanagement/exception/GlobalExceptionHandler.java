@@ -19,6 +19,24 @@ public class GlobalExceptionHandler {
         return ApiResponse.failure(ex.getMessage());
     }
 
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<Object> handleBusiness(BusinessException ex) {
+        return ApiResponse.failure(ex.getMessage());
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<Object> handleCustomValidation(ValidationException ex) {
+        return ApiResponse.failure(ex.getMessage());
+    }
+
+    @ExceptionHandler(SecurityException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiResponse<Object> handleCustomSecurity(SecurityException ex) {
+        return ApiResponse.failure(ex.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResponse<Object> handleValidation(
@@ -81,6 +99,13 @@ public class GlobalExceptionHandler {
         return ApiResponse.failure("Internal server error: A lazy collection was accessed outside of an active transaction.");
     }
 
+    @ExceptionHandler(org.springframework.web.server.ResponseStatusException.class)
+    public org.springframework.http.ResponseEntity<ApiResponse<Object>> handleResponseStatus(
+            org.springframework.web.server.ResponseStatusException ex) {
+        ApiResponse<Object> body = ApiResponse.failure(ex.getReason() != null ? ex.getReason() : ex.getMessage());
+        return org.springframework.http.ResponseEntity.status(ex.getStatusCode()).body(body);
+    }
+
     @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiResponse<Object> handleNoResourceFound(org.springframework.web.servlet.resource.NoResourceFoundException ex) {
@@ -91,7 +116,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiResponse<Object> handleException(
             Exception ex) {
-
+        ex.printStackTrace();
         return ApiResponse.failure("Internal server error");
     }
 }

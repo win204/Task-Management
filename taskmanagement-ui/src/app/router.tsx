@@ -13,6 +13,10 @@ import TasksPage from '../pages/dashboard/TasksPage';
 import ReportsPage from '../pages/dashboard/ReportsPage';
 import ProfilePage from '../pages/dashboard/ProfilePage';
 import SettingsPage from '../pages/dashboard/SettingsPage';
+import NotificationsPage from '../pages/dashboard/NotificationsPage';
+import { ActivityLogsPage } from '../pages/dashboard/ActivityLogsPage';
+import RolesPage from '../pages/dashboard/RolesPage';
+import PositionsPage from '../pages/dashboard/PositionsPage';
 
 // Guards
 import { ProtectedRoute } from '../routes/ProtectedRoute';
@@ -107,6 +111,34 @@ export const router = createBrowserRouter([
       {
         path: '/dashboard/settings',
         element: <SettingsPage />,
+      },
+      {
+        path: '/dashboard/notifications',
+        element: <NotificationsPage />,
+      },
+      {
+        path: '/dashboard/activity-logs',
+        element: (
+          <RoleProtectedRoute allowedRoles={['ADMIN']}>
+            <ActivityLogsPage />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/dashboard/roles',
+        element: (
+          <RoleProtectedRoute allowedRoles={['ADMIN']}>
+            <RolesPage />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '/dashboard/positions',
+        element: (
+          <RoleProtectedRoute allowedRoles={['ADMIN']}>
+            <PositionsPage />
+          </RoleProtectedRoute>
+        ),
       },
       // Redirect workspace parent to overview
       {

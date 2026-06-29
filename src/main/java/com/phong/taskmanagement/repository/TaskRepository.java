@@ -7,14 +7,17 @@ import com.phong.taskmanagement.entity.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface TaskRepository
-        extends JpaRepository<Task, Long>, TaskRepositoryCustom {
+        extends JpaRepository<Task, Long>, QuerydslPredicateExecutor<Task>, TaskRepositoryCustom {
 
     boolean existsByProjectId(Long projectId);
 
@@ -50,16 +53,19 @@ public interface TaskRepository
     @Query("SELECT t.startDate, COUNT(t) FROM Task t WHERE t.startDate IS NOT NULL GROUP BY t.startDate ORDER BY t.startDate ASC")
     List<Object[]> getTaskCountsByStartDate();
 
+    @EntityGraph(attributePaths = {"project", "assignee"})
     Page<Task> findByTitleContainingIgnoreCase(
             String keyword,
             Pageable pageable
     );
 
+    @EntityGraph(attributePaths = {"project", "assignee"})
     Page<Task> findByStatus(
             String status,
             Pageable pageable
     );
 
+    @EntityGraph(attributePaths = {"project", "assignee"})
     Page<Task> findByPriority(
             String priority,
             Pageable pageable

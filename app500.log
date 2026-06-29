@@ -1,0 +1,500 @@
+﻿taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+taskmanagement-app  | 	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+taskmanagement-app  | 	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+taskmanagement-app  | 	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+taskmanagement-app  | 	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+taskmanagement-app  | 	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+taskmanagement-app  | 	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+taskmanagement-app  | 	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+taskmanagement-app  | 	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:114)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+taskmanagement-app  | 	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+taskmanagement-app  | 	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+taskmanagement-app  | 	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+taskmanagement-app  | 	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+taskmanagement-app  | 	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+taskmanagement-app  | 	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+taskmanagement-app  | 	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+taskmanagement-app  | 	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+taskmanagement-app  | 	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+taskmanagement-app  | 	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+taskmanagement-app  | 	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+taskmanagement-app  | 	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+taskmanagement-app  | 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+taskmanagement-app  | 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+taskmanagement-app  | 	at java.base/java.lang.Thread.run(Unknown Source)
+taskmanagement-app  | 2026-06-29 07:23:32 [http-nio-8080-exec-4] DEBUG c.p.t.aspect.LoggingAspect - REST Request: POST /api/auth/login
+taskmanagement-app  | 2026-06-29 07:23:32 [http-nio-8080-exec-4] DEBUG c.p.t.aspect.LoggingAspect - Arguments: [LoginRequest(username=admin, password=***]
+taskmanagement-app  | Hibernate: 
+taskmanagement-app  |     select
+taskmanagement-app  |         u1_0.id,
+taskmanagement-app  |         u1_0.active,
+taskmanagement-app  |         u1_0.created_at,
+taskmanagement-app  |         u1_0.email,
+taskmanagement-app  |         u1_0.full_name,
+taskmanagement-app  |         u1_0.password,
+taskmanagement-app  |         u1_0.phone,
+taskmanagement-app  |         p1_0.user_id,
+taskmanagement-app  |         p1_1.id,
+taskmanagement-app  |         p1_1.description,
+taskmanagement-app  |         p1_1.name,
+taskmanagement-app  |         r1_0.user_id,
+taskmanagement-app  |         r1_1.id,
+taskmanagement-app  |         r1_1.description,
+taskmanagement-app  |         r1_1.name,
+taskmanagement-app  |         u1_0.updated_at,
+taskmanagement-app  |         u1_0.username 
+taskmanagement-app  |     from
+taskmanagement-app  |         users u1_0 
+taskmanagement-app  |     left join
+taskmanagement-app  |         user_positions p1_0 
+taskmanagement-app  |             on u1_0.id=p1_0.user_id 
+taskmanagement-app  |     left join
+taskmanagement-app  |         positions p1_1 
+taskmanagement-app  |             on p1_1.id=p1_0.position_id 
+taskmanagement-app  |     left join
+taskmanagement-app  |         user_roles r1_0 
+taskmanagement-app  |             on u1_0.id=r1_0.user_id 
+taskmanagement-app  |     left join
+taskmanagement-app  |         roles r1_1 
+taskmanagement-app  |             on r1_1.id=r1_0.role_id 
+taskmanagement-app  |     where
+taskmanagement-app  |         u1_0.username=?
+taskmanagement-app  | 2026-06-29 07:23:32 [http-nio-8080-exec-4] INFO  c.p.t.controller.AuthController - ========== LOGIN DEBUG ==========
+taskmanagement-app  | 2026-06-29 07:23:32 [http-nio-8080-exec-4] INFO  c.p.t.controller.AuthController - Username=admin
+taskmanagement-app  | 2026-06-29 07:23:32 [http-nio-8080-exec-4] INFO  c.p.t.controller.AuthController - DB Hash=$2a$10$d5xzl4wd5EHJLQwSIbqf6eNbUDlfPb2ZD1HfIlitBUSR.lznshg0K
+taskmanagement-app  | 2026-06-29 07:23:32 [http-nio-8080-exec-4] INFO  c.p.t.controller.AuthController - Matched=false
+taskmanagement-app  | 2026-06-29 07:23:32 [http-nio-8080-exec-4] INFO  c.p.t.controller.AuthController - ================================
+taskmanagement-app  | 2026-06-29 07:23:32 [http-nio-8080-exec-4] ERROR c.p.t.aspect.LoggingAspect - Exception in com.phong.taskmanagement.controller.AuthController.login() with cause = 'NULL' and exception = 'Invalid username or password'
+taskmanagement-app  | org.springframework.security.authentication.BadCredentialsException: Invalid username or password
+taskmanagement-app  | 	at com.phong.taskmanagement.controller.AuthController.login(AuthController.java:83)
+taskmanagement-app  | 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+taskmanagement-app  | 	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+taskmanagement-app  | 	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+taskmanagement-app  | 	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+taskmanagement-app  | 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+taskmanagement-app  | 	at org.springframework.aop.aspectj.AspectJAfterThrowingAdvice.invoke(AspectJAfterThrowingAdvice.java:64)
+taskmanagement-app  | 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+taskmanagement-app  | 	at org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor.invoke(AfterReturningAdviceInterceptor.java:57)
+taskmanagement-app  | 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+taskmanagement-app  | 	at org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor.invoke(MethodBeforeAdviceInterceptor.java:58)
+taskmanagement-app  | 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+taskmanagement-app  | 	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+taskmanagement-app  | 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+taskmanagement-app  | 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
+taskmanagement-app  | 	at com.phong.taskmanagement.controller.AuthController$$SpringCGLIB$$0.login(<generated>)
+taskmanagement-app  | 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+taskmanagement-app  | 	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+taskmanagement-app  | 	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258)
+taskmanagement-app  | 	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191)
+taskmanagement-app  | 	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+taskmanagement-app  | 	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:986)
+taskmanagement-app  | 	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:891)
+taskmanagement-app  | 	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+taskmanagement-app  | 	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+taskmanagement-app  | 	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+taskmanagement-app  | 	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+taskmanagement-app  | 	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+taskmanagement-app  | 	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+taskmanagement-app  | 	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+taskmanagement-app  | 	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at com.phong.taskmanagement.security.RateLimitingFilter.doFilterInternal(RateLimitingFilter.java:38)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+taskmanagement-app  | 	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$FilterObservation$SimpleFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:479)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:340)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator.lambda$wrapSecured$0(ObservationFilterChainDecorator.java:82)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:128)
+taskmanagement-app  | 	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125)
+taskmanagement-app  | 	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+taskmanagement-app  | 	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:181)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at com.phong.taskmanagement.security.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:43)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+taskmanagement-app  | 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+taskmanagement-app  | 	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+taskmanagement-app  | 	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+taskmanagement-app  | 	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+taskmanagement-app  | 	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+taskmanagement-app  | 	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+taskmanagement-app  | 	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+taskmanagement-app  | 	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+taskmanagement-app  | 	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+taskmanagement-app  | 	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:114)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+taskmanagement-app  | 	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+taskmanagement-app  | 	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+taskmanagement-app  | 	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+taskmanagement-app  | 	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+taskmanagement-app  | 	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+taskmanagement-app  | 	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+taskmanagement-app  | 	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+taskmanagement-app  | 	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+taskmanagement-app  | 	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+taskmanagement-app  | 	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+taskmanagement-app  | 	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+taskmanagement-app  | 	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+taskmanagement-app  | 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+taskmanagement-app  | 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+taskmanagement-app  | 	at java.base/java.lang.Thread.run(Unknown Source)
+taskmanagement-app  | === JWT FILTER ===
+taskmanagement-app  | URI: /actuator/health
+taskmanagement-app  | Header: null
+taskmanagement-app  | 2026-06-29 07:23:54 [http-nio-8080-exec-9] DEBUG c.p.t.aspect.LoggingAspect - REST Request: POST /api/auth/login
+taskmanagement-app  | 2026-06-29 07:23:54 [http-nio-8080-exec-9] DEBUG c.p.t.aspect.LoggingAspect - Arguments: [LoginRequest(username=admin, password=***]
+taskmanagement-app  | Hibernate: 
+taskmanagement-app  |     select
+taskmanagement-app  |         u1_0.id,
+taskmanagement-app  |         u1_0.active,
+taskmanagement-app  |         u1_0.created_at,
+taskmanagement-app  |         u1_0.email,
+taskmanagement-app  |         u1_0.full_name,
+taskmanagement-app  |         u1_0.password,
+taskmanagement-app  |         u1_0.phone,
+taskmanagement-app  |         p1_0.user_id,
+taskmanagement-app  |         p1_1.id,
+taskmanagement-app  |         p1_1.description,
+taskmanagement-app  |         p1_1.name,
+taskmanagement-app  |         r1_0.user_id,
+taskmanagement-app  |         r1_1.id,
+taskmanagement-app  |         r1_1.description,
+taskmanagement-app  |         r1_1.name,
+taskmanagement-app  |         u1_0.updated_at,
+taskmanagement-app  |         u1_0.username 
+taskmanagement-app  |     from
+taskmanagement-app  |         users u1_0 
+taskmanagement-app  |     left join
+taskmanagement-app  |         user_positions p1_0 
+taskmanagement-app  |             on u1_0.id=p1_0.user_id 
+taskmanagement-app  |     left join
+taskmanagement-app  |         positions p1_1 
+taskmanagement-app  |             on p1_1.id=p1_0.position_id 
+taskmanagement-app  |     left join
+taskmanagement-app  |         user_roles r1_0 
+taskmanagement-app  |             on u1_0.id=r1_0.user_id 
+taskmanagement-app  |     left join
+taskmanagement-app  |         roles r1_1 
+taskmanagement-app  |             on r1_1.id=r1_0.role_id 
+taskmanagement-app  |     where
+taskmanagement-app  |         u1_0.username=?
+taskmanagement-app  | 2026-06-29 07:23:54 [http-nio-8080-exec-9] INFO  c.p.t.controller.AuthController - ========== LOGIN DEBUG ==========
+taskmanagement-app  | 2026-06-29 07:23:54 [http-nio-8080-exec-9] INFO  c.p.t.controller.AuthController - Username=admin
+taskmanagement-app  | 2026-06-29 07:23:54 [http-nio-8080-exec-9] INFO  c.p.t.controller.AuthController - DB Hash=/XHHL5J/oKu
+taskmanagement-app  | 2026-06-29 07:23:54 [http-nio-8080-exec-9] WARN  o.s.s.c.bcrypt.BCryptPasswordEncoder - Encoded password does not look like BCrypt
+taskmanagement-app  | 2026-06-29 07:23:54 [http-nio-8080-exec-9] INFO  c.p.t.controller.AuthController - Matched=false
+taskmanagement-app  | 2026-06-29 07:23:54 [http-nio-8080-exec-9] INFO  c.p.t.controller.AuthController - ================================
+taskmanagement-app  | 2026-06-29 07:23:54 [http-nio-8080-exec-9] ERROR c.p.t.aspect.LoggingAspect - Exception in com.phong.taskmanagement.controller.AuthController.login() with cause = 'NULL' and exception = 'Invalid username or password'
+taskmanagement-app  | org.springframework.security.authentication.BadCredentialsException: Invalid username or password
+taskmanagement-app  | 	at com.phong.taskmanagement.controller.AuthController.login(AuthController.java:83)
+taskmanagement-app  | 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+taskmanagement-app  | 	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+taskmanagement-app  | 	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+taskmanagement-app  | 	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+taskmanagement-app  | 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+taskmanagement-app  | 	at org.springframework.aop.aspectj.AspectJAfterThrowingAdvice.invoke(AspectJAfterThrowingAdvice.java:64)
+taskmanagement-app  | 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+taskmanagement-app  | 	at org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor.invoke(AfterReturningAdviceInterceptor.java:57)
+taskmanagement-app  | 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+taskmanagement-app  | 	at org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor.invoke(MethodBeforeAdviceInterceptor.java:58)
+taskmanagement-app  | 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+taskmanagement-app  | 	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+taskmanagement-app  | 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+taskmanagement-app  | 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
+taskmanagement-app  | 	at com.phong.taskmanagement.controller.AuthController$$SpringCGLIB$$0.login(<generated>)
+taskmanagement-app  | 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+taskmanagement-app  | 	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+taskmanagement-app  | 	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258)
+taskmanagement-app  | 	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191)
+taskmanagement-app  | 	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+taskmanagement-app  | 	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:986)
+taskmanagement-app  | 	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:891)
+taskmanagement-app  | 	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+taskmanagement-app  | 	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+taskmanagement-app  | 	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+taskmanagement-app  | 	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+taskmanagement-app  | 	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+taskmanagement-app  | 	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+taskmanagement-app  | 	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+taskmanagement-app  | 	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at com.phong.taskmanagement.security.RateLimitingFilter.doFilterInternal(RateLimitingFilter.java:38)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+taskmanagement-app  | 	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$FilterObservation$SimpleFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:479)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:340)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator.lambda$wrapSecured$0(ObservationFilterChainDecorator.java:82)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:128)
+taskmanagement-app  | 	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125)
+taskmanagement-app  | 	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+taskmanagement-app  | 	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:181)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at com.phong.taskmanagement.security.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:43)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+taskmanagement-app  | 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+taskmanagement-app  | 	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+taskmanagement-app  | 	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+taskmanagement-app  | 	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+taskmanagement-app  | 	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+taskmanagement-app  | 	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+taskmanagement-app  | 	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+taskmanagement-app  | 	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+taskmanagement-app  | 	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+taskmanagement-app  | 	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+taskmanagement-app  | 	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+taskmanagement-app  | 	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+taskmanagement-app  | 	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:114)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+taskmanagement-app  | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+taskmanagement-app  | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+taskmanagement-app  | 	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+taskmanagement-app  | 	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+taskmanagement-app  | 	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+taskmanagement-app  | 	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+taskmanagement-app  | 	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+taskmanagement-app  | 	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+taskmanagement-app  | 	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+taskmanagement-app  | 	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+taskmanagement-app  | 	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+taskmanagement-app  | 	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+taskmanagement-app  | 	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+taskmanagement-app  | 	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+taskmanagement-app  | 	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+taskmanagement-app  | 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+taskmanagement-app  | 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+taskmanagement-app  | 	at java.base/java.lang.Thread.run(Unknown Source)
+taskmanagement-app  | === JWT FILTER ===
+taskmanagement-app  | URI: /actuator/health
+taskmanagement-app  | Header: null
+taskmanagement-app  | === JWT FILTER ===
+taskmanagement-app  | URI: /actuator/health
+taskmanagement-app  | Header: null
+taskmanagement-app  | === JWT FILTER ===
+taskmanagement-app  | URI: /actuator/health
+taskmanagement-app  | Header: null

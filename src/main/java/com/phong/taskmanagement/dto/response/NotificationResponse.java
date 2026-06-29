@@ -18,5 +18,6 @@ public class NotificationResponse {
     private String message;
     private String type;
     private Boolean isRead;
+    private Long relatedEntityId;
     private LocalDateTime createdAt;
 }

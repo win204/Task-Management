@@ -2,6 +2,10 @@ package com.phong.taskmanagement.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import com.phong.taskmanagement.dto.request.CreateActivityLogRequest;
@@ -48,6 +52,23 @@ public class ActivityLogController {
     public ApiResponse<List<ActivityLogResponse>> getAllLogs() {
 
         List<ActivityLogResponse> response = activityLogService.getAllLogs();
+        return ApiResponse.success(response, "Activity logs retrieved successfully");
+    }
+
+    @Operation(summary = "Search activity logs with pagination and filters")
+    @GetMapping("/search")
+    public ApiResponse<Page<ActivityLogResponse>> searchLogs(
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String module,
+            @RequestParam(required = false) String action,
+            @RequestParam(required = false) String result,
+            @RequestParam(required = false) String ipAddress,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        
+        Page<ActivityLogResponse> response = activityLogService.searchLogs(
+                username, module, action, result, ipAddress, startDate, endDate, pageable);
         return ApiResponse.success(response, "Activity logs retrieved successfully");
     }
 }

@@ -34,8 +34,8 @@ export default function TasksPage() {
     }
   }, [data?.totalPages, searchParams.page]);
 
-  const handleSearch = useCallback((keyword: string) => {
-    setSearchParams(prev => ({ ...prev, keyword, page: 0 }));
+  const handleSearch = useCallback((params: TaskSearchParams) => {
+    setSearchParams(prev => ({ ...prev, ...params, page: 0 }));
   }, []);
 
   const handlePageChange = (page: number) => {

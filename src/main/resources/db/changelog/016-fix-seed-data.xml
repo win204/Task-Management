@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- ─── Fix Admin Seed & Insert Manager ─────────────────────────── -->
+    <changeSet id="016-fix-admin" author="phong">
+        <validCheckSum>ANY</validCheckSum>
+        <update tableName="users">
+            <column name="password" value="$2a$10$d5xzl4wd5EHJLQwSIbqf6eNbUDlfPb2ZD1HfIlitBUSR.lznshg0K"/>
+            <column name="email" value="admin@gmail.com"/>
+            <where>username = 'admin'</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="016-insert-manager" author="phong">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM users WHERE username = 'manager'</sqlCheck>
+        </preConditions>
+
+        <insert tableName="users">
+            <column name="username" value="manager"/>
+            <column name="email" value="manager@gmail.com"/>
+            <column name="password" value="$2a$10$KRtGuQw.tfTEjLvbxQ34R.sG11G4Ram/ccEuVmPfe.9.E.HzVyJ/C"/>
+            <column name="full_name" value="Project Manager"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="status" valueBoolean="true"/>
+        </insert>
+        <insert tableName="user_roles">
+            <column name="user_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='manager')"/>
+            <column name="role_id" valueComputed="(SELECT TOP 1 id FROM roles WHERE name='MANAGER')"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

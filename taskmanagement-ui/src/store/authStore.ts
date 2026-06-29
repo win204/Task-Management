@@ -82,9 +82,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       try {
         console.log('[AuthStore] Fetching full user profile for:', decoded.sub);
-        const userSearchResponse = await AuthService.searchUsers(decoded.sub);
-        console.log('[AuthStore] User search API returned:', userSearchResponse);
-        const matchedUser = userSearchResponse.data.content?.[0];
+        const userMeResponse = await AuthService.getUserMe();
+        console.log('[AuthStore] User profile API returned:', userMeResponse);
+        const matchedUser = userMeResponse.data;
         if (matchedUser) {
           fullUser = {
             ...matchedUser,
@@ -249,10 +249,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           if (cachedUser) {
             freshUser = { ...cachedUser, roles: decoded.roles };
           } else {
-            console.log('[AuthStore] Fetching profile search details for username:', decoded.sub);
+            console.log('[AuthStore] Fetching profile details for username:', decoded.sub);
             // Re-fetch user details if cache was purged
-            const searchRes = await AuthService.searchUsers(decoded.sub);
-            const matchedUser = searchRes.data.content?.[0];
+            const userMeRes = await AuthService.getUserMe();
+            const matchedUser = userMeRes.data;
             if (matchedUser) {
               freshUser = { ...matchedUser, roles: decoded.roles };
             }

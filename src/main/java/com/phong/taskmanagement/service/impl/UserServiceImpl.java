@@ -1,5 +1,8 @@
 package com.phong.taskmanagement.service.impl;
 
+import com.querydsl.core.BooleanBuilder;
+import com.phong.taskmanagement.entity.QUser;
+
 import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +24,7 @@ import com.phong.taskmanagement.repository.ActivityLogRepository;
 import com.phong.taskmanagement.repository.RefreshTokenRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import com.phong.taskmanagement.service.UserService;
+import com.phong.taskmanagement.service.RealTimeUpdateService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +47,7 @@ public class UserServiceImpl implements UserService {
     private final ActivityLogRepository activityLogRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RealTimeUpdateService realTimeUpdateService;
 
     private UserResponse mapToResponse(User user) {
 
@@ -87,7 +92,11 @@ public class UserServiceImpl implements UserService {
 
         user = userRepository.save(user);
 
-        return mapToResponse(user);
+        UserResponse response = mapToResponse(user);
+        realTimeUpdateService.broadcastUserUpdate(response);
+        realTimeUpdateService.broadcastDashboardUpdate("USER_CREATED");
+        
+        return response;
     }
 
     @Override
@@ -134,6 +143,9 @@ public class UserServiceImpl implements UserService {
         refreshTokenRepository.deleteByUser(user);
 
         userRepository.deleteById(id);
+        
+        realTimeUpdateService.broadcastUserUpdate("DELETED_" + id);
+        realTimeUpdateService.broadcastDashboardUpdate("USER_DELETED");
     }
 
     @Override
@@ -157,7 +169,10 @@ public class UserServiceImpl implements UserService {
 
         user = userRepository.save(user);
 
-        return mapToResponse(user);
+        UserResponse response = mapToResponse(user);
+        realTimeUpdateService.broadcastUserUpdate(response);
+        realTimeUpdateService.sendProfileUpdateToUser(user.getUsername(), response);
+        return response;
     }
 
     @Override
@@ -182,7 +197,10 @@ public class UserServiceImpl implements UserService {
 
         user = userRepository.save(user);
 
-        return mapToResponse(user);
+        UserResponse response = mapToResponse(user);
+        realTimeUpdateService.broadcastUserUpdate(response);
+        realTimeUpdateService.sendProfileUpdateToUser(user.getUsername(), response);
+        return response;
     }
 
     @Override
@@ -193,13 +211,17 @@ public class UserServiceImpl implements UserService {
             int size) {
 
         Pageable pageable = PageRequest.of(page, size);
+        QUser qUser = QUser.user;
+        BooleanBuilder builder = new BooleanBuilder();
 
-        return userRepository
-                .findByUsernameContainingIgnoreCaseOrFullNameContainingIgnoreCase(
-                        keyword,
-                        keyword,
-                        pageable
-                )
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            builder.and(qUser.username.containsIgnoreCase(keyword)
+                    .or(qUser.fullName.containsIgnoreCase(keyword))
+                    .or(qUser.email.containsIgnoreCase(keyword))
+                    .or(qUser.phone.containsIgnoreCase(keyword)));
+        }
+
+        return userRepository.findAll(builder, pageable)
                 .map(this::mapToResponse);
     }
 
@@ -234,7 +256,10 @@ public class UserServiceImpl implements UserService {
 
         user = userRepository.save(user);
 
-        return mapToResponse(user);
+        UserResponse response = mapToResponse(user);
+        realTimeUpdateService.broadcastUserUpdate(response);
+        realTimeUpdateService.sendProfileUpdateToUser(user.getUsername(), response);
+        return response;
     }
 
     @Override
@@ -251,5 +276,31 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
+    }
+
+    @Override
+    public UserResponse lockUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+        user.setActive(false);
+        user = userRepository.save(user);
+        
+        UserResponse response = mapToResponse(user);
+        realTimeUpdateService.broadcastUserUpdate(response);
+        realTimeUpdateService.sendProfileUpdateToUser(user.getUsername(), response);
+        return response;
+    }
+
+    @Override
+    public UserResponse unlockUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+        user.setActive(true);
+        user = userRepository.save(user);
+        
+        UserResponse response = mapToResponse(user);
+        realTimeUpdateService.broadcastUserUpdate(response);
+        realTimeUpdateService.sendProfileUpdateToUser(user.getUsername(), response);
+        return response;
     }
 }

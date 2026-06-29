@@ -1,5 +1,8 @@
 package com.phong.taskmanagement.service.impl;
 
+import com.querydsl.core.BooleanBuilder;
+import com.phong.taskmanagement.entity.QTask;
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -26,6 +29,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.phong.taskmanagement.service.ActivityLogService;
 import com.phong.taskmanagement.service.EmailService;
 import com.phong.taskmanagement.service.NotificationService;
+import com.phong.taskmanagement.service.RealTimeUpdateService;
 import com.phong.taskmanagement.service.TaskService;
 
 import lombok.RequiredArgsConstructor;
@@ -43,6 +47,7 @@ public class TaskServiceImpl implements TaskService {
     private final ActivityLogRepository activityLogRepository;
     private final ActivityLogService activityLogService;
     private final NotificationService notificationService;
+    private final RealTimeUpdateService realTimeUpdateService;
     private final EmailService emailService;
 
     private TaskResponse mapToResponse(Task task) {
@@ -111,13 +116,18 @@ public class TaskServiceImpl implements TaskService {
                 assignee.getId(),
                 "New Task Assigned",
                 "You have been assigned task: " + savedTask.getTitle(),
-                "TASK_ASSIGN"
+                "TASK_ASSIGN",
+                savedTask.getId()
         );
 
         // Send task assignment email
         emailService.sendTaskAssignedEmail(savedTask);
 
-        return mapToResponse(savedTask);
+        TaskResponse response = mapToResponse(savedTask);
+        realTimeUpdateService.broadcastTaskUpdate(response);
+        realTimeUpdateService.broadcastDashboardUpdate("TASK_CREATED");
+        
+        return response;
     }
 
     @Override
@@ -161,6 +171,8 @@ public class TaskServiceImpl implements TaskService {
 
         activityLogRepository.deleteByTaskId(id);
         taskRepository.delete(task);
+        realTimeUpdateService.broadcastTaskUpdate("DELETED_" + id);
+        realTimeUpdateService.broadcastDashboardUpdate("TASK_DELETED");
     }
 
     @Override
@@ -216,7 +228,8 @@ public class TaskServiceImpl implements TaskService {
                     assignee.getId(),
                     "Task Assigned",
                     "You have been assigned task: " + savedTask.getTitle(),
-                    "TASK_ASSIGN"
+                    "TASK_ASSIGN",
+                    savedTask.getId()
             );
             
             // Send task assignment email for the new assignee
@@ -231,12 +244,16 @@ public class TaskServiceImpl implements TaskService {
                         notifyUserId,
                         "Task Status Updated",
                         "Status for task '" + savedTask.getTitle() + "' changed to " + savedTask.getStatus(),
-                        "TASK_STATUS"
+                        "TASK_STATUS",
+                        savedTask.getId()
                 );
             }
         }
 
-        return mapToResponse(savedTask);
+        TaskResponse response = mapToResponse(savedTask);
+        realTimeUpdateService.broadcastTaskUpdate(response);
+        realTimeUpdateService.broadcastDashboardUpdate("TASK_UPDATED");
+        return response;
     }
 
     @Override
@@ -276,14 +293,16 @@ public class TaskServiceImpl implements TaskService {
                             notifyUserId,
                             "Task Completed",
                             "Task '" + savedTask.getTitle() + "' has been successfully completed.",
-                            "TASK_COMPLETED"
+                            "TASK_COMPLETED",
+                            savedTask.getId()
                     );
                 } else {
                     notificationService.createNotification(
                             notifyUserId,
                             "Task Status Updated",
                             "Status for task '" + savedTask.getTitle() + "' changed to " + newStatus,
-                            "TASK_STATUS"
+                            "TASK_STATUS",
+                            savedTask.getId()
                     );
                 }
             }
@@ -294,7 +313,10 @@ public class TaskServiceImpl implements TaskService {
             }
         }
 
-        return mapToResponse(savedTask);
+        TaskResponse response = mapToResponse(savedTask);
+        realTimeUpdateService.broadcastTaskUpdate(response);
+        realTimeUpdateService.broadcastDashboardUpdate("TASK_STATUS_UPDATED");
+        return response;
     }
 
     @Override
@@ -307,11 +329,15 @@ public class TaskServiceImpl implements TaskService {
         Pageable pageable
                 = PageRequest.of(page, size, org.springframework.data.domain.Sort.by("id").descending());
 
-        return taskRepository
-                .findByTitleContainingIgnoreCase(
-                        keyword,
-                        pageable
-                )
+        QTask qTask = QTask.task;
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            builder.and(qTask.title.containsIgnoreCase(keyword)
+                    .or(qTask.description.containsIgnoreCase(keyword)));
+        }
+
+        return taskRepository.findAll(builder, pageable)
                 .map(this::mapToResponse);
     }
 

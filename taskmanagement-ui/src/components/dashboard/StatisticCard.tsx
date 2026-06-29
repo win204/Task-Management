@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 interface StatisticCardProps {
   title: string;
@@ -6,6 +7,7 @@ interface StatisticCardProps {
   icon: ReactNode;
   gradient?: string;
   isLoading?: boolean;
+  to?: string;
 }
 
 export function StatisticCard({
@@ -14,9 +16,11 @@ export function StatisticCard({
   icon,
   gradient = 'from-primary-500 to-primary-700',
   isLoading = false,
+  to,
 }: StatisticCardProps) {
-  return (
-    <div className="group relative overflow-hidden rounded-2xl bg-white dark:bg-surface-800/50 border border-surface-200 dark:border-surface-700/50 shadow-sm hover:shadow-lg dark:hover:shadow-2xl transition-all duration-300 hover:-translate-y-0.5">
+  
+  const content = (
+    <div className={`group relative overflow-hidden rounded-2xl bg-white dark:bg-surface-800/50 border border-surface-200 dark:border-surface-700/50 shadow-sm hover:shadow-lg dark:hover:shadow-2xl transition-all duration-300 hover:-translate-y-0.5 ${to ? 'cursor-pointer' : ''}`}>
       {/* Gradient accent strip */}
       <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${gradient}`} />
 
@@ -43,4 +47,10 @@ export function StatisticCard({
       </div>
     </div>
   );
+
+  if (to) {
+    return <Link to={to} className="block">{content}</Link>;
+  }
+
+  return content;
 }

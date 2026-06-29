@@ -9,10 +9,10 @@ export interface Project {
 }
 
 export interface ProjectSearchParams {
-  page?: number;
-  size?: number;
   keyword?: string;
   status?: string;
+  page?: number;
+  size?: number;
 }
 
 export interface CreateProjectPayload {

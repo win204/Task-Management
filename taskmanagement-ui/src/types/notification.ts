@@ -4,5 +4,6 @@ export interface Notification {
   message: string;
   type: string;
   isRead: boolean;
+  relatedEntityId?: number;
   createdAt: string;
 }

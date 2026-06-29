@@ -108,6 +108,72 @@ public class ExportController {
         );
     }
 
+    @Operation(
+            summary = "Export activity logs to Excel",
+            description = "Export all activity logs to activity_logs.xlsx"
+    )
+    @GetMapping("/activity-logs/excel")
+    public ResponseEntity<byte[]> exportActivityLogsToExcel(
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String username,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String module,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String action,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String result,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String ipAddress,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String startDate,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String endDate) {
+
+        return buildExcelResponse(
+                exportService.exportActivityLogsToExcel(username, module, action, result, ipAddress, startDate, endDate),
+                "activity_logs.xlsx"
+        );
+    }
+
+    @Operation(
+            summary = "Export activity logs to PDF",
+            description = "Export all activity logs to activity_logs.pdf"
+    )
+    @GetMapping("/activity-logs/pdf")
+    public ResponseEntity<byte[]> exportActivityLogsToPdf(
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String username,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String module,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String action,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String result,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String ipAddress,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String startDate,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String endDate) {
+
+        return buildPdfResponse(
+                exportPdfService.exportActivityLogsToPdf(username, module, action, result, ipAddress, startDate, endDate),
+                "activity_logs.pdf"
+        );
+    }
+
+    @Operation(
+            summary = "Export dashboard to Excel",
+            description = "Export dashboard statistics to dashboard.xlsx"
+    )
+    @GetMapping("/dashboard/excel")
+    public ResponseEntity<byte[]> exportDashboardToExcel() {
+
+        return buildExcelResponse(
+                exportService.exportDashboardToExcel(),
+                "dashboard.xlsx"
+        );
+    }
+
+    @Operation(
+            summary = "Export dashboard to PDF",
+            description = "Export dashboard statistics to dashboard.pdf"
+    )
+    @GetMapping("/dashboard/pdf")
+    public ResponseEntity<byte[]> exportDashboardToPdf() {
+
+        return buildPdfResponse(
+                exportPdfService.exportDashboardToPdf(),
+                "dashboard.pdf"
+        );
+    }
+
     private ResponseEntity<byte[]> buildExcelResponse(
             byte[] content,
             String fileName) {

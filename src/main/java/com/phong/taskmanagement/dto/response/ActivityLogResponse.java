@@ -21,5 +21,13 @@ public class ActivityLogResponse {
 
     private String taskTitle;
 
+    private String module;
+
+    private Long entityId;
+
+    private String ipAddress;
+
+    private String result;
+
     private LocalDateTime createdAt;
 }

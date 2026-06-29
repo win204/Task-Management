@@ -13,6 +13,26 @@ public interface ActivityLogService {
 
     List<ActivityLogResponse> getAllLogs();
 
+    org.springframework.data.domain.Page<ActivityLogResponse> searchLogs(
+            String username,
+            String module,
+            String action,
+            String result,
+            String ipAddress,
+            String startDate,
+            String endDate,
+            org.springframework.data.domain.Pageable pageable
+    );
+
+    ActivityLogResponse log(
+            Long userId,
+            Long entityId,
+            String module,
+            String action,
+            String description
+    );
+
+    // Keep backwards compatible version for existing code
     ActivityLogResponse log(
             Long userId,
             Long taskId,

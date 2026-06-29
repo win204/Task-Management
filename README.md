@@ -1,3 +1,20 @@
+# Task Management Application
+
+A full-stack collaborative Task Management application built with Spring Boot 3 and React 19.
+
+## Architecture & Tech Stack
+- **Backend:** Java 21, Spring Boot 3, Spring Security (JWT), Spring Data JPA, QueryDSL, Spring HATEOAS, Bucket4j
+- **Frontend:** React 19, Vite, Tailwind CSS, Axios, Recharts
+- **Database:** Microsoft SQL Server, Liquibase
+- **Infrastructure:** Docker Compose, Kubernetes
+
+## Key Features
+- **RBAC:** Admin, Manager, Employee roles.
+- **Projects & Tasks:** Full CRUD with QueryDSL-powered search and pagination.
+- **Real-time Notifications:** WebSockets with STOMP and Spring messaging.
+- **Exports:** PDF and Excel exports for Tasks, Projects, Users, and Activity Logs.
+- **Security:** Rate limiting with Bucket4j, customized Security Headers (CSP, XSS, HSTS), and proper CORS handling.
+
 ## Quick Start
 
 ### 1. Deploy All Services (DB + Backend + Frontend)

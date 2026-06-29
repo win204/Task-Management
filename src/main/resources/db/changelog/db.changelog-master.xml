@@ -20,5 +20,13 @@
     <include file="db/changelog/013-create-notifications.xml"/>
     <include file="db/changelog/014-seed-data.xml"/>
     <include file="db/changelog/015-add-unique-constraints.xml"/>
+    <include file="db/changelog/016-fix-seed-data.xml"/>
+    <include file="db/changelog/017-add-notification-type.xml"/>
+    <include file="db/changelog/018-add-project-members.xml"/>
+    <include file="db/changelog/019-add-task-comments.xml"/>
+    <include file="db/changelog/020-add-missing-columns.xml"/>
+    <include file="db/changelog/021-upgrade-activity-logs.xml"/>
+    <include file="db/changelog/022-normalize-activity-logs.xml"/>
+    <include file="db/changelog/changes/023-system-config.xml"/>
 
 </databaseChangeLog>

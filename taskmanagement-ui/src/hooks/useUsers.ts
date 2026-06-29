@@ -138,3 +138,35 @@ export const useDeleteUserMutation = () => {
     },
   });
 };
+
+export const useLockUserMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (userId: number) => UserService.lockUser(userId),
+    onSuccess: () => {
+      toast.success('User locked successfully');
+      queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.all });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Failed to lock user';
+      toast.error(message);
+    }
+  });
+};
+
+export const useUnlockUserMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (userId: number) => UserService.unlockUser(userId),
+    onSuccess: () => {
+      toast.success('User unlocked successfully');
+      queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.all });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Failed to unlock user';
+      toast.error(message);
+    }
+  });
+};

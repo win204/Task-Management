@@ -7,4 +7,16 @@ public interface ExportPdfService {
     byte[] exportTasksToPdf();
 
     byte[] exportProjectsToPdf();
+
+    byte[] exportActivityLogsToPdf(
+            String username,
+            String module,
+            String action,
+            String result,
+            String ipAddress,
+            String startDate,
+            String endDate
+    );
+
+    byte[] exportDashboardToPdf();
 }

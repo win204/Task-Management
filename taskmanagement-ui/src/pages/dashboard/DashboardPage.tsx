@@ -52,6 +52,7 @@ export default function DashboardPage() {
           icon={<Users className="w-5 h-5" />}
           gradient="from-blue-500 to-blue-700"
           isLoading={isLoading}
+          to="/dashboard/users"
         />
 
         <StatisticCard
@@ -60,6 +61,7 @@ export default function DashboardPage() {
           icon={<FolderKanban className="w-5 h-5" />}
           gradient="from-indigo-500 to-indigo-700"
           isLoading={isLoading}
+          to="/dashboard/projects"
         />
 
         <StatisticCard
@@ -68,6 +70,7 @@ export default function DashboardPage() {
           icon={<ListTodo className="w-5 h-5" />}
           gradient="from-violet-500 to-violet-700"
           isLoading={isLoading}
+          to="/dashboard/tasks"
         />
 
         <StatisticCard
@@ -76,6 +79,7 @@ export default function DashboardPage() {
           icon={<CheckCircle2 className="w-5 h-5" />}
           gradient="from-emerald-500 to-emerald-700"
           isLoading={isLoading}
+          to="/dashboard/tasks"
         />
 
         <StatisticCard
@@ -84,6 +88,7 @@ export default function DashboardPage() {
           icon={<Clock className="w-5 h-5" />}
           gradient="from-amber-500 to-amber-700"
           isLoading={isLoading}
+          to="/dashboard/tasks"
         />
 
         <StatisticCard
@@ -92,6 +97,7 @@ export default function DashboardPage() {
           icon={<CircleDashed className="w-5 h-5" />}
           gradient="from-surface-500 to-surface-700"
           isLoading={isLoading}
+          to="/dashboard/tasks"
         />
       </div>
 

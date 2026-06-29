@@ -24,8 +24,8 @@ export default function ProjectsPage() {
 
   const { data, isLoading, error } = useProjectsQuery(searchParams);
 
-  const handleSearch = useCallback((keyword: string) => {
-    setSearchParams(prev => ({ ...prev, keyword, page: 0 }));
+  const handleSearch = useCallback((keyword: string, status: string) => {
+    setSearchParams(prev => ({ ...prev, keyword, status: status || undefined, page: 0 }));
   }, []);
 
   const handlePageChange = (page: number) => {

@@ -16,6 +16,9 @@ export interface TaskSearchParams {
   keyword?: string;
   status?: string;
   priority?: string;
+  assigneeId?: number;
+  projectId?: number;
+  dueDate?: string;
 }
 
 export interface CreateTaskPayload {

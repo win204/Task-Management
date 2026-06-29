@@ -2,6 +2,9 @@ import { X, Calendar, User, Briefcase, FileText } from 'lucide-react';
 import type { Task } from '../../types/task';
 import { TaskStatusBadge } from './TaskStatusBadge';
 import { TaskPriorityBadge } from './TaskPriorityBadge';
+import { TaskCommentsList } from './TaskCommentsList';
+import { TaskAttachmentsList } from './TaskAttachmentsList';
+import { useAuthStore } from '../../store/authStore';
 
 interface TaskDetailModalProps {
   isOpen: boolean;
@@ -10,12 +13,13 @@ interface TaskDetailModalProps {
 }
 
 export const TaskDetailModal = ({ isOpen, onClose, task }: TaskDetailModalProps) => {
+  const { user } = useAuthStore();
   if (!isOpen || !task) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50 flex-shrink-0">
           <div className="flex gap-3 items-center">
             <TaskPriorityBadge priority={task.priority} />
             <h2 className="text-lg font-semibold text-slate-800">Task Details</h2>
@@ -25,7 +29,7 @@ export const TaskDetailModal = ({ isOpen, onClose, task }: TaskDetailModalProps)
           </button>
         </div>
 
-        <div className="p-6">
+        <div className="p-6 overflow-y-auto flex-1">
           <div className="flex justify-between items-start mb-6 gap-4">
             <h3 className="text-2xl font-bold text-slate-900 leading-tight">{task.title}</h3>
             <div className="flex-shrink-0 mt-1">
@@ -80,10 +84,12 @@ export const TaskDetailModal = ({ isOpen, onClose, task }: TaskDetailModalProps)
               </div>
             </div>
             
+            <TaskAttachmentsList taskId={task.id} />
+            <TaskCommentsList taskId={task.id} currentUsername={user?.username || ''} />
           </div>
         </div>
 
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+        <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end flex-shrink-0">
           <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
             Close Panel
           </button>

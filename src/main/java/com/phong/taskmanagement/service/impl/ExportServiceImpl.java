@@ -3,10 +3,15 @@ package com.phong.taskmanagement.service.impl;
 import com.phong.taskmanagement.entity.Project;
 import com.phong.taskmanagement.entity.Task;
 import com.phong.taskmanagement.entity.User;
+import com.phong.taskmanagement.entity.ActivityLog;
 import com.phong.taskmanagement.repository.ProjectRepository;
 import com.phong.taskmanagement.repository.TaskRepository;
 import com.phong.taskmanagement.repository.UserRepository;
+import com.phong.taskmanagement.repository.ActivityLogRepository;
+import com.phong.taskmanagement.service.ActivityLogService;
 import com.phong.taskmanagement.service.ExportService;
+import com.phong.taskmanagement.service.DashboardService;
+import com.phong.taskmanagement.dto.response.DashboardResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -57,9 +62,21 @@ public class ExportServiceImpl implements ExportService {
             "End Date"
     };
 
+    private static final String[] ACTIVITY_LOG_HEADERS = {
+            "Id",
+            "Time",
+            "Username",
+            "Module",
+            "Action",
+            "Description"
+    };
+
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
+    private final ActivityLogRepository activityLogRepository;
+    private final ActivityLogService activityLogService;
+    private final DashboardService dashboardService;
 
     @Override
     @Transactional(readOnly = true)
@@ -180,6 +197,101 @@ public class ExportServiceImpl implements ExportService {
                     "Could not export projects to Excel",
                     ex
             );
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public byte[] exportActivityLogsToExcel(
+            String username,
+            String module,
+            String action,
+            String result,
+            String ipAddress,
+            String startDate,
+            String endDate) {
+
+        List<com.phong.taskmanagement.dto.response.ActivityLogResponse> logs = activityLogService.searchLogs(
+                username, module, action, result, ipAddress, startDate, endDate, org.springframework.data.domain.Pageable.unpaged()
+        ).getContent();
+
+        try (Workbook workbook = new XSSFWorkbook()) {
+
+            Sheet sheet = workbook.createSheet("Activity Logs");
+            CellStyle headerStyle = createHeaderStyle(workbook);
+
+            createHeader(sheet, ACTIVITY_LOG_HEADERS, headerStyle);
+
+            int rowIndex = 1;
+            for (com.phong.taskmanagement.dto.response.ActivityLogResponse log : logs) {
+                Row row = sheet.createRow(rowIndex++);
+
+                writeCell(row, 0, log.getId());
+                writeCell(row, 1, log.getCreatedAt());
+                writeCell(row, 2, log.getUsername() != null ? log.getUsername() : "system");
+                writeCell(row, 3, log.getModule());
+                writeCell(row, 4, log.getAction());
+                writeCell(row, 5, log.getDescription());
+            }
+
+            autoSizeColumns(sheet, ACTIVITY_LOG_HEADERS.length);
+            return writeWorkbook(workbook);
+        } catch (IOException ex) {
+            throw new IllegalStateException(
+                    "Could not export activity logs to Excel",
+                    ex
+            );
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public byte[] exportDashboardToExcel() {
+        DashboardResponse stats = dashboardService.getDashboardStatistics();
+
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Dashboard Statistics");
+            CellStyle headerStyle = createHeaderStyle(workbook);
+
+            Row headerRow = sheet.createRow(0);
+            Cell cell0 = headerRow.createCell(0);
+            cell0.setCellValue("Metric");
+            cell0.setCellStyle(headerStyle);
+
+            Cell cell1 = headerRow.createCell(1);
+            cell1.setCellValue("Value");
+            cell1.setCellStyle(headerStyle);
+
+            int rowIndex = 1;
+
+            Row r1 = sheet.createRow(rowIndex++);
+            writeCell(r1, 0, "Total Users");
+            writeCell(r1, 1, stats.getTotalUsers());
+
+            Row r2 = sheet.createRow(rowIndex++);
+            writeCell(r2, 0, "Total Projects");
+            writeCell(r2, 1, stats.getTotalProjects());
+
+            Row r3 = sheet.createRow(rowIndex++);
+            writeCell(r3, 0, "Total Tasks");
+            writeCell(r3, 1, stats.getTotalTasks());
+
+            Row r4 = sheet.createRow(rowIndex++);
+            writeCell(r4, 0, "Completed Tasks");
+            writeCell(r4, 1, stats.getCompletedTasks());
+
+            Row r5 = sheet.createRow(rowIndex++);
+            writeCell(r5, 0, "Todo Tasks");
+            writeCell(r5, 1, stats.getTodoTasks());
+
+            Row r6 = sheet.createRow(rowIndex++);
+            writeCell(r6, 0, "In Progress Tasks");
+            writeCell(r6, 1, stats.getInProgressTasks());
+
+            autoSizeColumns(sheet, 2);
+            return writeWorkbook(workbook);
+        } catch (IOException ex) {
+            throw new IllegalStateException("Could not export dashboard to Excel", ex);
         }
     }
 

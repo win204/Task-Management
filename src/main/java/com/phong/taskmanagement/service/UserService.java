@@ -39,4 +39,8 @@ public interface UserService {
             Long id,
             ChangePasswordRequest request
     );
+
+    UserResponse lockUser(Long id);
+
+    UserResponse unlockUser(Long id);
 }

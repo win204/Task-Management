@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class UserController {
             CreateUserRequest request) {
 
         UserResponse response = userService.createUser(request);
+        response.add(linkTo(methodOn(UserController.class).getUserById(response.getId())).withSelfRel());
         return ApiResponse.success(response, "User created successfully");
     }
 
@@ -56,6 +58,7 @@ public class UserController {
                 userId,
                 roleId
         );
+        response.add(linkTo(methodOn(UserController.class).getUserById(userId)).withSelfRel());
         return ApiResponse.success(response, "Role assigned successfully");
     }
 
@@ -72,6 +75,7 @@ public class UserController {
                 userId,
                 positionId
         );
+        response.add(linkTo(methodOn(UserController.class).getUserById(userId)).withSelfRel());
         return ApiResponse.success(response, "Position assigned successfully");
     }
 
@@ -85,6 +89,7 @@ public class UserController {
             @RequestParam(defaultValue = "10") int size) {
 
         Page<UserResponse> response = userService.getUsersPaged(page, size);
+        response.forEach(user -> user.add(linkTo(methodOn(UserController.class).getUserById(user.getId())).withSelfRel()));
         return ApiResponse.success(response, "Users retrieved successfully");
     }
 
@@ -103,6 +108,7 @@ public class UserController {
                 page,
                 size
         );
+        response.forEach(user -> user.add(linkTo(methodOn(UserController.class).getUserById(user.getId())).withSelfRel()));
         return ApiResponse.success(response, "Users searched successfully");
     }
 
@@ -115,6 +121,8 @@ public class UserController {
             @PathVariable Long id) {
 
         UserResponse response = userService.getUserById(id);
+        response.add(linkTo(methodOn(UserController.class).getUserById(id)).withSelfRel());
+        response.add(linkTo(methodOn(UserController.class).getAllUsers(0, 10)).withRel("users"));
         return ApiResponse.success(response, "User retrieved successfully");
     }
 
@@ -133,6 +141,7 @@ public class UserController {
                 id,
                 request
         );
+        response.add(linkTo(methodOn(UserController.class).getUserById(id)).withSelfRel());
         return ApiResponse.success(response, "User updated successfully");
     }
 
@@ -161,5 +170,31 @@ public class UserController {
 
         userService.deleteUser(id);
         return ApiResponse.success(null, "User deleted successfully");
+    }
+
+    @Operation(
+            summary = "Lock user",
+            description = "Lock a user account"
+    )
+    @PutMapping("/{id}/lock")
+    public ApiResponse<UserResponse> lockUser(
+            @PathVariable Long id) {
+
+        UserResponse response = userService.lockUser(id);
+        response.add(linkTo(methodOn(UserController.class).getUserById(id)).withSelfRel());
+        return ApiResponse.success(response, "User locked successfully");
+    }
+
+    @Operation(
+            summary = "Unlock user",
+            description = "Unlock a user account"
+    )
+    @PutMapping("/{id}/unlock")
+    public ApiResponse<UserResponse> unlockUser(
+            @PathVariable Long id) {
+
+        UserResponse response = userService.unlockUser(id);
+        response.add(linkTo(methodOn(UserController.class).getUserById(id)).withSelfRel());
+        return ApiResponse.success(response, "User unlocked successfully");
     }
 }

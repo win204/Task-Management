@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from '../components/layout/Sidebar';
 import { Topbar } from '../components/layout/Topbar';
 import { GlobalSearchModal } from '../components/layout/GlobalSearchModal';
+import { useRealTimeSync } from '../hooks/useRealTimeSync';
 
 /**
  * Main application shell for authenticated users.
@@ -10,6 +11,7 @@ import { GlobalSearchModal } from '../components/layout/GlobalSearchModal';
  * and an Outlet for nested route pages.
  */
 export default function DashboardLayout() {
+  useRealTimeSync();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);

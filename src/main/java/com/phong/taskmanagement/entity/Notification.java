@@ -28,6 +28,9 @@ public class Notification {
     @Builder.Default
     private Boolean isRead = false;
 
+    @Column(name = "related_entity_id")
+    private Long relatedEntityId;
+
     private LocalDateTime createdAt;
 
     @ManyToOne

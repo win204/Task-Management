@@ -1,6 +1,7 @@
 package com.phong.taskmanagement.dto.response;
 
 import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDate;
 
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaskResponse {
+public class TaskResponse extends RepresentationModel<TaskResponse> {
 
     private Long id;
 

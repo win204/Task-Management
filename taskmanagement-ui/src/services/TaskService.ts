@@ -14,18 +14,26 @@ export const TaskService = {
    * Fetch a paginated list of tasks (native pagination)
    */
   async getTasks(params: TaskSearchParams): Promise<PageResponse<Task>> {
-    const { keyword, status, priority, ...pageParams } = params;
+    const { keyword, status, priority, assigneeId, projectId, dueDate, ...pageParams } = params;
     
-    // If we have a keyword, we route to the search endpoint
-    if (keyword) {
-      const response = await apiClient.get<ApiResponse<PageResponse<Task>>>(
-        API_ENDPOINTS.TASKS_SEARCH,
-        { params: { keyword, ...pageParams } }
+    // If any advanced parameter is present, we route to the advanced-search endpoint
+    if (keyword || status || priority || assigneeId || projectId || dueDate) {
+      const response = await apiClient.post<ApiResponse<PageResponse<Task>>>(
+        API_ENDPOINTS.TASKS_ADVANCED_SEARCH,
+        {
+          title: keyword || undefined,
+          status: status || undefined,
+          priority: priority || undefined,
+          assigneeId: assigneeId || undefined,
+          projectId: projectId || undefined,
+          dueDate: dueDate || undefined
+        },
+        { params: pageParams }
       );
       return response.data.data;
     }
     
-    // Native paging endpoint (no keyword)
+    // Native paging endpoint (no filters)
     const response = await apiClient.get<ApiResponse<PageResponse<Task>>>(
       API_ENDPOINTS.TASKS_PAGING,
       { params: pageParams }

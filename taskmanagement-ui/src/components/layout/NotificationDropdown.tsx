@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { Bell, Check, Info, AlertTriangle, Loader2 } from 'lucide-react';
 import { useUnreadNotifications, useMarkNotificationRead } from '../../hooks/useNotifications';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNowVN } from '../../utils/dateUtils';
+
+import { Link, useNavigate } from 'react-router-dom';
+import type { Notification } from '../../types/notification';
 
 export const NotificationDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,6 +12,7 @@ export const NotificationDropdown = () => {
   
   const { data: notifications = [], isLoading } = useUnreadNotifications();
   const { mutate: markAsRead, isPending: isMarking } = useMarkNotificationRead();
+  const navigate = useNavigate();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -36,6 +40,19 @@ export const NotificationDropdown = () => {
     markAsRead(id);
   };
 
+  const handleNotificationClick = (notif: Notification) => {
+    markAsRead(notif.id);
+    setIsOpen(false);
+    
+    if (notif.relatedEntityId) {
+      if (notif.type.startsWith('TASK_')) {
+        navigate(`/dashboard/tasks/${notif.relatedEntityId}`);
+      } else if (notif.type.startsWith('PROJECT_')) {
+        navigate(`/dashboard/projects/${notif.relatedEntityId}`);
+      }
+    }
+  };
+
   return (
     <div className="relative" ref={dropdownRef}>
       <button
@@ -45,7 +62,9 @@ export const NotificationDropdown = () => {
       >
         <Bell className="w-5 h-5" />
         {notifications.length > 0 && (
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-surface-900" />
+          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white dark:ring-surface-900">
+            {notifications.length > 99 ? '99+' : notifications.length}
+          </span>
         )}
       </button>
 
@@ -78,7 +97,11 @@ export const NotificationDropdown = () => {
             ) : (
               <div className="divide-y divide-surface-100 dark:divide-surface-700/50">
                 {notifications.map((notif) => (
-                  <div key={notif.id} className="p-4 hover:bg-surface-50 dark:hover:bg-surface-700/30 transition-colors flex gap-3 group relative">
+                  <div 
+                    key={notif.id} 
+                    onClick={() => handleNotificationClick(notif)}
+                    className="p-4 hover:bg-surface-50 dark:hover:bg-surface-700/30 transition-colors flex gap-3 group relative cursor-pointer"
+                  >
                     <div className="flex-shrink-0 mt-0.5">
                       {getIconForType(notif.type)}
                     </div>
@@ -90,11 +113,14 @@ export const NotificationDropdown = () => {
                         {notif.message}
                       </p>
                       <p className="text-xs text-surface-400 dark:text-surface-500 mt-1.5">
-                        {notif.createdAt ? formatDistanceToNow(new Date(notif.createdAt), { addSuffix: true }) : 'Just now'}
+                        {notif.createdAt ? formatDistanceToNowVN(notif.createdAt) : 'Just now'}
                       </p>
                     </div>
                     <button
-                      onClick={() => handleMarkAsRead(notif.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleMarkAsRead(notif.id);
+                      }}
                       disabled={isMarking}
                       className="absolute right-4 top-4 p-1.5 text-surface-300 hover:text-primary-600 dark:text-surface-500 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 rounded-lg opacity-0 group-hover:opacity-100 transition-all focus:opacity-100"
                       title="Mark as read"
@@ -108,9 +134,13 @@ export const NotificationDropdown = () => {
           </div>
           
           <div className="p-2 border-t border-surface-100 dark:border-surface-700 bg-surface-50/50 dark:bg-surface-800/50">
-            <button className="w-full py-2 text-xs font-medium text-surface-500 hover:text-surface-800 dark:text-surface-400 dark:hover:text-surface-200 transition-colors">
+            <Link 
+              to="/dashboard/notifications" 
+              onClick={() => setIsOpen(false)}
+              className="block w-full text-center py-2 text-xs font-medium text-surface-500 hover:text-surface-800 dark:text-surface-400 dark:hover:text-surface-200 transition-colors"
+            >
               View all history
-            </button>
+            </Link>
           </div>
         </div>
       )}

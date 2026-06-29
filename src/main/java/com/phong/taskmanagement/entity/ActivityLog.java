@@ -24,6 +24,18 @@ public class ActivityLog {
     @Column(columnDefinition = "NVARCHAR(MAX)")
     private String description;
 
+    @Column(length = 50)
+    private String module;
+
+    @Column(name = "entity_id")
+    private Long entityId;
+
+    @Column(name = "ip_address", length = 45)
+    private String ipAddress;
+
+    @Column(length = 20)
+    private String result;
+
     private LocalDateTime createdAt;
 
     @ManyToOne

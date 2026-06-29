@@ -1,5 +1,8 @@
 package com.phong.taskmanagement.service.impl;
 
+import com.querydsl.core.BooleanBuilder;
+import com.phong.taskmanagement.entity.QProject;
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -16,6 +19,8 @@ import com.phong.taskmanagement.repository.TaskRepository;
 import com.phong.taskmanagement.repository.ActivityLogRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import com.phong.taskmanagement.service.ProjectService;
+import com.phong.taskmanagement.service.NotificationService;
+import com.phong.taskmanagement.service.RealTimeUpdateService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +35,8 @@ public class ProjectServiceImpl
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
     private final ActivityLogRepository activityLogRepository;
+    private final NotificationService notificationService;
+    private final RealTimeUpdateService realTimeUpdateService;
 
     private ProjectResponse mapToResponse(
             Project project) {
@@ -58,9 +65,12 @@ public class ProjectServiceImpl
                 .status(request.getStatus())
                 .build();
 
-        return mapToResponse(
+        ProjectResponse response = mapToResponse(
                 projectRepository.save(project)
         );
+        realTimeUpdateService.broadcastProjectUpdate(response);
+        realTimeUpdateService.broadcastDashboardUpdate("PROJECT_CREATED");
+        return response;
     }
 
     @Override
@@ -101,6 +111,8 @@ public class ProjectServiceImpl
         activityLogRepository.deleteByTaskProjectId(id);
         taskRepository.deleteByProjectId(id);
         projectRepository.deleteById(id);
+        realTimeUpdateService.broadcastProjectUpdate("DELETED_" + id);
+        realTimeUpdateService.broadcastDashboardUpdate("PROJECT_DELETED");
     }
 
     @Override
@@ -139,26 +151,52 @@ public class ProjectServiceImpl
                 request.getStatus()
         );
 
-        return mapToResponse(
-                projectRepository.save(project)
-        );
+        Project savedProject = projectRepository.save(project);
+
+        // Notify task assignees about the project update
+        savedProject.getTasks().stream()
+                .filter(t -> t.getAssignee() != null)
+                .map(t -> t.getAssignee().getId())
+                .distinct()
+                .forEach(userId -> {
+                        notificationService.createNotification(
+                                userId,
+                                "Project Updated",
+                                "The project '" + savedProject.getProjectName() + "' has been updated.",
+                                "PROJECT_UPDATED",
+                                savedProject.getId()
+                        );
+                });
+
+        ProjectResponse response = mapToResponse(savedProject);
+        realTimeUpdateService.broadcastProjectUpdate(response);
+        realTimeUpdateService.broadcastDashboardUpdate("PROJECT_UPDATED");
+        return response;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<ProjectResponse> searchProjects(
             String keyword,
+            String status,
             int page,
             int size) {
 
-        Pageable pageable =
-                PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size);
+        QProject qProject = QProject.project;
+        BooleanBuilder builder = new BooleanBuilder();
 
-        return projectRepository
-                .findByProjectNameContainingIgnoreCase(
-                        keyword,
-                        pageable
-                )
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            builder.and(qProject.projectName.containsIgnoreCase(keyword)
+                    .or(qProject.projectCode.containsIgnoreCase(keyword))
+                    .or(qProject.description.containsIgnoreCase(keyword)));
+        }
+
+        if (status != null && !status.trim().isEmpty()) {
+            builder.and(qProject.status.eq(status));
+        }
+
+        return projectRepository.findAll(builder, pageable)
                 .map(this::mapToResponse);
     }
 

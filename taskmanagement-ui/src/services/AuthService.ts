@@ -68,14 +68,11 @@ export const AuthService = {
   },
 
   /**
-   * Search users by keyword (e.g. username) to fetch profile details before we have the ID.
+   * Fetch current authenticated user's profile
    */
-  async searchUsers(keyword: string): Promise<ApiResponse<{ content: User[] }>> {
-    const response = await apiClient.get<ApiResponse<{ content: User[] }>>(
-      '/api/users/search',
-      {
-        params: { keyword, page: 0, size: 1 },
-      }
+  async getUserMe(): Promise<ApiResponse<User>> {
+    const response = await apiClient.get<ApiResponse<User>>(
+      API_ENDPOINTS.USER_ME
     );
     return response.data;
   },
