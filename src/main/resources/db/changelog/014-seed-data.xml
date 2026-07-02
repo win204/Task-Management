@@ -13,7 +13,7 @@
         <insert tableName="users">
             <column name="username" value="admin"/>
             <column name="email" value="admin@taskmanagement.com"/>
-            <column name="password" value="$2a$10$rtz5qG8MfisCdzLIMLRe9eVCuy/.gIbM5nfzSWt2cqZ3smQ1mngzy"/>
+            <column name="password" value="$2a$10$02bc5xeMbPvD/7EXutfIBepkcNgARt1YI7gnC6QmpAM5i3QO/mSlC"/>
             <column name="full_name" value="System Administrator"/>
             <column name="active" valueBoolean="true"/>
             <column name="status" valueBoolean="true"/>
