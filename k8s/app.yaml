@@ -37,7 +37,7 @@ spec:
               /opt/mssql-tools18/bin/sqlcmd -C -S sql-server -U sa -P "$SA_PASSWORD" -Q "IF NOT EXISTS(SELECT * FROM sys.databases WHERE name='task_management') CREATE DATABASE task_management;"
       containers:
         - name: taskapp
-          image: taskmanagement:v4
+          image: taskmanagement:v10
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

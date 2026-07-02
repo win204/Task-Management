@@ -11,7 +11,8 @@ public interface AttachmentService {
 
     AttachmentResponse uploadFile(
             MultipartFile file,
-            Long taskId
+            Long taskId,
+            String username
     );
 
     Resource downloadFile(Long id);

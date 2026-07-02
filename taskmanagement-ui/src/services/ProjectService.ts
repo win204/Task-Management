@@ -16,16 +16,16 @@ export const ProjectService = {
   async getProjects(params: ProjectSearchParams): Promise<PageResponse<Project>> {
     const { keyword, status, ...pageParams } = params;
     
-    // If we have a keyword, we route to the search endpoint
-    if (keyword) {
+    // If we have a keyword or status, we route to the search endpoint
+    if (keyword || status) {
       const response = await apiClient.get<ApiResponse<PageResponse<Project>>>(
         API_ENDPOINTS.PROJECTS_SEARCH,
-        { params: { keyword, ...pageParams } }
+        { params: { keyword, status, ...pageParams } }
       );
       return response.data.data;
     }
     
-    // Native paging endpoint (no keyword)
+    // Native paging endpoint (no keyword and no status)
     const response = await apiClient.get<ApiResponse<PageResponse<Project>>>(
       API_ENDPOINTS.PROJECTS_PAGING,
       { params: pageParams }

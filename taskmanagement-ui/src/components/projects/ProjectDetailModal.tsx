@@ -13,7 +13,7 @@ export const ProjectDetailModal = ({ isOpen, onClose, project }: ProjectDetailMo
   const { user } = useAuthStore();
   if (!isOpen || !project) return null;
 
-  const isAdminOrManager = user?.roles?.some(r => r === 'ROLE_ADMIN' || r === 'ROLE_MANAGER') || false;
+  const isAdminOrManager = user?.roles?.some(r => r === 'ADMIN' || r === 'MANAGER') || false;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">

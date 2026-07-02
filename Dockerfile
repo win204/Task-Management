@@ -21,7 +21,7 @@ WORKDIR /app
 
 COPY --from=build /workspace/target/*.jar taskmanagement.jar
 RUN chown appuser:appgroup /app/taskmanagement.jar
-
+RUN mkdir -p /app/uploads /app/logs && chown -R appuser:appgroup /app
 USER appuser
 
 EXPOSE 8080

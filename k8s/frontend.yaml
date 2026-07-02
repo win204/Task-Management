@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: taskmanagement-ui:v6
+          image: taskmanagement-ui:v7
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
@@ -42,11 +42,13 @@ metadata:
   labels:
     app.kubernetes.io/name: taskmanagement
 spec:
-  type: NodePort
+  type: LoadBalancer
+  ipFamilyPolicy: SingleStack
+  ipFamilies:
+    - IPv4
   selector:
     app: frontend
   ports:
     - protocol: TCP
-      port: 80
+      port: 30080
       targetPort: 80
-      nodePort: 30080

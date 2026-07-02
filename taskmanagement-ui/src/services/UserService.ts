@@ -22,6 +22,14 @@ export const UserService = {
     return response.data.data;
   },
 
+  async getAllUsers(): Promise<User[]> {
+    const response = await apiClient.get<ApiResponse<PageResponse<User>>>(
+      API_ENDPOINTS.USERS,
+      { params: { page: 0, size: 1000 } }
+    );
+    return response.data.data?.content || [];
+  },
+
   async searchUsers(params: UserSearchParams): Promise<PageResponse<User>> {
     const response = await apiClient.get<ApiResponse<PageResponse<User>>>(
       API_ENDPOINTS.USERS_SEARCH,
@@ -82,5 +90,19 @@ export const UserService = {
       API_ENDPOINTS.CHANGE_PASSWORD,
       payload
     );
+  },
+
+  async assignRole(userId: number, roleId: number): Promise<User> {
+    const response = await apiClient.post<ApiResponse<User>>(
+      `/api/users/${userId}/roles/${roleId}`
+    );
+    return response.data.data;
+  },
+
+  async assignPosition(userId: number, positionId: number): Promise<User> {
+    const response = await apiClient.post<ApiResponse<User>>(
+      `/api/users/${userId}/positions/${positionId}`
+    );
+    return response.data.data;
   },
 };

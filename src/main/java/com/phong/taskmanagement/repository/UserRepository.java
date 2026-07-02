@@ -39,4 +39,6 @@ public interface UserRepository
 
     @EntityGraph(attributePaths = {"roles", "positions"})
     Page<User> findAll(Pageable pageable);
+
+    long countByRoles_Name(String roleName);
 }

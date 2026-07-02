@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!--
+        ROOT CAUSE: SQL Server IDENTITY cache (default=1000).
+        On container/process restart, the in-memory cache block is discarded.
+        SQL Server resumes at the next cache block: 1,2,3 -> 10001,10002...
+
+        FIX: DBCC CHECKIDENT with RESEED to the current MAX(id).
+        Each changeSet uses splitStatements="false" with DECLARE + EXEC
+        so that the variable is visible within the same JDBC batch.
+
+        AFFECTED TABLES (verified via DBCC CHECKIDENT NORESEED before this fix):
+          roles:         identity=10005, max_id=3
+          positions:     identity=10005, max_id=3
+          tasks:         identity=10027, max_id=28
+          notifications: identity=10014, max_id=10014
+          activity_logs: identity=10008, max_id=10008
+
+        NOT AFFECTED (already correct):
+          users:    identity=5,  max_id=5
+          projects: identity=12, max_id=12
+    -->
+
+    <changeSet id="024-reseed-roles" author="system">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN IDENT_CURRENT('roles') &gt; ISNULL((SELECT MAX(id) FROM roles), 0) THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <sql splitStatements="false">
+DECLARE @m BIGINT = (SELECT ISNULL(MAX(id), 0) FROM roles);
+EXEC('DBCC CHECKIDENT(''roles'', RESEED, ' + @m + ')')
+        </sql>
+    </changeSet>
+
+    <changeSet id="024-reseed-positions" author="system">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN IDENT_CURRENT('positions') &gt; ISNULL((SELECT MAX(id) FROM positions), 0) THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <sql splitStatements="false">
+DECLARE @m BIGINT = (SELECT ISNULL(MAX(id), 0) FROM positions);
+EXEC('DBCC CHECKIDENT(''positions'', RESEED, ' + @m + ')')
+        </sql>
+    </changeSet>
+
+    <changeSet id="024-reseed-tasks" author="system">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN IDENT_CURRENT('tasks') &gt; ISNULL((SELECT MAX(id) FROM tasks), 0) THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <sql splitStatements="false">
+DECLARE @m BIGINT = (SELECT ISNULL(MAX(id), 0) FROM tasks);
+EXEC('DBCC CHECKIDENT(''tasks'', RESEED, ' + @m + ')')
+        </sql>
+    </changeSet>
+
+    <changeSet id="024-reseed-notifications" author="system">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN IDENT_CURRENT('notifications') &gt; ISNULL((SELECT MAX(id) FROM notifications), 0) THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <sql splitStatements="false">
+DECLARE @m BIGINT = (SELECT ISNULL(MAX(id), 0) FROM notifications);
+EXEC('DBCC CHECKIDENT(''notifications'', RESEED, ' + @m + ')')
+        </sql>
+    </changeSet>
+
+    <changeSet id="024-reseed-activity-logs" author="system">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN IDENT_CURRENT('activity_logs') &gt; ISNULL((SELECT MAX(id) FROM activity_logs), 0) THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <sql splitStatements="false">
+DECLARE @m BIGINT = (SELECT ISNULL(MAX(id), 0) FROM activity_logs);
+EXEC('DBCC CHECKIDENT(''activity_logs'', RESEED, ' + @m + ')')
+        </sql>
+    </changeSet>
+
+    <!--
+        PREVENTION: Disable the IDENTITY cache permanently at database scope.
+        After this, SQL Server reads MAX(id) from disk on startup instead of
+        jumping to the next 1000-block. Requires SQL Server 2016+ (v13+).
+    -->
+    <changeSet id="024-disable-identity-cache" author="system" runInTransaction="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT CASE WHEN CAST(SERVERPROPERTY('ProductMajorVersion') AS INT) &gt;= 13 THEN 1 ELSE 0 END
+            </sqlCheck>
+        </preConditions>
+        <sql splitStatements="false">
+ALTER DATABASE SCOPED CONFIGURATION SET IDENTITY_CACHE = OFF
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

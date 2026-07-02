@@ -30,10 +30,10 @@ export const Breadcrumb = () => {
           const isLast = index === pathnames.length - 1;
           const to = `/${pathnames.slice(0, index + 1).join('/')}`;
           const label =
-            routeNameMap[value.toLowerCase()] ||
-            value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
+            routeNameMap[(value || '').toLowerCase()] ||
+            (value || '').charAt(0).toUpperCase() + (value || '').slice(1).replace(/-/g, ' ');
 
-          if (index === 0 && value.toLowerCase() === 'dashboard') {
+          if (index === 0 && (value || '').toLowerCase() === 'dashboard') {
             return null;
           }
 

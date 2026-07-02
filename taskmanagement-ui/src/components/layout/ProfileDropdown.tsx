@@ -40,7 +40,7 @@ export const ProfileDropdown = () => {
         </div>
 
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
-          {user.fullName ? user.fullName.charAt(0).toUpperCase() : user.username.charAt(0).toUpperCase()}
+          {(user.fullName || user.username || '').charAt(0).toUpperCase()}
         </div>
 
         <ChevronDown className={`w-3.5 h-3.5 text-surface-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />

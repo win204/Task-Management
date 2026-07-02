@@ -43,11 +43,11 @@ export const ProjectSearchBar = ({ onSearch, onAddProject }: ProjectSearchBarPro
           onChange={(e) => setStatusFilter(e.target.value)}
           className="block w-full pl-10 pr-8 py-2 border border-surface-300 dark:border-surface-600 rounded-xl leading-5 bg-white dark:bg-surface-800 text-surface-900 dark:text-surface-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition-all shadow-sm appearance-none"
         >
-          <option value="">All Statuses</option>
-          <option value="ACTIVE">Active</option>
+          <option value="">All</option>
+          <option value="PLANNING">Planning</option>
+          <option value="IN_PROGRESS">In Progress</option>
           <option value="COMPLETED">Completed</option>
           <option value="ON_HOLD">On Hold</option>
-          <option value="CANCELLED">Cancelled</option>
         </select>
       </div>
 

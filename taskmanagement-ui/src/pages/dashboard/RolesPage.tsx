@@ -1,21 +1,36 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Shield, Plus, Edit2, Trash2 } from 'lucide-react';
+import { Shield, Plus, Edit2, Trash2, Search, UserPlus, X } from 'lucide-react';
 import { RoleService, type Role } from '../../services/RoleService';
+import { UserService } from '../../services/UserService';
 import { Pagination } from '../../components/users/Pagination';
 import toast from 'react-hot-toast';
 
 export default function RolesPage() {
   const [page, setPage] = useState(0);
+  const [keyword, setKeyword] = useState('');
+  const [searchInput, setSearchInput] = useState('');
   const size = 10;
   const queryClient = useQueryClient();
 
   const [isEditing, setIsEditing] = useState<Role | null>(null);
   const [roleName, setRoleName] = useState('');
 
+  // Assign role to user
+  const [assignRoleId, setAssignRoleId] = useState<number | null>(null);
+  const [assignUserId, setAssignUserId] = useState('');
+
   const { data, isLoading } = useQuery({
-    queryKey: ['roles', page],
-    queryFn: () => RoleService.getRoles(page, size),
+    queryKey: ['roles', page, keyword],
+    queryFn: () =>
+      keyword.trim()
+        ? RoleService.searchRoles(keyword.trim(), page, size)
+        : RoleService.getRoles(page, size),
+  });
+
+  const { data: users } = useQuery({
+    queryKey: ['users-all'],
+    queryFn: () => UserService.getAllUsers(),
   });
 
   const createMutation = useMutation({
@@ -48,10 +63,20 @@ export default function RolesPage() {
     onError: () => toast.error('Failed to delete role')
   });
 
+  const assignMutation = useMutation({
+    mutationFn: ({ userId, roleId }: { userId: number, roleId: number }) =>
+      RoleService.assignRoleToUser(userId, roleId),
+    onSuccess: () => {
+      toast.success('Role assigned to user successfully');
+      setAssignRoleId(null);
+      setAssignUserId('');
+    },
+    onError: (err: any) => toast.error(err.response?.data?.message || 'Failed to assign role')
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!roleName.trim()) return;
-    
     if (isEditing) {
       updateMutation.mutate({ id: isEditing.id, name: roleName });
     } else {
@@ -69,6 +94,18 @@ export default function RolesPage() {
     setRoleName('');
   };
 
+  const handleSearch = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    setKeyword(searchInput);
+    setPage(0);
+  }, [searchInput]);
+
+  const clearSearch = () => {
+    setSearchInput('');
+    setKeyword('');
+    setPage(0);
+  };
+
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       <div>
@@ -77,10 +114,11 @@ export default function RolesPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-1">
-          <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-200 dark:border-surface-700 p-5 shadow-sm sticky top-6">
+        {/* Sidebar: Create / Edit Form */}
+        <div className="md:col-span-1 space-y-4">
+          <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-200 dark:border-surface-700 p-5 shadow-sm">
             <h3 className="text-lg font-semibold text-surface-900 dark:text-surface-100 mb-4 flex items-center gap-2">
-              <Shield className="w-5 h-5 text-primary-500" /> 
+              <Shield className="w-5 h-5 text-primary-500" />
               {isEditing ? 'Edit Role' : 'Create Role'}
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -91,7 +129,7 @@ export default function RolesPage() {
                   required
                   value={roleName}
                   onChange={(e) => setRoleName(e.target.value)}
-                  placeholder="e.g. ROLE_MANAGER"
+                  placeholder="e.g. MANAGER"
                   className="w-full px-3 py-2 border border-surface-300 dark:border-surface-600 rounded-xl bg-surface-50 dark:bg-surface-900 text-surface-900 dark:text-surface-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
@@ -116,9 +154,67 @@ export default function RolesPage() {
               </div>
             </form>
           </div>
+
+          {/* Assign Role to User */}
+          {assignRoleId && (
+            <div className="bg-white dark:bg-surface-800 rounded-2xl border border-primary-200 dark:border-primary-800 p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-semibold text-surface-900 dark:text-surface-100 flex items-center gap-2">
+                  <UserPlus className="w-4 h-4 text-primary-500" />
+                  Assign to User
+                </h3>
+                <button onClick={() => { setAssignRoleId(null); setAssignUserId(''); }} className="text-surface-400 hover:text-surface-600">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <p className="text-xs text-surface-500 mb-3">
+                Assigning role: <span className="font-medium text-primary-600">{data?.content.find(r => r.id === assignRoleId)?.name}</span>
+              </p>
+              <select
+                value={assignUserId}
+                onChange={(e) => setAssignUserId(e.target.value)}
+                className="w-full px-3 py-2 border border-surface-300 dark:border-surface-600 rounded-xl bg-surface-50 dark:bg-surface-900 text-surface-900 dark:text-surface-100 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm mb-3"
+              >
+                <option value="">Select user...</option>
+                {(users || []).map((u: any) => (
+                  <option key={u.id} value={u.id}>{u.fullName || u.username} ({u.username})</option>
+                ))}
+              </select>
+              <button
+                disabled={!assignUserId || assignMutation.isPending}
+                onClick={() => assignMutation.mutate({ userId: parseInt(assignUserId), roleId: assignRoleId })}
+                className="w-full px-4 py-2 bg-primary-600 text-white rounded-xl text-sm font-medium hover:bg-primary-700 transition-colors disabled:opacity-50"
+              >
+                Assign Role
+              </button>
+            </div>
+          )}
         </div>
 
+        {/* Main table */}
         <div className="md:col-span-2">
+          {/* Search */}
+          <form onSubmit={handleSearch} className="flex gap-2 mb-4">
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
+              <input
+                type="text"
+                placeholder="Search roles..."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                className="w-full pl-9 pr-9 py-2 border border-surface-300 dark:border-surface-600 rounded-xl bg-white dark:bg-surface-800 text-surface-900 dark:text-surface-100 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+              />
+              {searchInput && (
+                <button type="button" onClick={clearSearch} className="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400 hover:text-surface-600">
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+            <button type="submit" className="px-4 py-2 bg-primary-600 text-white rounded-xl text-sm font-medium hover:bg-primary-700 transition-colors">
+              Search
+            </button>
+          </form>
+
           <div className="bg-white dark:bg-surface-800 rounded-2xl border border-surface-200 dark:border-surface-700 shadow-sm overflow-hidden min-h-[400px] flex flex-col">
             <div className="flex-1 overflow-x-auto">
               <table className="w-full text-left border-collapse">
@@ -136,7 +232,9 @@ export default function RolesPage() {
                     </tr>
                   ) : !data || data.content.length === 0 ? (
                     <tr>
-                      <td colSpan={3} className="px-6 py-8 text-center text-surface-500">No roles found.</td>
+                      <td colSpan={3} className="px-6 py-8 text-center text-surface-500">
+                        {keyword ? `No roles found for "${keyword}"` : 'No roles found.'}
+                      </td>
                     </tr>
                   ) : (
                     data.content.map((role) => (
@@ -149,6 +247,13 @@ export default function RolesPage() {
                         </td>
                         <td className="px-6 py-4 text-right">
                           <div className="flex justify-end gap-2">
+                            <button
+                              onClick={() => { setAssignRoleId(role.id); setAssignUserId(''); }}
+                              title="Assign to User"
+                              className="p-1.5 text-surface-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg transition-colors"
+                            >
+                              <UserPlus className="w-4 h-4" />
+                            </button>
                             <button
                               onClick={() => handleEdit(role)}
                               className="p-1.5 text-surface-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-colors"

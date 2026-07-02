@@ -56,8 +56,8 @@ public class TaskServiceImpl implements TaskService {
                 .id(task.getId())
                 .title(task.getTitle())
                 .description(task.getDescription())
-                .priority(task.getPriority())
-                .status(task.getStatus())
+                .priority(task.getPriority() != null ? task.getPriority() : "MEDIUM")
+                .status(task.getStatus() != null ? task.getStatus() : "TODO")
                 .startDate(task.getStartDate())
                 .dueDate(task.getDueDate())
                 .projectName(

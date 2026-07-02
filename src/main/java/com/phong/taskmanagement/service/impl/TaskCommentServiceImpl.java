@@ -1,6 +1,7 @@
 package com.phong.taskmanagement.service.impl;
 
 import com.phong.taskmanagement.dto.request.CreateTaskCommentRequest;
+import com.phong.taskmanagement.dto.request.UpdateTaskCommentRequest;
 import com.phong.taskmanagement.dto.response.TaskCommentResponse;
 import com.phong.taskmanagement.entity.Task;
 import com.phong.taskmanagement.entity.TaskComment;
@@ -105,6 +106,31 @@ public class TaskCommentServiceImpl implements TaskCommentService {
     }
 
     @Override
+    public TaskCommentResponse updateComment(Long commentId, String username, UpdateTaskCommentRequest request) {
+        TaskComment comment = taskCommentRepository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        boolean isAdmin = user.getRoles().stream().anyMatch(r -> r.getName().equals("ADMIN"));
+
+        if (!comment.getUser().getId().equals(user.getId()) && !isAdmin) {
+            throw new AccessDeniedException("You do not have permission to edit this comment");
+        }
+
+        comment.setContent(request.getContent());
+        taskCommentRepository.save(comment);
+
+        activityLogService.log(
+                user.getId(),
+                comment.getTask().getId(),
+                "UPDATE_TASK_COMMENT",
+                "Edited comment on task " + comment.getTask().getTitle()
+        );
+
+        realTimeUpdateService.broadcastTaskUpdate("TASK_COMMENT_UPDATED");
+
+        return mapToResponse(comment);
+    }
     @Transactional(readOnly = true)
     public List<TaskCommentResponse> getCommentsByTask(Long taskId) {
         return taskCommentRepository.findByTaskIdAndParentIsNullOrderByCreatedAtDesc(taskId)

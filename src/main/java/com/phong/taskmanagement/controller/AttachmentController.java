@@ -50,10 +50,12 @@ public class AttachmentController {
             @RequestParam Long taskId,
 
             @Parameter(description = "File to upload")
-            @RequestPart("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file,
+            org.springframework.security.core.Authentication authentication) {
 
+        String username = authentication.getName();
         AttachmentResponse response = attachmentService
-                .uploadFile(file, taskId);
+                .uploadFile(file, taskId, username);
         return ApiResponse.success(response, "File uploaded successfully");
     }
 

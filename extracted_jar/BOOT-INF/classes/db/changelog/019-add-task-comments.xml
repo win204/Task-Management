@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <changeSet id="019-add-task-comments" author="antigravity">
+        <createTable tableName="task_comments">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="NVARCHAR(MAX)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_id" type="BIGINT"/>
+            <column name="created_at" type="DATETIME" defaultValueComputed="GETDATE()"/>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="GETDATE()"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="task_comments"
+                                 baseColumnNames="task_id"
+                                 constraintName="fk_task_comments_task_id"
+                                 referencedTableName="tasks"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseTableName="task_comments"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_task_comments_user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseTableName="task_comments"
+                                 baseColumnNames="parent_id"
+                                 constraintName="fk_task_comments_parent_id"
+                                 referencedTableName="task_comments"
+                                 referencedColumnNames="id"
+                                 onDelete="NO ACTION"/>
+    </changeSet>
+
+</databaseChangeLog>

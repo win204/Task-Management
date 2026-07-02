@@ -5,7 +5,7 @@ interface TaskStatusBadgeProps {
 }
 
 export const TaskStatusBadge = ({ status }: TaskStatusBadgeProps) => {
-  const normalizedStatus = status.toUpperCase();
+  const normalizedStatus = (status || '').toUpperCase();
   
   switch (normalizedStatus) {
     case 'TODO':
@@ -39,7 +39,7 @@ export const TaskStatusBadge = ({ status }: TaskStatusBadgeProps) => {
     default:
       return (
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200 shadow-sm">
-          {status.replace('_', ' ')}
+          {(status ?? '').replace('_', ' ')}
         </span>
       );
   }

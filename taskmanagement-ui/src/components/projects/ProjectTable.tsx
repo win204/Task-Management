@@ -49,7 +49,7 @@ export const ProjectTable = ({ projects, isLoading, error, onView, onEdit, onDel
   }
 
   const getStatusBadge = (status: string) => {
-    switch (status.toUpperCase()) {
+    switch ((status || '').toUpperCase()) {
       case 'COMPLETED':
         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-400">Completed</span>;
       case 'IN_PROGRESS':
@@ -86,7 +86,7 @@ export const ProjectTable = ({ projects, isLoading, error, onView, onEdit, onDel
               <td className="px-6 py-4">
                 <div className="flex items-center">
                   <div className="flex-shrink-0 h-10 w-10 bg-primary-50 text-primary-600 border border-primary-100 dark:bg-primary-900/30 dark:border-primary-500/20 dark:text-primary-400 flex items-center justify-center rounded-xl font-bold">
-                    {project.projectCode.substring(0, 2).toUpperCase()}
+                    {(project.projectCode || '').substring(0, 2).toUpperCase()}
                   </div>
                   <div className="ml-4 max-w-[300px]">
                     <div className="text-sm font-medium text-surface-900 dark:text-surface-100 truncate" title={project.projectName}>

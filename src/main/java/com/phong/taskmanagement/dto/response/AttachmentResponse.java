@@ -26,4 +26,8 @@ public class AttachmentResponse {
     private Long taskId;
 
     private String taskTitle;
+
+    private Long uploadedById;
+
+    private String uploadedByName;
 }

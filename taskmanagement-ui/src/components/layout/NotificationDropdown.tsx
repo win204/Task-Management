@@ -26,7 +26,7 @@ export const NotificationDropdown = () => {
   }, []);
 
   const getIconForType = (type: string) => {
-    switch (type?.toUpperCase()) {
+    switch ((type || '').toUpperCase()) {
       case 'WARNING':
         return <AlertTriangle className="w-5 h-5 text-amber-500" />;
       case 'SUCCESS':
@@ -45,9 +45,9 @@ export const NotificationDropdown = () => {
     setIsOpen(false);
     
     if (notif.relatedEntityId) {
-      if (notif.type.startsWith('TASK_')) {
+      if ((notif.type || '').startsWith('TASK_')) {
         navigate(`/dashboard/tasks/${notif.relatedEntityId}`);
-      } else if (notif.type.startsWith('PROJECT_')) {
+      } else if ((notif.type || '').startsWith('PROJECT_')) {
         navigate(`/dashboard/projects/${notif.relatedEntityId}`);
       }
     }

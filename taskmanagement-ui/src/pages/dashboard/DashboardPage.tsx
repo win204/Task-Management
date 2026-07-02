@@ -6,6 +6,7 @@ import {
   CircleDashed,
   AlertCircle,
   Clock,
+  AlertTriangle,
 } from 'lucide-react';
 import { useDashboard } from '../../hooks/useDashboard';
 import { StatisticCard } from '../../components/dashboard/StatisticCard';
@@ -45,7 +46,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Statistics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatisticCard
           title="Total Users"
           value={data?.totalUsers}
@@ -96,6 +97,15 @@ export default function DashboardPage() {
           value={data?.todoTasks}
           icon={<CircleDashed className="w-5 h-5" />}
           gradient="from-surface-500 to-surface-700"
+          isLoading={isLoading}
+          to="/dashboard/tasks"
+        />
+
+        <StatisticCard
+          title="Overdue"
+          value={data?.overdueTasks}
+          icon={<AlertTriangle className="w-5 h-5" />}
+          gradient="from-red-500 to-rose-700"
           isLoading={isLoading}
           to="/dashboard/tasks"
         />

@@ -54,6 +54,24 @@ public class TaskCommentController {
         );
     }
 
+    @Operation(summary = "Update a task comment")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'EMPLOYEE')")
+    @PutMapping("/{commentId}")
+    public ResponseEntity<ApiResponse<TaskCommentResponse>> updateComment(
+            @PathVariable Long taskId,
+            @PathVariable Long commentId,
+            @Valid @RequestBody com.phong.taskmanagement.dto.request.UpdateTaskCommentRequest request,
+            Authentication authentication) {
+
+        String username = authentication.getName();
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        taskCommentService.updateComment(commentId, username, request),
+                        "Task comment updated successfully"
+                )
+        );
+    }
+
     @Operation(summary = "Get all comments for a task")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'EMPLOYEE')")
     @GetMapping

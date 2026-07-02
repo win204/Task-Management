@@ -45,7 +45,7 @@ export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) 
 
   // Authorize user roles if restrictions are active
   if (allowedRoles && allowedRoles.length > 0) {
-    const hasRequiredRole = user?.roles.some((role) => allowedRoles.includes(role));
+    const hasRequiredRole = (user?.roles || []).some((role) => allowedRoles.includes(role));
     
     if (!hasRequiredRole) {
       console.warn(`[ProtectedRoute] Unauthorized role. Required: ${allowedRoles}. Found: ${user?.roles}. Redirecting to dashboard.`);

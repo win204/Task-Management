@@ -19,14 +19,21 @@ export interface CreateTaskCommentRequest {
   parentId?: number;
 }
 
+export interface UpdateTaskCommentRequest {
+  content: string;
+}
+
 export const TaskCommentService = {
   getComments: (taskId: number) => {
-    return api.get<ApiResponse<TaskCommentResponse[]>>(`/tasks/${taskId}/comments`);
+    return api.get<ApiResponse<TaskCommentResponse[]>>(`/api/tasks/${taskId}/comments`);
   },
   addComment: (taskId: number, request: CreateTaskCommentRequest) => {
-    return api.post<ApiResponse<TaskCommentResponse>>(`/tasks/${taskId}/comments`, request);
+    return api.post<ApiResponse<TaskCommentResponse>>(`/api/tasks/${taskId}/comments`, request);
   },
   deleteComment: (taskId: number, commentId: number) => {
-    return api.delete<ApiResponse<void>>(`/tasks/${taskId}/comments/${commentId}`);
+    return api.delete<ApiResponse<void>>(`/api/tasks/${taskId}/comments/${commentId}`);
+  },
+  updateComment: (taskId: number, commentId: number, request: UpdateTaskCommentRequest) => {
+    return api.put<ApiResponse<TaskCommentResponse>>(`/api/tasks/${taskId}/comments/${commentId}`, request);
   }
 };

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ProjectMemberService, type AddProjectMemberRequest, type ProjectMemberResponse } from '../../services/ProjectMemberService';
+import { UserService } from '../../services/UserService';
 import { Users, UserPlus, X, Shield, User, Edit2, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -17,7 +18,14 @@ export const ProjectMembersList = ({ projectId, isAdmin }: { projectId: number, 
     queryFn: () => ProjectMemberService.getMembers(projectId),
   });
 
+  const { data: allUsers } = useQuery({
+    queryKey: ['users-all'],
+    queryFn: () => UserService.getAllUsers(),
+    enabled: isAdmin,
+  });
+
   const members = response?.data?.data || [];
+  const memberUserIds = new Set(members.map((m: ProjectMemberResponse) => m.userId));
 
   const addMemberMutation = useMutation({
     mutationFn: (request: AddProjectMemberRequest) => ProjectMemberService.addMember(projectId, request),
@@ -71,15 +79,18 @@ export const ProjectMembersList = ({ projectId, isAdmin }: { projectId: number, 
 
       {/* Add Member Form (Admin/Manager only) */}
       {isAdmin && (
-        <form onSubmit={handleAddMember} className="flex gap-2 mb-6 bg-slate-50 p-3 rounded-lg border border-slate-200">
-          <input
-            type="number"
-            placeholder="User ID"
+        <form onSubmit={handleAddMember} className="flex flex-wrap gap-2 mb-6 bg-slate-50 p-3 rounded-lg border border-slate-200">
+          <select
             value={newUserId}
             onChange={(e) => setNewUserId(e.target.value)}
-            className="w-24 text-sm rounded-md border border-slate-300 px-3 py-1.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+            className="flex-grow min-w-0 text-sm rounded-md border border-slate-300 px-3 py-1.5 focus:ring-2 focus:ring-indigo-500 outline-none bg-white"
             required
-          />
+          >
+            <option value="">Select user to add...</option>
+            {(allUsers || []).filter((u: any) => !memberUserIds.has(u.id)).map((u: any) => (
+              <option key={u.id} value={u.id}>{u.fullName || u.username} ({u.username})</option>
+            ))}
+          </select>
           <select
             value={newRole}
             onChange={(e) => setNewRole(e.target.value)}

@@ -5,6 +5,7 @@ export interface DashboardResponse {
   completedTasks: number;
   todoTasks: number;
   inProgressTasks: number;
+  overdueTasks: number;
 }
 
 export interface TaskStatusChartResponse {

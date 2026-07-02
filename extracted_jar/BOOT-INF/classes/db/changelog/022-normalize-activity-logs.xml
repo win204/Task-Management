@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <changeSet id="normalize-activity-logs" author="system">
+        <!-- Normalize Result -->
+        <update tableName="activity_logs">
+            <column name="result" value="SUCCESS"/>
+            <where>result IS NULL</where>
+        </update>
+
+        <!-- Normalize IP Address -->
+        <update tableName="activity_logs">
+            <column name="ip_address" value="SYSTEM"/>
+            <where>ip_address IS NULL</where>
+        </update>
+
+        <!-- Normalize Module based on Action prefix/contents -->
+        <update tableName="activity_logs">
+            <column name="module" value="TASK"/>
+            <where>module IS NULL AND action LIKE '%TASK%'</where>
+        </update>
+        <update tableName="activity_logs">
+            <column name="module" value="PROJECT"/>
+            <where>module IS NULL AND action LIKE '%PROJECT%'</where>
+        </update>
+        <update tableName="activity_logs">
+            <column name="module" value="USER"/>
+            <where>module IS NULL AND action LIKE '%USER%'</where>
+        </update>
+        <update tableName="activity_logs">
+            <column name="module" value="AUTH"/>
+            <where>module IS NULL AND action LIKE '%LOGIN%'</where>
+        </update>
+        
+        <!-- Catch-all for any remaining null modules -->
+        <update tableName="activity_logs">
+            <column name="module" value="SYSTEM"/>
+            <where>module IS NULL</where>
+        </update>
+    </changeSet>
+
+</databaseChangeLog>

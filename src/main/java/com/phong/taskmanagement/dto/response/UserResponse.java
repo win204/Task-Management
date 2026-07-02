@@ -25,4 +25,6 @@ public class UserResponse extends RepresentationModel<UserResponse> {
     private Boolean active;
 
     private java.util.Set<String> roles;
+
+    private java.util.Set<String> positionNames;
 }

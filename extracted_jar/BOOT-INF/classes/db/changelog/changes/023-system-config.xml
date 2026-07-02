@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <changeSet id="023-system-config-1" author="phong">
+        <createTable tableName="system_config">
+            <column name="config_key" type="VARCHAR(100)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="config_value" type="NVARCHAR(MAX)"/>
+            <column name="description" type="NVARCHAR(255)"/>
+            <column name="updated_at" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="023-system-config-2" author="phong">
+        <insert tableName="system_config">
+            <column name="config_key" value="APP_NAME"/>
+            <column name="config_value" value="Enterprise Task Manager"/>
+            <column name="description" value="Application Name"/>
+            <column name="updated_at" valueComputed="GETDATE()"/>
+            <column name="updated_by" value="SYSTEM"/>
+        </insert>
+        <insert tableName="system_config">
+            <column name="config_key" value="ALLOW_USER_REGISTRATION"/>
+            <column name="config_value" value="true"/>
+            <column name="description" value="Allow public user registration"/>
+            <column name="updated_at" valueComputed="GETDATE()"/>
+            <column name="updated_by" value="SYSTEM"/>
+        </insert>
+        <insert tableName="system_config">
+            <column name="config_key" value="MAX_FILE_UPLOAD_SIZE_MB"/>
+            <column name="config_value" value="10"/>
+            <column name="description" value="Maximum attachment file size in MB"/>
+            <column name="updated_at" valueComputed="GETDATE()"/>
+            <column name="updated_by" value="SYSTEM"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- ─── Seed Admin User ─────────────────────────────────────────── -->
+    <changeSet id="014-seed-admin" author="phong">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM users WHERE username = 'admin'</sqlCheck>
+        </preConditions>
+        <insert tableName="users">
+            <column name="username" value="admin"/>
+            <column name="email" value="admin@taskmanagement.com"/>
+            <column name="password" value="$2a$10$02bc5xeMbPvD/7EXutfIBepkcNgARt1YI7gnC6QmpAM5i3QO/mSlC"/>
+            <column name="full_name" value="System Administrator"/>
+            <column name="active" valueBoolean="true"/>
+            <column name="status" valueBoolean="true"/>
+        </insert>
+        <insert tableName="user_roles">
+            <column name="user_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+            <column name="role_id" valueComputed="(SELECT TOP 1 id FROM roles WHERE name='ADMIN')"/>
+        </insert>
+    </changeSet>
+
+    <!-- ─── Seed realistic projects ─────────────────────────────────────────── -->
+    <changeSet id="014-seed-projects" author="phong">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM projects WHERE project_name IN ('E-Commerce Platform','Mobile Banking App')</sqlCheck>
+        </preConditions>
+
+        <insert tableName="projects">
+            <column name="project_name" value="E-Commerce Platform"/>
+            <column name="project_code" value="ECP-001"/>
+            <column name="description" value="Build a full-featured e-commerce platform with payment gateway integration."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="start_date" value="2026-01-15"/>
+            <column name="end_date" value="2026-12-31"/>
+        </insert>
+        <insert tableName="projects">
+            <column name="project_name" value="Mobile Banking App"/>
+            <column name="project_code" value="MBA-002"/>
+            <column name="description" value="Develop a secure mobile banking application for iOS and Android."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="start_date" value="2026-02-01"/>
+            <column name="end_date" value="2026-09-30"/>
+        </insert>
+        <insert tableName="projects">
+            <column name="project_name" value="HR Management System"/>
+            <column name="project_code" value="HRM-003"/>
+            <column name="description" value="Internal HR system for employee management, leave tracking, and payroll."/>
+            <column name="status" value="PLANNING"/>
+            <column name="start_date" value="2026-03-01"/>
+            <column name="end_date" value="2026-11-30"/>
+        </insert>
+        <insert tableName="projects">
+            <column name="project_name" value="Inventory Management"/>
+            <column name="project_code" value="INV-004"/>
+            <column name="description" value="Real-time inventory tracking and warehouse management solution."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="start_date" value="2026-01-10"/>
+            <column name="end_date" value="2026-08-15"/>
+        </insert>
+        <insert tableName="projects">
+            <column name="project_name" value="Customer Portal"/>
+            <column name="project_code" value="CST-005"/>
+            <column name="description" value="Self-service customer portal with ticketing and knowledge base."/>
+            <column name="status" value="COMPLETED"/>
+            <column name="start_date" value="2025-09-01"/>
+            <column name="end_date" value="2026-01-31"/>
+        </insert>
+        <insert tableName="projects">
+            <column name="project_name" value="Analytics Dashboard"/>
+            <column name="project_code" value="ANL-006"/>
+            <column name="description" value="Business intelligence dashboard with real-time KPI monitoring."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="start_date" value="2026-04-01"/>
+            <column name="end_date" value="2026-10-31"/>
+        </insert>
+        <insert tableName="projects">
+            <column name="project_name" value="DevOps Infrastructure"/>
+            <column name="project_code" value="DVO-007"/>
+            <column name="description" value="Migrate all services to Kubernetes with CI/CD pipelines."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="start_date" value="2026-01-01"/>
+            <column name="end_date" value="2026-06-30"/>
+        </insert>
+        <insert tableName="projects">
+            <column name="project_name" value="API Gateway Redesign"/>
+            <column name="project_code" value="API-008"/>
+            <column name="description" value="Redesign the API gateway layer for microservices architecture."/>
+            <column name="status" value="PLANNING"/>
+            <column name="start_date" value="2026-05-01"/>
+            <column name="end_date" value="2026-12-31"/>
+        </insert>
+        <insert tableName="projects">
+            <column name="project_name" value="Security Audit 2026"/>
+            <column name="project_code" value="SEC-009"/>
+            <column name="description" value="Annual security audit and penetration testing across all systems."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="start_date" value="2026-03-15"/>
+            <column name="end_date" value="2026-07-31"/>
+        </insert>
+        <insert tableName="projects">
+            <column name="project_name" value="Data Migration Project"/>
+            <column name="project_code" value="DMP-010"/>
+            <column name="description" value="Migrate legacy Oracle database to SQL Server with zero downtime."/>
+            <column name="status" value="PLANNING"/>
+            <column name="start_date" value="2026-06-01"/>
+            <column name="end_date" value="2026-12-31"/>
+        </insert>
+    </changeSet>
+
+    <!-- ─── Seed realistic tasks ─────────────────────────────────────────────── -->
+    <changeSet id="014-seed-tasks" author="phong">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM tasks WHERE title IN ('Design database schema','Implement JWT authentication')</sqlCheck>
+        </preConditions>
+
+        <!-- E-Commerce Platform tasks (project 1) -->
+        <insert tableName="tasks">
+            <column name="title" value="Design database schema"/>
+            <column name="description" value="Design the complete ER diagram and database schema for the e-commerce platform."/>
+            <column name="status" value="DONE"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-02-01"/>
+            <column name="start_date" value="2026-01-15"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='E-Commerce Platform')"/>
+            <column name="assignee_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Implement JWT authentication"/>
+            <column name="description" value="Implement secure JWT-based authentication with refresh token rotation."/>
+            <column name="status" value="DONE"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-02-15"/>
+            <column name="start_date" value="2026-02-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='E-Commerce Platform')"/>
+            <column name="assignee_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Build product catalog API"/>
+            <column name="description" value="Create RESTful APIs for product listing, search, and filtering."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-03-01"/>
+            <column name="start_date" value="2026-02-15"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='E-Commerce Platform')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Integrate payment gateway"/>
+            <column name="description" value="Integrate Stripe and PayPal payment gateway with webhook support."/>
+            <column name="status" value="TODO"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-04-15"/>
+            <column name="start_date" value="2026-04-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='E-Commerce Platform')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="UI/UX design for checkout flow"/>
+            <column name="description" value="Design and implement the shopping cart and checkout user interface."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="priority" value="MEDIUM"/>
+            <column name="due_date" value="2026-03-15"/>
+            <column name="start_date" value="2026-03-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='E-Commerce Platform')"/>
+        </insert>
+
+        <!-- Mobile Banking App tasks (project 2) -->
+        <insert tableName="tasks">
+            <column name="title" value="Implement biometric authentication"/>
+            <column name="description" value="Add Face ID and fingerprint authentication for mobile app login."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-03-30"/>
+            <column name="start_date" value="2026-03-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='Mobile Banking App')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Build transaction history screen"/>
+            <column name="description" value="Implement paginated transaction history with search and filter capabilities."/>
+            <column name="status" value="TODO"/>
+            <column name="priority" value="MEDIUM"/>
+            <column name="due_date" value="2026-04-15"/>
+            <column name="start_date" value="2026-04-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='Mobile Banking App')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Encrypt sensitive user data"/>
+            <column name="description" value="Implement AES-256 encryption for all PII fields at rest and in transit."/>
+            <column name="status" value="DONE"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-02-28"/>
+            <column name="start_date" value="2026-02-10"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='Mobile Banking App')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Push notification service"/>
+            <column name="description" value="Implement Firebase Cloud Messaging for transaction alerts."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="priority" value="MEDIUM"/>
+            <column name="due_date" value="2026-05-01"/>
+            <column name="start_date" value="2026-04-15"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='Mobile Banking App')"/>
+        </insert>
+
+        <!-- DevOps Infrastructure tasks (project 7) -->
+        <insert tableName="tasks">
+            <column name="title" value="Set up Kubernetes cluster"/>
+            <column name="description" value="Configure Kubernetes cluster with namespaces, RBAC, and network policies."/>
+            <column name="status" value="DONE"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-02-01"/>
+            <column name="start_date" value="2026-01-10"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='DevOps Infrastructure')"/>
+            <column name="assignee_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Configure CI/CD pipeline"/>
+            <column name="description" value="Set up GitHub Actions pipeline with automated testing, Docker build, and K8s deploy."/>
+            <column name="status" value="DONE"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-02-15"/>
+            <column name="start_date" value="2026-02-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='DevOps Infrastructure')"/>
+            <column name="assignee_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Deploy monitoring stack"/>
+            <column name="description" value="Deploy Prometheus and Grafana for cluster and application monitoring."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="priority" value="MEDIUM"/>
+            <column name="due_date" value="2026-04-30"/>
+            <column name="start_date" value="2026-04-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='DevOps Infrastructure')"/>
+            <column name="assignee_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Implement auto-scaling policies"/>
+            <column name="description" value="Configure HPA and VPA for all critical deployments."/>
+            <column name="status" value="TODO"/>
+            <column name="priority" value="LOW"/>
+            <column name="due_date" value="2026-05-31"/>
+            <column name="start_date" value="2026-05-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='DevOps Infrastructure')"/>
+        </insert>
+
+        <!-- Analytics Dashboard tasks (project 6) -->
+        <insert tableName="tasks">
+            <column name="title" value="Design KPI dashboard wireframes"/>
+            <column name="description" value="Create wireframes and mockups for the executive KPI dashboard."/>
+            <column name="status" value="DONE"/>
+            <column name="priority" value="MEDIUM"/>
+            <column name="due_date" value="2026-04-15"/>
+            <column name="start_date" value="2026-04-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='Analytics Dashboard')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Build data aggregation service"/>
+            <column name="description" value="Implement ETL service to aggregate data from multiple sources hourly."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-06-30"/>
+            <column name="start_date" value="2026-05-15"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='Analytics Dashboard')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Implement real-time WebSocket updates"/>
+            <column name="description" value="Push live chart updates to connected dashboards using WebSocket."/>
+            <column name="status" value="TODO"/>
+            <column name="priority" value="MEDIUM"/>
+            <column name="due_date" value="2026-08-31"/>
+            <column name="start_date" value="2026-07-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='Analytics Dashboard')"/>
+        </insert>
+
+        <!-- Security Audit tasks (project 9) -->
+        <insert tableName="tasks">
+            <column name="title" value="Perform OWASP Top 10 assessment"/>
+            <column name="description" value="Run automated and manual OWASP Top 10 vulnerability assessment."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-05-31"/>
+            <column name="start_date" value="2026-03-15"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='Security Audit 2026')"/>
+            <column name="assignee_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Fix SQL injection vulnerabilities"/>
+            <column name="description" value="Remediate all SQL injection findings from the security assessment."/>
+            <column name="status" value="TODO"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-06-30"/>
+            <column name="start_date" value="2026-06-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='Security Audit 2026')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Implement rate limiting"/>
+            <column name="description" value="Add API rate limiting to prevent brute force and DDoS attacks."/>
+            <column name="status" value="TODO"/>
+            <column name="priority" value="MEDIUM"/>
+            <column name="due_date" value="2026-07-15"/>
+            <column name="start_date" value="2026-07-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='Security Audit 2026')"/>
+        </insert>
+
+        <!-- HR Management tasks (project 3) -->
+        <insert tableName="tasks">
+            <column name="title" value="Design employee onboarding workflow"/>
+            <column name="description" value="Map out and digitize the complete new employee onboarding process."/>
+            <column name="status" value="TODO"/>
+            <column name="priority" value="MEDIUM"/>
+            <column name="due_date" value="2026-04-30"/>
+            <column name="start_date" value="2026-03-15"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='HR Management System')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Implement leave management module"/>
+            <column name="description" value="Build annual leave, sick leave, and PTO request and approval workflows."/>
+            <column name="status" value="TODO"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-06-30"/>
+            <column name="start_date" value="2026-05-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='HR Management System')"/>
+        </insert>
+
+        <!-- Inventory Management tasks (project 4) -->
+        <insert tableName="tasks">
+            <column name="title" value="Barcode scanner integration"/>
+            <column name="description" value="Integrate barcode and QR code scanning for inventory check-in/out."/>
+            <column name="status" value="IN_PROGRESS"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-05-15"/>
+            <column name="start_date" value="2026-04-15"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='Inventory Management')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Low stock alert system"/>
+            <column name="description" value="Implement automated email and SMS alerts when inventory drops below threshold."/>
+            <column name="status" value="TODO"/>
+            <column name="priority" value="MEDIUM"/>
+            <column name="due_date" value="2026-06-30"/>
+            <column name="start_date" value="2026-06-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='Inventory Management')"/>
+        </insert>
+
+        <!-- API Gateway Redesign tasks (project 8) -->
+        <insert tableName="tasks">
+            <column name="title" value="Evaluate API gateway solutions"/>
+            <column name="description" value="Evaluate Kong, AWS API Gateway, and custom Spring Cloud Gateway solution."/>
+            <column name="status" value="DONE"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-05-31"/>
+            <column name="start_date" value="2026-05-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='API Gateway Redesign')"/>
+            <column name="assignee_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+        </insert>
+        <insert tableName="tasks">
+            <column name="title" value="Implement service discovery"/>
+            <column name="description" value="Set up Consul or Kubernetes-native service discovery for microservices."/>
+            <column name="status" value="TODO"/>
+            <column name="priority" value="HIGH"/>
+            <column name="due_date" value="2026-08-31"/>
+            <column name="start_date" value="2026-07-01"/>
+            <column name="project_id" valueComputed="(SELECT TOP 1 id FROM projects WHERE project_name='API Gateway Redesign')"/>
+        </insert>
+    </changeSet>
+
+    <!-- ─── Seed notifications ────────────────────────────────────────────────── -->
+    <changeSet id="014-seed-notifications" author="phong">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="notifications"/>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM notifications</sqlCheck>
+        </preConditions>
+
+        <insert tableName="notifications">
+            <column name="user_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+            <column name="title" value="New task assigned to you"/>
+            <column name="message" value="You have been assigned: Design database schema in E-Commerce Platform"/>
+            <column name="is_read" valueBoolean="false"/>
+        </insert>
+        <insert tableName="notifications">
+            <column name="user_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+            <column name="title" value="Task completed"/>
+            <column name="message" value="Task 'Implement JWT authentication' has been marked as DONE"/>
+            <column name="is_read" valueBoolean="false"/>
+        </insert>
+        <insert tableName="notifications">
+            <column name="user_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+            <column name="title" value="Project deadline approaching"/>
+            <column name="message" value="Mobile Banking App project deadline is in 30 days. Review progress."/>
+            <column name="is_read" valueBoolean="true"/>
+        </insert>
+        <insert tableName="notifications">
+            <column name="user_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+            <column name="title" value="New task assigned to you"/>
+            <column name="message" value="You have been assigned: Set up Kubernetes cluster in DevOps Infrastructure"/>
+            <column name="is_read" valueBoolean="true"/>
+        </insert>
+        <insert tableName="notifications">
+            <column name="user_id" valueComputed="(SELECT TOP 1 id FROM users WHERE username='admin')"/>
+            <column name="title" value="Security audit started"/>
+            <column name="message" value="OWASP Top 10 assessment has been initiated. Please coordinate with the security team."/>
+            <column name="is_read" valueBoolean="false"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

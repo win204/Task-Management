@@ -37,6 +37,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .completedTasks(taskRepository.countByStatus("DONE"))
                 .todoTasks(taskRepository.countByStatus("TODO"))
                 .inProgressTasks(taskRepository.countByStatus("IN_PROGRESS"))
+                .overdueTasks(taskRepository.countByDueDateBeforeAndStatusNot(LocalDate.now(), "DONE"))
                 .build();
     }
 

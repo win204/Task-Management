@@ -21,7 +21,7 @@ export const RoleProtectedRoute = ({ children, allowedRoles }: RoleProtectedRout
   }
 
   // If the route has no specific roles required, or user has an allowed role
-  const hasAccess = allowedRoles.length === 0 || allowedRoles.some((role) => user.roles.includes(role));
+  const hasAccess = allowedRoles.length === 0 || allowedRoles.some((role) => (user.roles || []).includes(role));
 
   if (!hasAccess) {
     console.warn(`Access denied. User ${user.username} lacks required roles for ${location.pathname}`);

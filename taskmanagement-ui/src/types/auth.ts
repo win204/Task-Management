@@ -6,6 +6,7 @@ export interface User {
   phone: string;
   active: boolean;
   roles: string[];
+  positionNames?: string[];
 }
 
 export interface AuthTokens {

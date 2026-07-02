@@ -15,7 +15,7 @@ export const TaskAttachmentsList = ({ taskId }: TaskAttachmentsListProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const { data: attachments, isLoading } = useQuery({
+  const { data: attachments, isLoading, isError } = useQuery({
     queryKey: ['task-attachments', taskId],
     queryFn: () => AttachmentService.getAttachmentsByTask(taskId),
   });
@@ -75,6 +75,7 @@ export const TaskAttachmentsList = ({ taskId }: TaskAttachmentsListProps) => {
             type="file"
             ref={fileInputRef}
             className="hidden"
+            accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.txt,.zip"
             onChange={handleFileSelect}
           />
           <button
@@ -91,6 +92,8 @@ export const TaskAttachmentsList = ({ taskId }: TaskAttachmentsListProps) => {
       <div className="space-y-2">
         {isLoading ? (
           <div className="text-center text-sm text-slate-500 py-4">Loading attachments...</div>
+        ) : isError ? (
+          <div className="text-center text-sm text-red-500 py-4 italic bg-red-50 rounded border border-red-100">Failed to load attachments.</div>
         ) : attachments?.length === 0 ? (
           <div className="text-center text-sm text-slate-400 py-4 italic bg-white rounded border border-slate-100 border-dashed">No attachments yet.</div>
         ) : (
@@ -104,8 +107,14 @@ export const TaskAttachmentsList = ({ taskId }: TaskAttachmentsListProps) => {
                   <div className="font-medium text-sm text-slate-900 truncate" title={attachment.fileName}>
                     {attachment.fileName}
                   </div>
-                  <div className="text-xs text-slate-500">
-                    {formatFileSize(attachment.fileSize)} • {new Date(attachment.uploadedAt).toLocaleDateString()}
+                  <div className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+                    <span className="font-medium text-slate-600">{formatFileSize(attachment.fileSize)}</span>
+                    <span className="text-slate-300">•</span>
+                    <span>{attachment.fileType?.split('/').pop()?.toUpperCase() || 'FILE'}</span>
+                    <span className="text-slate-300">•</span>
+                    <span>by {attachment.uploadedByName || 'Unknown'}</span>
+                    <span className="text-slate-300">•</span>
+                    <span>{new Date(attachment.uploadedAt).toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -117,7 +126,7 @@ export const TaskAttachmentsList = ({ taskId }: TaskAttachmentsListProps) => {
                 >
                   <Download className="w-4 h-4" />
                 </button>
-                {user?.role === 'ADMIN' && (
+                {user?.roles?.includes('ADMIN') && (
                   <button
                     onClick={() => {
                       if (confirm('Are you sure you want to delete this attachment?')) {

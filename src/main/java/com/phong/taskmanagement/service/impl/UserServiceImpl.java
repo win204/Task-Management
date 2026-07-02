@@ -22,6 +22,10 @@ import com.phong.taskmanagement.repository.UserRepository;
 import com.phong.taskmanagement.repository.TaskRepository;
 import com.phong.taskmanagement.repository.ActivityLogRepository;
 import com.phong.taskmanagement.repository.RefreshTokenRepository;
+import com.phong.taskmanagement.repository.ProjectMemberRepository;
+import com.phong.taskmanagement.repository.TaskCommentRepository;
+import com.phong.taskmanagement.repository.NotificationRepository;
+import com.phong.taskmanagement.repository.PasswordResetTokenRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import com.phong.taskmanagement.service.UserService;
 import com.phong.taskmanagement.service.RealTimeUpdateService;
@@ -46,6 +50,10 @@ public class UserServiceImpl implements UserService {
     private final TaskRepository taskRepository;
     private final ActivityLogRepository activityLogRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final ProjectMemberRepository projectMemberRepository;
+    private final TaskCommentRepository taskCommentRepository;
+    private final NotificationRepository notificationRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final RealTimeUpdateService realTimeUpdateService;
 
@@ -61,6 +69,11 @@ public class UserServiceImpl implements UserService {
                 .roles(
                         user.getRoles() != null
                                 ? user.getRoles().stream().map(Role::getName).collect(Collectors.toSet())
+                                : java.util.Collections.emptySet()
+                )
+                .positionNames(
+                        user.getPositions() != null
+                                ? user.getPositions().stream().map(Position::getName).collect(Collectors.toSet())
                                 : java.util.Collections.emptySet()
                 )
                 .build();
@@ -137,6 +150,19 @@ public class UserServiceImpl implements UserService {
                         -> new ResourceNotFoundException(
                         "Id not found"
                 ));
+
+        boolean isAdmin = user.getRoles().stream().anyMatch(r -> r.getName().equals("ADMIN"));
+        if (isAdmin) {
+            long adminCount = userRepository.countByRoles_Name("ADMIN");
+            if (adminCount <= 1) {
+                throw new com.phong.taskmanagement.exception.BusinessException("Cannot delete the last remaining ADMIN user.");
+            }
+        }
+
+        projectMemberRepository.deleteByUser(user);
+        taskCommentRepository.deleteByUser(user);
+        notificationRepository.deleteByUser(user);
+        passwordResetTokenRepository.deleteByUser(user);
 
         taskRepository.updateAssigneeToNull(id);
         activityLogRepository.updateUserToNull(id);

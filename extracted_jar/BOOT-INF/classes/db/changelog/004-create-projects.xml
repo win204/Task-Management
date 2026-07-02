@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="4" author="phong">
+        <createTable tableName="projects">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="DATE"/>
+            <column name="project_code" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UK1batb7mq0elcfcs3d6maqo6sg"/>
+            </column>
+            <column name="project_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="DATE"/>
+            <column name="status" type="VARCHAR(255)"/>
+        </createTable>
+
+        <insert tableName="projects">
+            <column name="description" value="Spring Boot Internship Project"/>
+            <column name="end_date" valueDate="2026-08-01"/>
+            <column name="project_code" value="PRJ001"/>
+            <column name="project_name" value="Task Management System"/>
+            <column name="start_date" valueDate="2026-06-01"/>
+            <column name="status" value="IN_PROGRESS"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

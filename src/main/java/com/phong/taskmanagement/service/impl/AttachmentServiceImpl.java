@@ -22,6 +22,8 @@ import com.phong.taskmanagement.entity.Task;
 import com.phong.taskmanagement.exception.ResourceNotFoundException;
 import com.phong.taskmanagement.repository.AttachmentRepository;
 import com.phong.taskmanagement.repository.TaskRepository;
+import com.phong.taskmanagement.repository.UserRepository;
+import com.phong.taskmanagement.entity.User;
 import com.phong.taskmanagement.service.AttachmentService;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ public class AttachmentServiceImpl
 
     private final AttachmentRepository attachmentRepository;
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
     @Value("${file.upload-dir:uploads}")
     private String uploadDir;
@@ -57,6 +60,16 @@ public class AttachmentServiceImpl
                                 ? attachment.getTask().getTitle()
                                 : null
                 )
+                .uploadedById(
+                        attachment.getUploadedBy() != null
+                                ? attachment.getUploadedBy().getId()
+                                : null
+                )
+                .uploadedByName(
+                        attachment.getUploadedBy() != null
+                                ? attachment.getUploadedBy().getFullName()
+                                : null
+                )
                 .build();
     }
 
@@ -64,7 +77,8 @@ public class AttachmentServiceImpl
     @Transactional
     public AttachmentResponse uploadFile(
             MultipartFile file,
-            Long taskId) {
+            Long taskId,
+            String username) {
 
         Task task = taskRepository.findById(
                 taskId
@@ -72,6 +86,13 @@ public class AttachmentServiceImpl
                 new ResourceNotFoundException(
                         "Task not found"
                 ));
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        if (file.getSize() > 20 * 1024 * 1024) {
+            throw new IllegalArgumentException("File size exceeds 20MB limit");
+        }
 
         String originalFileName = StringUtils.cleanPath(
                 file.getOriginalFilename() != null
@@ -82,6 +103,22 @@ public class AttachmentServiceImpl
         if (originalFileName.contains("..")) {
             throw new IllegalArgumentException(
                     "Invalid file name"
+            );
+        }
+
+        String fileNameLower = originalFileName.toLowerCase();
+        boolean validExtension = fileNameLower.endsWith(".pdf") ||
+                fileNameLower.endsWith(".doc") || fileNameLower.endsWith(".docx") ||
+                fileNameLower.endsWith(".xls") || fileNameLower.endsWith(".xlsx") ||
+                fileNameLower.endsWith(".ppt") || fileNameLower.endsWith(".pptx") ||
+                fileNameLower.endsWith(".jpg") || fileNameLower.endsWith(".jpeg") ||
+                fileNameLower.endsWith(".png") ||
+                fileNameLower.endsWith(".txt") ||
+                fileNameLower.endsWith(".zip");
+
+        if (!validExtension) {
+            throw new IllegalArgumentException(
+                    "File type not supported"
             );
         }
 
@@ -116,6 +153,7 @@ public class AttachmentServiceImpl
                     .fileSize(file.getSize())
                     .filePath(storedPath)
                     .task(task)
+                    .uploadedBy(user)
                     .build();
 
             attachment = attachmentRepository.save(
@@ -127,7 +165,7 @@ public class AttachmentServiceImpl
         } catch (IOException ex) {
             throw new IllegalArgumentException(
                     "Could not upload file: "
-                            + originalFileName
+                            + originalFileName, ex
             );
         }
     }
@@ -162,7 +200,7 @@ public class AttachmentServiceImpl
 
         } catch (MalformedURLException ex) {
             throw new ResourceNotFoundException(
-                    "File not found"
+                    "File not found", ex
             );
         }
     }
@@ -185,7 +223,7 @@ public class AttachmentServiceImpl
             Files.deleteIfExists(filePath);
         } catch (IOException ex) {
             throw new IllegalArgumentException(
-                    "Could not delete physical file"
+                    "Could not delete physical file", ex
             );
         }
 

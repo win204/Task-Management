@@ -26,7 +26,7 @@ export default function SettingsPage() {
   const { data: configs, isLoading: configsLoading } = useQuery({
     queryKey: ['system-configs'],
     queryFn: () => SystemConfigService.getAllConfigs(),
-    enabled: user?.roles?.includes('ADMIN') && activeTab === 'system',
+    enabled: (user?.roles || []).includes('ADMIN') && activeTab === 'system',
   });
 
   const updateConfigMutation = useMutation({
@@ -130,7 +130,7 @@ export default function SettingsPage() {
           >
             <Lock className="w-4 h-4" /> Security
           </button>
-          {user?.roles?.includes('ADMIN') && (
+          {(user?.roles || []).includes('ADMIN') && (
             <button 
               onClick={() => setActiveTab('system')}
               className={`w-full flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
@@ -201,7 +201,7 @@ export default function SettingsPage() {
           )}
 
           {/* System Config Section */}
-          {activeTab === 'system' && user?.roles?.includes('ADMIN') && (
+          {activeTab === 'system' && (user?.roles || []).includes('ADMIN') && (
             <div className="bg-white dark:bg-surface-800/50 rounded-2xl border border-surface-200 dark:border-surface-700/50 p-6 shadow-sm animate-in fade-in duration-200">
               <h3 className="text-lg font-semibold text-surface-900 dark:text-surface-100 mb-4 flex items-center gap-2">
                 <Settings2 className="w-5 h-5 text-indigo-500" /> System Configuration

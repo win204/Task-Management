@@ -78,7 +78,7 @@ export const ActivityLogsPage = () => {
         <div className="flex gap-2">
           <button
             onClick={() => refetch()}
-            className="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-2 font-medium"
+            className="px-4 py-2 bg-white dark:bg-surface-800 border border-slate-200 dark:border-surface-700 text-slate-700 dark:text-surface-200 rounded-lg hover:bg-slate-50 dark:hover:bg-surface-700 transition-colors flex items-center gap-2 font-medium"
           >
             <RefreshCw className="w-4 h-4" />
             Refresh
@@ -100,7 +100,7 @@ export const ActivityLogsPage = () => {
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4">
+      <div className="bg-white dark:bg-surface-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-surface-700 flex flex-col gap-4">
         <div className="flex flex-wrap gap-4">
           <div className="flex-1 min-w-[200px]">
             <div className="relative">
@@ -111,7 +111,7 @@ export const ActivityLogsPage = () => {
                 placeholder="Search by username..."
                 value={params.username || ''}
                 onChange={handleFilterChange}
-                className="w-full pl-9 pr-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+                className="w-full pl-9 pr-4 py-2 rounded-lg border border-slate-300 dark:border-surface-600 bg-white dark:bg-surface-900 text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
               />
             </div>
           </div>
@@ -123,7 +123,7 @@ export const ActivityLogsPage = () => {
               placeholder="Search action..."
               value={params.action || ''}
               onChange={handleFilterChange}
-              className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+              className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-surface-600 bg-white dark:bg-surface-900 text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
             />
           </div>
 
@@ -134,7 +134,7 @@ export const ActivityLogsPage = () => {
               placeholder="Search IP address..."
               value={params.ipAddress || ''}
               onChange={handleFilterChange}
-              className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+              className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-surface-600 bg-white dark:bg-surface-900 text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
             />
           </div>
         </div>
@@ -147,7 +147,7 @@ export const ActivityLogsPage = () => {
                 name="module"
                 value={params.module || ''}
                 onChange={handleFilterChange}
-                className="w-full pl-9 pr-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm appearance-none bg-white"
+                className="w-full pl-9 pr-4 py-2 rounded-lg border border-slate-300 dark:border-surface-600 bg-white dark:bg-surface-900 text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm appearance-none"
               >
                 <option value="">All Modules</option>
                 <option value="PROJECT">Projects</option>
@@ -163,7 +163,7 @@ export const ActivityLogsPage = () => {
               name="result"
               value={params.result || ''}
               onChange={handleFilterChange}
-              className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm appearance-none bg-white"
+              className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-surface-600 bg-white dark:bg-surface-900 text-surface-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm appearance-none"
             >
               <option value="">All Results</option>
               <option value="SUCCESS">Success</option>
@@ -177,7 +177,7 @@ export const ActivityLogsPage = () => {
               name="startDate"
               value={params.startDate?.split('T')[0] || ''}
               onChange={(e) => setParams(prev => ({ ...prev, startDate: e.target.value ? `${e.target.value}T00:00:00+07:00` : undefined, page: 0 }))}
-              className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-600"
+              className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-surface-600 bg-white dark:bg-surface-900 text-slate-600 dark:text-surface-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
             />
           </div>
           <div className="w-48">
@@ -186,17 +186,17 @@ export const ActivityLogsPage = () => {
               name="endDate"
               value={params.endDate?.split('T')[0] || ''}
               onChange={(e) => setParams(prev => ({ ...prev, endDate: e.target.value ? `${e.target.value}T23:59:59+07:00` : undefined, page: 0 }))}
-              className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-600"
+              className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-surface-600 bg-white dark:bg-surface-900 text-slate-600 dark:text-surface-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
             />
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-white dark:bg-surface-800 rounded-xl shadow-sm border border-slate-200 dark:border-surface-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200">
+              <tr className="bg-slate-50 dark:bg-surface-900/50 border-b border-slate-200 dark:border-surface-700">
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wider">
                     Time
                   </th>
@@ -214,32 +214,32 @@ export const ActivityLogsPage = () => {
                   </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-surface-700/50">
               {isLoading ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500 dark:text-surface-400">
                     Loading activity logs...
                   </td>
                 </tr>
               ) : logs.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500 dark:text-surface-400">
                     No activities found matching the criteria.
                   </td>
                 </tr>
               ) : (
                 logs.map((log) => (
-                  <tr key={log.id} className="hover:bg-slate-50/50 transition-colors">
+                  <tr key={log.id} className="hover:bg-slate-50/50 dark:hover:bg-surface-700/50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-surface-500 dark:text-surface-400">
                       {formatVietnamTime(log.createdAt)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm font-medium text-slate-700">
+                      <span className="text-sm font-medium text-slate-700 dark:text-surface-200">
                         {log.action}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm font-medium text-slate-900 bg-slate-100 px-2 py-1 rounded">
+                      <span className="text-sm font-medium text-slate-900 dark:text-surface-100 bg-slate-100 dark:bg-surface-700 px-2 py-1 rounded">
                         @{log.username || 'system'}
                       </span>
                     </td>
@@ -273,26 +273,26 @@ export const ActivityLogsPage = () => {
 
         {/* Pagination */}
         {pageData && pageData.totalPages > 1 && (
-          <div className="px-6 py-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
-            <span className="text-sm text-slate-500">
-              Showing <span className="font-medium text-slate-700">{pageData.number * pageData.size + 1}</span> to{' '}
-              <span className="font-medium text-slate-700">
+          <div className="px-6 py-4 border-t border-slate-200 dark:border-surface-700 bg-slate-50 dark:bg-surface-900/50 flex items-center justify-between">
+            <span className="text-sm text-slate-500 dark:text-surface-400">
+              Showing <span className="font-medium text-slate-700 dark:text-surface-200">{pageData.number * pageData.size + 1}</span> to{' '}
+              <span className="font-medium text-slate-700 dark:text-surface-200">
                 {Math.min((pageData.number + 1) * pageData.size, pageData.totalElements)}
               </span>{' '}
-              of <span className="font-medium text-slate-700">{pageData.totalElements}</span> results
+              of <span className="font-medium text-slate-700 dark:text-surface-200">{pageData.totalElements}</span> results
             </span>
             <div className="flex gap-2">
               <button
                 onClick={() => handlePageChange(pageData.number - 1)}
                 disabled={pageData.first}
-                className="p-2 border border-slate-300 rounded-md bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="p-2 border border-slate-300 dark:border-surface-600 rounded-md bg-white dark:bg-surface-800 text-slate-600 dark:text-surface-300 hover:bg-slate-50 dark:hover:bg-surface-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={() => handlePageChange(pageData.number + 1)}
                 disabled={pageData.last}
-                className="p-2 border border-slate-300 rounded-md bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="p-2 border border-slate-300 dark:border-surface-600 rounded-md bg-white dark:bg-surface-800 text-slate-600 dark:text-surface-300 hover:bg-slate-50 dark:hover:bg-surface-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>

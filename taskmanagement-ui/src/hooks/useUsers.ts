@@ -170,3 +170,37 @@ export const useUnlockUserMutation = () => {
     }
   });
 };
+
+export const useAssignRoleMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ userId, roleId }: { userId: number; roleId: number }) =>
+      UserService.assignRole(userId, roleId),
+    onSuccess: () => {
+      toast.success('Role assigned successfully');
+      queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.all });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Failed to assign role';
+      toast.error(message);
+    },
+  });
+};
+
+export const useAssignPositionMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ userId, positionId }: { userId: number; positionId: number }) =>
+      UserService.assignPosition(userId, positionId),
+    onSuccess: () => {
+      toast.success('Position assigned successfully');
+      queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.all });
+    },
+    onError: (error: any) => {
+      const message = error?.response?.data?.message || 'Failed to assign position';
+      toast.error(message);
+    },
+  });
+};

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <include file="db/changelog/001-create-roles.xml"/>
+    <include file="db/changelog/002-create-positions.xml"/>
+    <include file="db/changelog/003-create-users.xml"/>
+    <include file="db/changelog/004-create-projects.xml"/>
+    <include file="db/changelog/005-create-tasks.xml"/>
+    <include file="db/changelog/006-create-activity-logs.xml"/>
+    <include file="db/changelog/007-create-attachments.xml"/>
+    <include file="db/changelog/008-update-admin-password.xml"/>
+    <include file="db/changelog/009-create-refresh-tokens.xml"/>
+    <include file="db/changelog/010-create-password-reset-tokens.xml"/>
+    <include file="db/changelog/011-update-password-reset-tokens.xml"/>
+    <include file="db/changelog/012-update-refresh-tokens.xml"/>
+    <include file="db/changelog/013-create-notifications.xml"/>
+    <include file="db/changelog/014-seed-data.xml"/>
+    <include file="db/changelog/015-add-unique-constraints.xml"/>
+    <include file="db/changelog/016-fix-seed-data.xml"/>
+    <include file="db/changelog/017-add-notification-type.xml"/>
+    <include file="db/changelog/018-add-project-members.xml"/>
+    <include file="db/changelog/019-add-task-comments.xml"/>
+    <include file="db/changelog/020-add-missing-columns.xml"/>
+    <include file="db/changelog/021-upgrade-activity-logs.xml"/>
+    <include file="db/changelog/022-normalize-activity-logs.xml"/>
+    <include file="db/changelog/changes/023-system-config.xml"/>
+    <include file="db/changelog/024-fix-identity-seeds.xml"/>
+    <include file="db/changelog/025-add-attachment-columns.xml"/>
+    <include file="db/changelog/026-add-uploaded-by-to-attachments.xml"/>
+    <include file="db/changelog/027-reseed-activity-logs.xml"/>
+
+    <include file="db/changelog/028-reseed-activity-logs.xml"/>
+    <include file="db/changelog/029-update-admin-password-fix.xml"/>
+</databaseChangeLog>

@@ -53,7 +53,7 @@ export const UserTable = ({ users, isLoading, error, onView, onEdit, onDelete }:
   }
 
   const getRoleColor = (role: string) => {
-    switch (role.toUpperCase()) {
+    switch ((role || '').toUpperCase()) {
       case 'ADMIN': return 'bg-red-100 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20';
       case 'MANAGER': return 'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20';
       default: return 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20';
@@ -100,7 +100,7 @@ export const UserTable = ({ users, isLoading, error, onView, onEdit, onDelete }:
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center">
                   <div className="flex-shrink-0 h-10 w-10 bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 flex items-center justify-center rounded-full font-bold">
-                    {user.fullName.charAt(0).toUpperCase()}
+                    {(user.fullName || user.username || '').charAt(0).toUpperCase()}
                   </div>
                   <div className="ml-4">
                     <div className="text-sm font-medium text-surface-900 dark:text-surface-100">{user.fullName}</div>

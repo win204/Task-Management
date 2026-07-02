@@ -5,7 +5,7 @@ interface TaskPriorityBadgeProps {
 }
 
 export const TaskPriorityBadge = ({ priority }: TaskPriorityBadgeProps) => {
-  const normalizedPriority = priority.toUpperCase();
+  const normalizedPriority = (priority || '').toUpperCase();
   
   switch (normalizedPriority) {
     case 'LOW':
@@ -39,7 +39,7 @@ export const TaskPriorityBadge = ({ priority }: TaskPriorityBadgeProps) => {
     default:
       return (
         <span className="inline-flex items-center text-xs font-medium text-slate-700">
-          {priority}
+          {priority ?? ''}
         </span>
       );
   }

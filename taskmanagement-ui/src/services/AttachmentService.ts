@@ -10,6 +10,8 @@ export interface AttachmentResponse {
   uploadedAt: string;
   taskId: number;
   taskTitle: string;
+  uploadedById?: number;
+  uploadedByName?: string;
 }
 
 export const AttachmentService = {
@@ -25,12 +27,7 @@ export const AttachmentService = {
     // Pass taskId as query param as expected by backend
     const response = await apiClient.post<ApiResponse<AttachmentResponse>>(
       `/api/attachments/upload?taskId=${taskId}`, 
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
+      formData
     );
     return response.data.data;
   },

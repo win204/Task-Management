@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { LogOut, ChevronsLeft, ChevronsRight, X } from 'lucide-react';
 import { SIDEBAR_MENU } from '../../constants/menu';
 import { useAuthStore } from '../../store/authStore';
@@ -29,7 +29,7 @@ export const Sidebar = ({ collapsed, onToggleCollapse, mobileOpen, onMobileClose
     return SIDEBAR_MENU.filter((item) => {
       // If the item requires specific roles, check if user has at least one of them
       if (item.roles && item.roles.length > 0) {
-        return item.roles.some((role) => user.roles.includes(role));
+        return item.roles.some((role) => (user.roles || []).includes(role));
       }
       // If no specific roles required, it's public/accessible to all authenticated users
       return true;
@@ -40,7 +40,7 @@ export const Sidebar = ({ collapsed, onToggleCollapse, mobileOpen, onMobileClose
     <>
       {/* Brand Header */}
       <div className={`flex items-center h-16 border-b border-surface-800 dark:border-surface-800 px-4 flex-shrink-0 ${collapsed ? 'justify-center' : 'justify-between'}`}>
-        <div className="flex items-center gap-2.5 overflow-hidden">
+        <Link to="/dashboard" className="flex items-center gap-2.5 overflow-hidden cursor-pointer hover:opacity-90 transition-opacity" onClick={onMobileClose}>
           <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center text-sm font-black text-white shadow-lg shadow-primary-600/30 flex-shrink-0">
             TF
           </div>
@@ -49,7 +49,7 @@ export const Sidebar = ({ collapsed, onToggleCollapse, mobileOpen, onMobileClose
               TaskFlow
             </span>
           )}
-        </div>
+        </Link>
         {/* Desktop collapse toggle */}
         {!collapsed && (
           <button
@@ -90,6 +90,7 @@ export const Sidebar = ({ collapsed, onToggleCollapse, mobileOpen, onMobileClose
             <NavLink
               key={item.path}
               to={item.path}
+              end={item.path === '/dashboard'}
               onClick={onMobileClose}
               title={collapsed ? item.label : undefined}
               className={({ isActive }) =>
@@ -123,7 +124,7 @@ export const Sidebar = ({ collapsed, onToggleCollapse, mobileOpen, onMobileClose
         {user && !collapsed && (
           <div className="flex items-center gap-3 px-3 py-2.5 mb-2 rounded-xl bg-surface-800/50">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
-              {user.fullName ? user.fullName.charAt(0).toUpperCase() : user.username.charAt(0).toUpperCase()}
+              {(user.fullName || user.username || '').charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-surface-200 truncate">

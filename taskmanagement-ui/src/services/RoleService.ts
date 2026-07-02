@@ -5,6 +5,7 @@ import type { PageResponse } from '../types/user';
 export interface Role {
   id: number;
   name: string;
+  description?: string;
 }
 
 export const RoleService = {
@@ -12,6 +13,18 @@ export const RoleService = {
     const response = await apiClient.get<ApiResponse<PageResponse<Role>>>('/api/roles/paging', {
       params: { page, size }
     });
+    return response.data.data;
+  },
+
+  searchRoles: async (keyword: string, page: number, size: number): Promise<PageResponse<Role>> => {
+    const response = await apiClient.get<ApiResponse<PageResponse<Role>>>('/api/roles/search', {
+      params: { keyword, page, size }
+    });
+    return response.data.data;
+  },
+
+  getAllRoles: async (): Promise<Role[]> => {
+    const response = await apiClient.get<ApiResponse<Role[]>>('/api/roles');
     return response.data.data;
   },
 
@@ -27,5 +40,9 @@ export const RoleService = {
 
   deleteRole: async (id: number): Promise<void> => {
     await apiClient.delete(`/api/roles/${id}`);
+  },
+
+  assignRoleToUser: async (userId: number, roleId: number): Promise<void> => {
+    await apiClient.post(`/api/users/${userId}/roles/${roleId}`);
   }
 };
