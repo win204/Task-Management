@@ -29,5 +29,10 @@
     <include file="db/changelog/022-normalize-activity-logs.xml"/>
     <include file="db/changelog/changes/023-system-config.xml"/>
     <include file="db/changelog/024-fix-identity-seeds.xml"/>
+    <include file="db/changelog/025-add-attachment-columns.xml"/>
+    <include file="db/changelog/026-add-uploaded-by-to-attachments.xml"/>
+    <include file="db/changelog/027-reseed-activity-logs.xml"/>
 
+    <include file="db/changelog/028-reseed-activity-logs.xml"/>
+    <include file="db/changelog/029-update-admin-password-fix.xml"/>
 </databaseChangeLog>
