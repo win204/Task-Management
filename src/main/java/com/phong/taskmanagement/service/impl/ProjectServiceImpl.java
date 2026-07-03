@@ -1,7 +1,7 @@
 package com.phong.taskmanagement.service.impl;
 
 import com.querydsl.core.BooleanBuilder;
-import com.phong.taskmanagement.entity.QProject;
+import com.phong.taskmanagement.domain.entity.QProject;
 
 import java.util.List;
 
@@ -12,15 +12,15 @@ import org.springframework.stereotype.Service;
 
 import com.phong.taskmanagement.dto.request.CreateProjectRequest;
 import com.phong.taskmanagement.dto.response.ProjectResponse;
-import com.phong.taskmanagement.entity.Project;
+import com.phong.taskmanagement.domain.entity.Project;
 import com.phong.taskmanagement.exception.ResourceNotFoundException;
-import com.phong.taskmanagement.repository.ProjectRepository;
-import com.phong.taskmanagement.repository.TaskRepository;
-import com.phong.taskmanagement.repository.ActivityLogRepository;
+import com.phong.taskmanagement.domain.repository.ProjectRepository;
+import com.phong.taskmanagement.domain.repository.TaskRepository;
+import com.phong.taskmanagement.domain.repository.ActivityLogRepository;
 import org.springframework.dao.DataIntegrityViolationException;
-import com.phong.taskmanagement.service.ProjectService;
-import com.phong.taskmanagement.service.NotificationService;
-import com.phong.taskmanagement.service.RealTimeUpdateService;
+import com.phong.taskmanagement.service.interfaces.ProjectService;
+import com.phong.taskmanagement.service.interfaces.NotificationService;
+import com.phong.taskmanagement.service.interfaces.RealTimeUpdateService;
 
 import lombok.RequiredArgsConstructor;
 

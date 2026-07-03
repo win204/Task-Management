@@ -9,7 +9,7 @@ import {
   Contact
 } from 'lucide-react';
 import type { MenuItem } from '../types/menu';
-import { ROUTES } from '../utils/constants';
+import { ROUTES } from '@/utils/constants';
 
 /**
  * Centralized role-based menu configuration.

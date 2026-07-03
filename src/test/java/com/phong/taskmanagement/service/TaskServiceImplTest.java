@@ -1,9 +1,9 @@
 package com.phong.taskmanagement.service;
 
 import com.phong.taskmanagement.dto.response.TaskResponse;
-import com.phong.taskmanagement.entity.Task;
+import com.phong.taskmanagement.domain.entity.Task;
 import com.phong.taskmanagement.exception.ResourceNotFoundException;
-import com.phong.taskmanagement.repository.TaskRepository;
+import com.phong.taskmanagement.domain.repository.TaskRepository;
 import com.phong.taskmanagement.service.impl.TaskServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

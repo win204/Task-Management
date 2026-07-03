@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { wsService } from '../services/WebSocketService';
-import { useAuthStore } from '../store/authStore';
+import { wsService } from '@/services/WebSocketService';
+import { useAuthStore } from '@/features/auth/store/authStore';
 
 export const useRealTimeSync = () => {
   const queryClient = useQueryClient();

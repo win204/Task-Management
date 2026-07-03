@@ -1,6 +1,6 @@
 package com.phong.taskmanagement.exception;
 
-import com.phong.taskmanagement.dto.response.ApiResponse;
+import com.phong.taskmanagement.common.response.ApiResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;

@@ -8,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.phong.taskmanagement.dto.request.CreateRoleRequest;
-import com.phong.taskmanagement.entity.Role;
+import com.phong.taskmanagement.domain.entity.Role;
 import com.phong.taskmanagement.exception.ResourceNotFoundException;
-import com.phong.taskmanagement.repository.RoleRepository;
-import com.phong.taskmanagement.service.RoleService;
+import com.phong.taskmanagement.domain.repository.RoleRepository;
+import com.phong.taskmanagement.service.interfaces.RoleService;
 
 import lombok.RequiredArgsConstructor;
 

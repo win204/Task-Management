@@ -8,8 +8,8 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.phong.taskmanagement.entity.Role;
-import com.phong.taskmanagement.entity.User;
+import com.phong.taskmanagement.domain.entity.Role;
+import com.phong.taskmanagement.domain.entity.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

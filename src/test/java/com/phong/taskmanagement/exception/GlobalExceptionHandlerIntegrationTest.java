@@ -1,7 +1,7 @@
 package com.phong.taskmanagement.exception;
 
 import com.phong.taskmanagement.controller.ProjectController;
-import com.phong.taskmanagement.service.ProjectService;
+import com.phong.taskmanagement.service.interfaces.ProjectService;
 import com.phong.taskmanagement.security.JwtService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.junit.jupiter.api.Test;

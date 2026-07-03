@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.phong.taskmanagement.dto.response.ApiResponse;
+import com.phong.taskmanagement.common.response.ApiResponse;
 import com.phong.taskmanagement.dto.response.AttachmentResponse;
-import com.phong.taskmanagement.service.AttachmentService;
+import com.phong.taskmanagement.service.interfaces.AttachmentService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

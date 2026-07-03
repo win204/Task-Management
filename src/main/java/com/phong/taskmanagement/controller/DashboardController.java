@@ -1,11 +1,11 @@
 package com.phong.taskmanagement.controller;
 
-import com.phong.taskmanagement.dto.response.ApiResponse;
+import com.phong.taskmanagement.common.response.ApiResponse;
 import com.phong.taskmanagement.dto.response.DashboardResponse;
 import com.phong.taskmanagement.dto.response.TaskMonthlyChartResponse;
 import com.phong.taskmanagement.dto.response.TaskPriorityChartResponse;
 import com.phong.taskmanagement.dto.response.TaskStatusChartResponse;
-import com.phong.taskmanagement.service.DashboardService;
+import com.phong.taskmanagement.service.interfaces.DashboardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

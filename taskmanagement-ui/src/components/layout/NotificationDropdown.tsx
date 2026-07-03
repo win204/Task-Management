@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { Bell, Check, Info, AlertTriangle, Loader2 } from 'lucide-react';
-import { useUnreadNotifications, useMarkNotificationRead } from '../../hooks/useNotifications';
-import { formatDistanceToNowVN } from '../../utils/dateUtils';
+import { useUnreadNotifications, useMarkNotificationRead } from '@/features/notifications/hooks/useNotifications';
+import { formatDistanceToNowVN } from '@/utils/dateUtils';
 
 import { Link, useNavigate } from 'react-router-dom';
-import type { Notification } from '../../types/notification';
+import type { Notification } from '@/features/notifications/types/notification';
 
 export const NotificationDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);

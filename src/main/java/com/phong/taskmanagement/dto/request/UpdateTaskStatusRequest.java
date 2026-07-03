@@ -1,6 +1,6 @@
 package com.phong.taskmanagement.dto.request;
 
-import com.phong.taskmanagement.enums.TaskStatus;
+import com.phong.taskmanagement.domain.enums.TaskStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

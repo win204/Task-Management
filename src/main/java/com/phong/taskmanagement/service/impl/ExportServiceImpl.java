@@ -1,16 +1,16 @@
 package com.phong.taskmanagement.service.impl;
 
-import com.phong.taskmanagement.entity.Project;
-import com.phong.taskmanagement.entity.Task;
-import com.phong.taskmanagement.entity.User;
-import com.phong.taskmanagement.entity.ActivityLog;
-import com.phong.taskmanagement.repository.ProjectRepository;
-import com.phong.taskmanagement.repository.TaskRepository;
-import com.phong.taskmanagement.repository.UserRepository;
-import com.phong.taskmanagement.repository.ActivityLogRepository;
-import com.phong.taskmanagement.service.ActivityLogService;
-import com.phong.taskmanagement.service.ExportService;
-import com.phong.taskmanagement.service.DashboardService;
+import com.phong.taskmanagement.domain.entity.Project;
+import com.phong.taskmanagement.domain.entity.Task;
+import com.phong.taskmanagement.domain.entity.User;
+import com.phong.taskmanagement.domain.entity.ActivityLog;
+import com.phong.taskmanagement.domain.repository.ProjectRepository;
+import com.phong.taskmanagement.domain.repository.TaskRepository;
+import com.phong.taskmanagement.domain.repository.UserRepository;
+import com.phong.taskmanagement.domain.repository.ActivityLogRepository;
+import com.phong.taskmanagement.service.interfaces.ActivityLogService;
+import com.phong.taskmanagement.service.interfaces.ExportService;
+import com.phong.taskmanagement.service.interfaces.DashboardService;
 import com.phong.taskmanagement.dto.response.DashboardResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;

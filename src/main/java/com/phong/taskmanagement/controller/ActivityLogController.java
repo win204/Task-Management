@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.phong.taskmanagement.dto.request.CreateActivityLogRequest;
 import com.phong.taskmanagement.dto.response.ActivityLogResponse;
-import com.phong.taskmanagement.dto.response.ApiResponse;
-import com.phong.taskmanagement.service.ActivityLogService;
+import com.phong.taskmanagement.common.response.ApiResponse;
+import com.phong.taskmanagement.service.interfaces.ActivityLogService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

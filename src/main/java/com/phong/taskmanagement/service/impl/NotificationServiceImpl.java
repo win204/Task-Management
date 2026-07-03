@@ -1,13 +1,13 @@
 package com.phong.taskmanagement.service.impl;
 
 import com.phong.taskmanagement.dto.response.NotificationResponse;
-import com.phong.taskmanagement.entity.Notification;
-import com.phong.taskmanagement.entity.User;
+import com.phong.taskmanagement.domain.entity.Notification;
+import com.phong.taskmanagement.domain.entity.User;
 import com.phong.taskmanagement.exception.ResourceNotFoundException;
-import com.phong.taskmanagement.repository.NotificationRepository;
-import com.phong.taskmanagement.repository.UserRepository;
-import com.phong.taskmanagement.service.NotificationService;
-import com.phong.taskmanagement.service.RealTimeUpdateService;
+import com.phong.taskmanagement.domain.repository.NotificationRepository;
+import com.phong.taskmanagement.domain.repository.UserRepository;
+import com.phong.taskmanagement.service.interfaces.NotificationService;
+import com.phong.taskmanagement.service.interfaces.RealTimeUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

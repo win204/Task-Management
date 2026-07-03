@@ -2,10 +2,10 @@ package com.phong.taskmanagement.service;
 
 import com.phong.taskmanagement.dto.request.ChangePasswordRequest;
 import com.phong.taskmanagement.dto.request.UpdateUserRequest;
-import com.phong.taskmanagement.entity.Role;
-import com.phong.taskmanagement.entity.User;
-import com.phong.taskmanagement.repository.RoleRepository;
-import com.phong.taskmanagement.repository.UserRepository;
+import com.phong.taskmanagement.domain.entity.Role;
+import com.phong.taskmanagement.domain.entity.User;
+import com.phong.taskmanagement.domain.repository.RoleRepository;
+import com.phong.taskmanagement.domain.repository.UserRepository;
 import com.phong.taskmanagement.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import com.phong.taskmanagement.service.interfaces.RealTimeUpdateService;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,9 @@ public class UserServiceImplUpdateTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private RealTimeUpdateService realTimeUpdateService;
 
     @InjectMocks
     private UserServiceImpl userService;

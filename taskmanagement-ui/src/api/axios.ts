@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import { storage } from '../utils/storage';
-import { API_ENDPOINTS } from '../utils/constants';
+import { storage } from '@/utils/storage';
+import { API_ENDPOINTS } from '@/utils/constants';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080';
 
@@ -120,7 +120,7 @@ apiClient.interceptors.response.use(
         storage.setRefreshToken(newRefreshToken);
 
         // Dynamically import Zustand store to update session state (avoids circular dependency issues)
-        const { updateSession } = (await import('../store/authStore')).useAuthStore.getState();
+        const { updateSession } = (await import('@/features/auth/store/authStore')).useAuthStore.getState();
         updateSession(newAccessToken, newRefreshToken);
 
         console.log('[Axios Interceptor] Store state updated. Releasing queued requests...');
@@ -150,7 +150,7 @@ apiClient.interceptors.response.use(
 const handleSessionExpiration = () => {
   console.warn('[Axios Interceptor] Session expired or invalid. Flashing localStorage and informing Store.');
   storage.clearAuth();
-  import('../store/authStore').then(({ useAuthStore }) => {
+  import('@/features/auth/store/authStore').then(({ useAuthStore }) => {
     useAuthStore.getState().logoutState();
   });
 };

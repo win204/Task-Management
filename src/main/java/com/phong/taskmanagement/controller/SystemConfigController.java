@@ -1,9 +1,9 @@
 package com.phong.taskmanagement.controller;
 
 import com.phong.taskmanagement.dto.request.UpdateSystemConfigRequest;
-import com.phong.taskmanagement.dto.response.ApiResponse;
+import com.phong.taskmanagement.common.response.ApiResponse;
 import com.phong.taskmanagement.dto.response.SystemConfigResponse;
-import com.phong.taskmanagement.service.SystemConfigService;
+import com.phong.taskmanagement.service.interfaces.SystemConfigService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

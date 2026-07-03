@@ -1,6 +1,6 @@
 package com.phong.taskmanagement.scheduler;
 
-import com.phong.taskmanagement.repository.RefreshTokenRepository;
+import com.phong.taskmanagement.domain.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

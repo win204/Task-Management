@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { LogOut, ChevronsLeft, ChevronsRight, X } from 'lucide-react';
 import { SIDEBAR_MENU } from '../../constants/menu';
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore } from '@/features/auth/store/authStore';
 
 interface SidebarProps {
   collapsed: boolean;

@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.phong.taskmanagement.entity.User;
-import com.phong.taskmanagement.repository.UserRepository;
+import com.phong.taskmanagement.domain.entity.User;
+import com.phong.taskmanagement.domain.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

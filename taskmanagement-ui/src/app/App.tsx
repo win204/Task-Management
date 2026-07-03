@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore } from '@/features/auth/store/authStore';
 import { router } from './router';
 import Providers from './providers';
 import { Loader2 } from 'lucide-react';

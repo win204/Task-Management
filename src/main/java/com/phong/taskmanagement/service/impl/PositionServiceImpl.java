@@ -8,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.phong.taskmanagement.dto.request.CreatePositionRequest;
-import com.phong.taskmanagement.entity.Position;
+import com.phong.taskmanagement.domain.entity.Position;
 import com.phong.taskmanagement.exception.ResourceNotFoundException;
-import com.phong.taskmanagement.repository.PositionRepository;
-import com.phong.taskmanagement.service.PositionService;
+import com.phong.taskmanagement.domain.repository.PositionRepository;
+import com.phong.taskmanagement.service.interfaces.PositionService;
 
 import lombok.RequiredArgsConstructor;
 

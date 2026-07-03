@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import com.phong.taskmanagement.dto.request.CreateProjectRequest;
-import com.phong.taskmanagement.dto.response.ApiResponse;
+import com.phong.taskmanagement.common.response.ApiResponse;
 import com.phong.taskmanagement.dto.response.ProjectResponse;
-import com.phong.taskmanagement.service.ProjectService;
+import com.phong.taskmanagement.service.interfaces.ProjectService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

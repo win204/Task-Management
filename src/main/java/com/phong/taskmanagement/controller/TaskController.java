@@ -9,9 +9,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import com.phong.taskmanagement.dto.request.CreateTaskRequest;
 import com.phong.taskmanagement.dto.request.TaskSearchRequest;
 import com.phong.taskmanagement.dto.request.UpdateTaskStatusRequest;
-import com.phong.taskmanagement.dto.response.ApiResponse;
+import com.phong.taskmanagement.common.response.ApiResponse;
 import com.phong.taskmanagement.dto.response.TaskResponse;
-import com.phong.taskmanagement.service.TaskService;
+import com.phong.taskmanagement.service.interfaces.TaskService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,7 +1,7 @@
 package com.phong.taskmanagement.service.impl;
 
 import com.querydsl.core.BooleanBuilder;
-import com.phong.taskmanagement.entity.QUser;
+import com.phong.taskmanagement.domain.entity.QUser;
 
 import java.util.List;
 
@@ -12,23 +12,23 @@ import com.phong.taskmanagement.dto.request.CreateUserRequest;
 import com.phong.taskmanagement.dto.request.UpdateUserRequest;
 import com.phong.taskmanagement.dto.request.ChangePasswordRequest;
 import com.phong.taskmanagement.dto.response.UserResponse;
-import com.phong.taskmanagement.entity.Position;
-import com.phong.taskmanagement.entity.Role;
-import com.phong.taskmanagement.entity.User;
+import com.phong.taskmanagement.domain.entity.Position;
+import com.phong.taskmanagement.domain.entity.Role;
+import com.phong.taskmanagement.domain.entity.User;
 import com.phong.taskmanagement.exception.ResourceNotFoundException;
-import com.phong.taskmanagement.repository.PositionRepository;
-import com.phong.taskmanagement.repository.RoleRepository;
-import com.phong.taskmanagement.repository.UserRepository;
-import com.phong.taskmanagement.repository.TaskRepository;
-import com.phong.taskmanagement.repository.ActivityLogRepository;
-import com.phong.taskmanagement.repository.RefreshTokenRepository;
-import com.phong.taskmanagement.repository.ProjectMemberRepository;
-import com.phong.taskmanagement.repository.TaskCommentRepository;
-import com.phong.taskmanagement.repository.NotificationRepository;
-import com.phong.taskmanagement.repository.PasswordResetTokenRepository;
+import com.phong.taskmanagement.domain.repository.PositionRepository;
+import com.phong.taskmanagement.domain.repository.RoleRepository;
+import com.phong.taskmanagement.domain.repository.UserRepository;
+import com.phong.taskmanagement.domain.repository.TaskRepository;
+import com.phong.taskmanagement.domain.repository.ActivityLogRepository;
+import com.phong.taskmanagement.domain.repository.RefreshTokenRepository;
+import com.phong.taskmanagement.domain.repository.ProjectMemberRepository;
+import com.phong.taskmanagement.domain.repository.TaskCommentRepository;
+import com.phong.taskmanagement.domain.repository.NotificationRepository;
+import com.phong.taskmanagement.domain.repository.PasswordResetTokenRepository;
 import org.springframework.dao.DataIntegrityViolationException;
-import com.phong.taskmanagement.service.UserService;
-import com.phong.taskmanagement.service.RealTimeUpdateService;
+import com.phong.taskmanagement.service.interfaces.UserService;
+import com.phong.taskmanagement.service.interfaces.RealTimeUpdateService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -139,6 +139,13 @@ public class UserServiceImpl implements UserService {
                         "Id not found"
                 ));
 
+        return mapToResponse(user);
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public UserResponse getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Username not found"));
         return mapToResponse(user);
     }
 

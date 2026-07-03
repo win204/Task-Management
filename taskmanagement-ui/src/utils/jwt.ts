@@ -1,4 +1,4 @@
-import type { DecodedJwt } from '../types/auth';
+import type { DecodedJwt } from '@/features/auth/types/auth';
 
 /**
  * Decodes a JWT token payload using native browser APIs.

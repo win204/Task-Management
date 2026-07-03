@@ -3,9 +3,9 @@ package com.phong.taskmanagement.controller;
 import com.phong.taskmanagement.dto.request.CreateUserRequest;
 import com.phong.taskmanagement.dto.request.UpdateUserRequest;
 import com.phong.taskmanagement.dto.request.ChangePasswordRequest;
-import com.phong.taskmanagement.dto.response.ApiResponse;
+import com.phong.taskmanagement.common.response.ApiResponse;
 import com.phong.taskmanagement.dto.response.UserResponse;
-import com.phong.taskmanagement.service.UserService;
+import com.phong.taskmanagement.service.interfaces.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

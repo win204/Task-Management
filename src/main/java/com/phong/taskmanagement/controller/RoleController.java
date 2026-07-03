@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.phong.taskmanagement.dto.request.CreateRoleRequest;
-import com.phong.taskmanagement.dto.response.ApiResponse;
-import com.phong.taskmanagement.entity.Role;
-import com.phong.taskmanagement.service.RoleService;
+import com.phong.taskmanagement.common.response.ApiResponse;
+import com.phong.taskmanagement.domain.entity.Role;
+import com.phong.taskmanagement.service.interfaces.RoleService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

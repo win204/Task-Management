@@ -1,9 +1,9 @@
 package com.phong.taskmanagement.component;
 
-import com.phong.taskmanagement.entity.Role;
-import com.phong.taskmanagement.entity.User;
-import com.phong.taskmanagement.repository.RoleRepository;
-import com.phong.taskmanagement.repository.UserRepository;
+import com.phong.taskmanagement.domain.entity.Role;
+import com.phong.taskmanagement.domain.entity.User;
+import com.phong.taskmanagement.domain.repository.RoleRepository;
+import com.phong.taskmanagement.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

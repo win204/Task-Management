@@ -1,5 +1,5 @@
 import { STORAGE_KEYS } from './constants';
-import type { User } from '../types/auth';
+import type { User } from '@/features/auth/types/auth';
 
 /**
  * Storage helper class wrapping browser localStorage with type-safety

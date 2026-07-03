@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
-import { ROUTES } from '../utils/constants';
+import { useAuthStore } from '@/features/auth/store/authStore';
+import { ROUTES } from '@/utils/constants';
 
 interface RoleProtectedRouteProps {
   children: React.ReactNode;

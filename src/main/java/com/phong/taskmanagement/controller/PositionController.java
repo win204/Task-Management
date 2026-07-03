@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.phong.taskmanagement.dto.request.CreatePositionRequest;
-import com.phong.taskmanagement.dto.response.ApiResponse;
-import com.phong.taskmanagement.entity.Position;
-import com.phong.taskmanagement.service.PositionService;
+import com.phong.taskmanagement.common.response.ApiResponse;
+import com.phong.taskmanagement.domain.entity.Position;
+import com.phong.taskmanagement.service.interfaces.PositionService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

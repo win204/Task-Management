@@ -1,9 +1,9 @@
 package com.phong.taskmanagement.scheduler;
 
-import com.phong.taskmanagement.entity.Task;
-import com.phong.taskmanagement.repository.TaskRepository;
-import com.phong.taskmanagement.service.NotificationService;
-import com.phong.taskmanagement.service.RealTimeUpdateService;
+import com.phong.taskmanagement.domain.entity.Task;
+import com.phong.taskmanagement.domain.repository.TaskRepository;
+import com.phong.taskmanagement.service.interfaces.NotificationService;
+import com.phong.taskmanagement.service.interfaces.RealTimeUpdateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -1,9 +1,9 @@
 package com.phong.taskmanagement.controller;
 
 import com.phong.taskmanagement.dto.request.CreateTaskCommentRequest;
-import com.phong.taskmanagement.dto.response.ApiResponse;
+import com.phong.taskmanagement.common.response.ApiResponse;
 import com.phong.taskmanagement.dto.response.TaskCommentResponse;
-import com.phong.taskmanagement.service.TaskCommentService;
+import com.phong.taskmanagement.service.interfaces.TaskCommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

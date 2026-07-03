@@ -1,6 +1,6 @@
 package com.phong.taskmanagement.controller;
 
-import com.phong.taskmanagement.service.ReportService;
+import com.phong.taskmanagement.service.interfaces.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

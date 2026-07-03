@@ -3,9 +3,9 @@ package com.phong.taskmanagement.dto.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import com.phong.taskmanagement.validation.UniqueUsername;
-import com.phong.taskmanagement.validation.UniqueEmail;
-import com.phong.taskmanagement.validation.ValidPassword;
+import com.phong.taskmanagement.common.validation.UniqueUsername;
+import com.phong.taskmanagement.common.validation.UniqueEmail;
+import com.phong.taskmanagement.common.validation.ValidPassword;
 import lombok.Data;
 
 @Data

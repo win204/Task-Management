@@ -2,10 +2,10 @@ package com.phong.taskmanagement.service.impl;
 
 import com.phong.taskmanagement.dto.request.UpdateSystemConfigRequest;
 import com.phong.taskmanagement.dto.response.SystemConfigResponse;
-import com.phong.taskmanagement.entity.SystemConfig;
+import com.phong.taskmanagement.domain.entity.SystemConfig;
 import com.phong.taskmanagement.exception.ResourceNotFoundException;
-import com.phong.taskmanagement.repository.SystemConfigRepository;
-import com.phong.taskmanagement.service.SystemConfigService;
+import com.phong.taskmanagement.domain.repository.SystemConfigRepository;
+import com.phong.taskmanagement.service.interfaces.SystemConfigService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;

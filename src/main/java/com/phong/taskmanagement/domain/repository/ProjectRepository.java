@@ -1,12 +1,22 @@
 package com.phong.taskmanagement.domain.repository;
 
-import com.phong.taskmanagement.domain.model.Project;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-import java.util.List;
-import java.util.Optional;
+import com.phong.taskmanagement.domain.entity.Project;
 
-public interface ProjectRepository {
-    Optional<Project> findById(Long id);
-    List<Project> findAll();
-    Project save(Project project);
+public interface ProjectRepository
+        extends JpaRepository<Project, Long>, QuerydslPredicateExecutor<Project> {
+
+    Page<Project> findByProjectNameContainingIgnoreCase(
+            String keyword,
+            Pageable pageable
+    );
+
+    Page<Project> findByStatus(
+            String status,
+            Pageable pageable
+    );
 }

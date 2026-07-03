@@ -1,7 +1,7 @@
 package com.phong.taskmanagement.service.impl;
 
 import com.querydsl.core.BooleanBuilder;
-import com.phong.taskmanagement.entity.QTask;
+import com.phong.taskmanagement.domain.entity.QTask;
 
 import java.util.List;
 
@@ -17,20 +17,20 @@ import com.phong.taskmanagement.dto.request.CreateTaskRequest;
 import com.phong.taskmanagement.dto.request.TaskSearchRequest;
 import com.phong.taskmanagement.dto.request.UpdateTaskStatusRequest;
 import com.phong.taskmanagement.dto.response.TaskResponse;
-import com.phong.taskmanagement.entity.Project;
-import com.phong.taskmanagement.entity.Task;
-import com.phong.taskmanagement.entity.User;
+import com.phong.taskmanagement.domain.entity.Project;
+import com.phong.taskmanagement.domain.entity.Task;
+import com.phong.taskmanagement.domain.entity.User;
 import com.phong.taskmanagement.exception.ResourceNotFoundException;
-import com.phong.taskmanagement.repository.ProjectRepository;
-import com.phong.taskmanagement.repository.TaskRepository;
-import com.phong.taskmanagement.repository.UserRepository;
-import com.phong.taskmanagement.repository.ActivityLogRepository;
+import com.phong.taskmanagement.domain.repository.ProjectRepository;
+import com.phong.taskmanagement.domain.repository.TaskRepository;
+import com.phong.taskmanagement.domain.repository.UserRepository;
+import com.phong.taskmanagement.domain.repository.ActivityLogRepository;
 import org.springframework.dao.DataIntegrityViolationException;
-import com.phong.taskmanagement.service.ActivityLogService;
-import com.phong.taskmanagement.service.EmailService;
-import com.phong.taskmanagement.service.NotificationService;
-import com.phong.taskmanagement.service.RealTimeUpdateService;
-import com.phong.taskmanagement.service.TaskService;
+import com.phong.taskmanagement.service.interfaces.ActivityLogService;
+import com.phong.taskmanagement.service.interfaces.EmailService;
+import com.phong.taskmanagement.service.interfaces.NotificationService;
+import com.phong.taskmanagement.service.interfaces.RealTimeUpdateService;
+import com.phong.taskmanagement.service.interfaces.TaskService;
 
 import lombok.RequiredArgsConstructor;
 

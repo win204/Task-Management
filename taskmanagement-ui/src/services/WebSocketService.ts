@@ -1,6 +1,6 @@
 import { Client, type IMessage } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import { storage } from '../utils/storage';
+import { storage } from '@/utils/storage';
 
 export type SubscriptionCallback = (message: any) => void;
 

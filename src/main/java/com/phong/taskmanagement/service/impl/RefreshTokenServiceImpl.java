@@ -1,12 +1,12 @@
 package com.phong.taskmanagement.service.impl;
 
-import com.phong.taskmanagement.entity.RefreshToken;
-import com.phong.taskmanagement.entity.User;
+import com.phong.taskmanagement.domain.entity.RefreshToken;
+import com.phong.taskmanagement.domain.entity.User;
 import com.phong.taskmanagement.exception.ResourceNotFoundException;
-import com.phong.taskmanagement.repository.RefreshTokenRepository;
-import com.phong.taskmanagement.repository.UserRepository;
+import com.phong.taskmanagement.domain.repository.RefreshTokenRepository;
+import com.phong.taskmanagement.domain.repository.UserRepository;
 import com.phong.taskmanagement.security.JwtService;
-import com.phong.taskmanagement.service.RefreshTokenService;
+import com.phong.taskmanagement.service.interfaces.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

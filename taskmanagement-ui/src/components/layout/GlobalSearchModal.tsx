@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Search, Loader2, X, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useTasksQuery } from '../../hooks/useTasks';
+import { useTasksQuery } from '@/features/tasks/hooks/useTasks';
 
 interface GlobalSearchModalProps {
   isOpen: boolean;

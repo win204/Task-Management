@@ -1,6 +1,6 @@
 package com.phong.taskmanagement.controller;
 
-import com.phong.taskmanagement.service.EmailService;
+import com.phong.taskmanagement.service.interfaces.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

@@ -1,28 +1,28 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import AuthLayout from '../layout/AuthLayout';
 import DashboardLayout from '../layout/DashboardLayout';
-import LoginPage from '../pages/auth/LoginPage';
-import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
-import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
+import LoginPage from '@/features/auth/pages/LoginPage';
+import ForgotPasswordPage from '@/features/auth/pages/ForgotPasswordPage';
+import ResetPasswordPage from '@/features/auth/pages/ResetPasswordPage';
 
 // Workspace Pages
-import DashboardPage from '../pages/dashboard/DashboardPage';
-import UsersPage from '../pages/dashboard/UsersPage';
-import ProjectsPage from '../pages/dashboard/ProjectsPage';
-import TasksPage from '../pages/dashboard/TasksPage';
-import ReportsPage from '../pages/dashboard/ReportsPage';
-import ProfilePage from '../pages/dashboard/ProfilePage';
-import SettingsPage from '../pages/dashboard/SettingsPage';
-import NotificationsPage from '../pages/dashboard/NotificationsPage';
-import { ActivityLogsPage } from '../pages/dashboard/ActivityLogsPage';
-import RolesPage from '../pages/dashboard/RolesPage';
-import PositionsPage from '../pages/dashboard/PositionsPage';
+import DashboardPage from '@/features/dashboard/pages/DashboardPage';
+import UsersPage from '@/features/users/pages/UsersPage';
+import ProjectsPage from '@/features/projects/pages/ProjectsPage';
+import TasksPage from '@/features/tasks/pages/TasksPage';
+import ReportsPage from '@/features/reports/pages/ReportsPage';
+import ProfilePage from '@/features/users/pages/ProfilePage';
+import SettingsPage from '@/features/settings/pages/SettingsPage';
+import NotificationsPage from '@/features/notifications/pages/NotificationsPage';
+import { ActivityLogsPage } from '@/features/activity/pages/ActivityLogsPage';
+import RolesPage from '@/features/users/pages/RolesPage';
+import PositionsPage from '@/features/users/pages/PositionsPage';
 
 // Guards
 import { ProtectedRoute } from '../routes/ProtectedRoute';
 import { PublicRoute } from '../routes/PublicRoute';
 import { RoleProtectedRoute } from '../routes/RoleProtectedRoute';
-import { ROUTES } from '../utils/constants';
+import { ROUTES } from '@/utils/constants';
 
 /**
  * Global Router definition using React Router's data APIs.
