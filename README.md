@@ -1,4 +1,4 @@
-﻿# 📋 Task Management System
+# 📋 Task Management System
 
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.3-6DB33F?style=for-the-badge&logo=springboot)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)
@@ -172,24 +172,131 @@ Liquibase automatically tracks, manages, and applies database schema changes dur
 
 ---
 
-## 🖼️ Screenshots
-
-*(Placeholder: Screenshots of Login, Dashboard, User/Project Management, Dark Mode, and Swagger UI will be added here).*
-
----
-
-## 🔮 Future Improvements
-
-- [ ] Add comprehensive **Unit Testing** and **Integration Testing**.
-- [ ] Establish a **CI/CD Pipeline** using GitHub Actions.
-- [ ] Integrate **Redis** for distributed caching.
-- [ ] Set up application monitoring with **Prometheus & Grafana**.
-- [ ] Implement an asynchronous **Email Notification Queue**.
-
----
 
 ## 👨‍💻 Author
 
 **Phong Ho**  
 *Information Technology Student*  
 *Dong A University*
+
+---
+
+## 🔑 Environment Variables
+
+This project requires several environment variables to function. **No credentials are hardcoded.**
+
+### Required Variables
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `SA_PASSWORD` | SQL Server SA password (must meet complexity rules) | `MyStr0ng!Pass` |
+| `JWT_SECRET` | JWT signing secret (min 32 chars, random) | `$(openssl rand -hex 32)` |
+| `SPRING_MAIL_USERNAME` | Gmail address used to send emails | `you@gmail.com` |
+| `SPRING_MAIL_PASSWORD` | Google App Password (16 chars, not your login password) | `abcd efgh ijkl mnop` |
+
+### Optional Variables (have defaults)
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SPRING_MAIL_HOST` | `smtp.gmail.com` | SMTP server host |
+| `SPRING_MAIL_PORT` | `587` | SMTP server port |
+| `APP_RESET_URL` | `http://localhost:5173` | Base URL for password-reset email links |
+
+---
+
+### 📧 How to Generate a Google App Password
+
+> **Requirement:** 2-Step Verification must be enabled on your Google Account.
+
+1. Go to **[https://myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)**
+2. Select **"Mail"** as the app and **"Other"** as the device (name it anything, e.g. `TaskManagement`)
+3. Click **Generate** — you'll receive a **16-character password** (spaces can be omitted)
+4. Copy the password immediately — Google will not show it again
+5. Use this as your `SPRING_MAIL_PASSWORD` value
+
+---
+
+### 🐳 Configuring Docker Compose
+
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Open `.env` and fill in every `CHANGE_ME_*` value:
+   ```dotenv
+   SA_PASSWORD=MyStr0ng!SqlPass
+   JWT_SECRET=your-32-plus-char-random-secret-here
+   SPRING_MAIL_USERNAME=you@gmail.com
+   SPRING_MAIL_PASSWORD=yourgoogleapppassword
+   APP_RESET_URL=http://localhost:5173
+   ```
+
+3. Start the application:
+   ```bash
+   docker compose up -d --build
+   ```
+
+> ⚠️ **Never commit `.env` to Git.** It is already listed in `.gitignore`.
+
+---
+
+### ☸️ Configuring Kubernetes
+
+All secrets are stored in the `taskapp-secret` Kubernetes Secret. **Edit `k8s/secret.yaml` locally** (or use `kubectl` directly) and replace every `CHANGE_ME_*` placeholder before applying:
+
+```bash
+# Option A — edit the manifest and apply (for development/testing only)
+# Replace CHANGE_ME values in k8s/secret.yaml first, then:
+kubectl apply -f k8s/secret.yaml
+
+# Option B — create the secret imperatively (recommended for production)
+kubectl create secret generic taskapp-secret \
+  --namespace=taskmanagement \
+  --from-literal=db-password='MyStr0ng!SqlPass' \
+  --from-literal=jwt-secret='your-32-plus-char-random-secret' \
+  --from-literal=mail-username='you@gmail.com' \
+  --from-literal=mail-password='yourgoogleapppassword'
+
+# Apply the rest of the manifests
+kubectl apply -f k8s/
+```
+
+> ⚠️ **Never commit `k8s/secret.yaml` with real values to Git.**  
+> Use Kubernetes Sealed Secrets, HashiCorp Vault, or your cloud provider's secret manager in production.
+
+---
+
+### 💻 Configuring Local Development
+
+Set the required variables in your shell before running the application:
+
+```bash
+# Linux / macOS
+export SA_PASSWORD="MyStr0ng!SqlPass"
+export JWT_SECRET="your-32-plus-char-random-secret-here"
+export SPRING_MAIL_USERNAME="you@gmail.com"
+export SPRING_MAIL_PASSWORD="yourgoogleapppassword"
+
+./mvnw spring-boot:run
+```
+
+```powershell
+# Windows PowerShell
+$env:SA_PASSWORD = "MyStr0ng!SqlPass"
+$env:JWT_SECRET = "your-32-plus-char-random-secret-here"
+$env:SPRING_MAIL_USERNAME = "you@gmail.com"
+$env:SPRING_MAIL_PASSWORD = "yourgoogleapppassword"
+
+.\mvnw.cmd spring-boot:run
+```
+
+Alternatively, configure them in your IDE's run configuration (IntelliJ: **Run → Edit Configurations → Environment Variables**).
+
+---
+
+### 🔒 Security Notes
+
+- The app will **refuse to start** if `SPRING_MAIL_USERNAME` or `SPRING_MAIL_PASSWORD` are not set (no insecure defaults).
+- Sensitive values are **never logged** by Spring Boot's configuration reporting.
+- For CI/CD (GitHub Actions), configure secrets under **Repository → Settings → Secrets and Variables → Actions**.

@@ -6,14 +6,14 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Express"
-      SA_PASSWORD: "Password@123"
+      SA_PASSWORD: "${SA_PASSWORD}"
     ports:
       - "14333:1433"
     volumes:
       - mssql-data:/var/opt/mssql
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Password@123' -C -Q 'SELECT 1' || exit 1"]
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"${SA_PASSWORD}\" -C -Q 'SELECT 1' || exit 1"]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -26,11 +26,11 @@ services:
       db:
         condition: service_healthy
     environment:
-      SA_PASSWORD: "Password@123"
+      SA_PASSWORD: "${SA_PASSWORD}"
     volumes:
       - ./sql/init.sql:/init.sql:ro
     command: >
-      bash -c "/opt/mssql-tools18/bin/sqlcmd -S db -U sa -P 'Password@123' -C -i /init.sql && echo 'Init complete'"
+      bash -c "/opt/mssql-tools18/bin/sqlcmd -S db -U sa -P \"${SA_PASSWORD}\" -C -i /init.sql && echo 'Init complete'"
     restart: "no"
 
   # ─── Backend: Spring Boot 3.5 ───────────────────────────────────────────────
@@ -45,13 +45,17 @@ services:
     environment:
       SPRING_DATASOURCE_URL: "jdbc:sqlserver://db:1433;databaseName=task_management;encrypt=true;trustServerCertificate=true"
       SPRING_DATASOURCE_USERNAME: "sa"
-      SPRING_DATASOURCE_PASSWORD: "Password@123"
+      SPRING_DATASOURCE_PASSWORD: "${SA_PASSWORD}"
       SPRING_JPA_HIBERNATE_DDL_AUTO: "none"
       SERVER_PORT: "8080"
-      JWT_SECRET: "TaskManagementSecretKey2026SpringBootJavaProject"
+      JWT_SECRET: "${JWT_SECRET}"
       FILE_UPLOAD_DIR: "/app/uploads"
       SPRING_DATASOURCE_HIKARI_INITIALIZATION_FAIL_TIMEOUT: "120000"
-      APP_RESET_URL: "http://localhost:5173"
+      APP_RESET_URL: "${APP_RESET_URL:-http://localhost:5173}"
+      SPRING_MAIL_HOST: "${SPRING_MAIL_HOST:-smtp.gmail.com}"
+      SPRING_MAIL_PORT: "${SPRING_MAIL_PORT:-587}"
+      SPRING_MAIL_USERNAME: "${SPRING_MAIL_USERNAME}"
+      SPRING_MAIL_PASSWORD: "${SPRING_MAIL_PASSWORD}"
     depends_on:
       db-init:
         condition: service_completed_successfully

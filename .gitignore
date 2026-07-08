@@ -41,3 +41,15 @@ dist/
 .DS_Store
 Thumbs.db
 
+### Security — NEVER commit these ############################################
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+*.secret
+*.pem
+*.key
+*.p12
+*.jks
+

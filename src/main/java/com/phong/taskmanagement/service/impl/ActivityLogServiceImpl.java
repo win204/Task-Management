@@ -61,13 +61,11 @@ public class ActivityLogServiceImpl
                 .username(
                         log.getUser() != null
                                 ? log.getUser().getUsername()
-                                : null
-                )
+                                : null)
                 .taskTitle(
                         log.getTask() != null
                                 ? log.getTask().getTitle()
-                                : null
-                )
+                                : null)
                 .module(log.getModule())
                 .entityId(log.getEntityId())
                 .ipAddress(log.getIpAddress())
@@ -81,18 +79,14 @@ public class ActivityLogServiceImpl
             CreateActivityLogRequest request) {
 
         User user = userRepository.findById(
-                request.getUserId()
-        ).orElseThrow(() ->
-                new ResourceNotFoundException(
-                        "User not found"
-                ));
+                request.getUserId()).orElseThrow(
+                        () -> new ResourceNotFoundException(
+                                "User not found"));
 
         Task task = taskRepository.findById(
-                request.getTaskId()
-        ).orElseThrow(() ->
-                new ResourceNotFoundException(
-                        "Task not found"
-                ));
+                request.getTaskId()).orElseThrow(
+                        () -> new ResourceNotFoundException(
+                                "Task not found"));
 
         ActivityLog log = ActivityLog.builder()
                 .action(request.getAction())
@@ -154,7 +148,8 @@ public class ActivityLogServiceImpl
         if (startDate != null && !startDate.trim().isEmpty()) {
             LocalDateTime start;
             try {
-                start = java.time.OffsetDateTime.parse(startDate).withOffsetSameInstant(java.time.ZoneOffset.UTC).toLocalDateTime();
+                start = java.time.OffsetDateTime.parse(startDate).withOffsetSameInstant(java.time.ZoneOffset.UTC)
+                        .toLocalDateTime();
             } catch (Exception e) {
                 start = LocalDateTime.parse(startDate, DateTimeFormatter.ISO_DATE_TIME);
             }
@@ -163,7 +158,8 @@ public class ActivityLogServiceImpl
         if (endDate != null && !endDate.trim().isEmpty()) {
             LocalDateTime end;
             try {
-                end = java.time.OffsetDateTime.parse(endDate).withOffsetSameInstant(java.time.ZoneOffset.UTC).toLocalDateTime();
+                end = java.time.OffsetDateTime.parse(endDate).withOffsetSameInstant(java.time.ZoneOffset.UTC)
+                        .toLocalDateTime();
             } catch (Exception e) {
                 end = LocalDateTime.parse(endDate, DateTimeFormatter.ISO_DATE_TIME);
             }
@@ -182,18 +178,14 @@ public class ActivityLogServiceImpl
             String description) {
 
         User user = userRepository.findById(
-                userId
-        ).orElseThrow(() ->
-                new ResourceNotFoundException(
-                        "User not found"
-                ));
+                userId).orElseThrow(
+                        () -> new ResourceNotFoundException(
+                                "User not found"));
 
         Task task = taskRepository.findById(
-                taskId
-        ).orElseThrow(() ->
-                new ResourceNotFoundException(
-                        "Task not found"
-                ));
+                taskId).orElseThrow(
+                        () -> new ResourceNotFoundException(
+                                "Task not found"));
 
         ActivityLog log = ActivityLog.builder()
                 .action(action)
@@ -210,6 +202,7 @@ public class ActivityLogServiceImpl
 
         return mapToResponse(log);
     }
+
     @Override
     public ActivityLogResponse log(
             Long userId,

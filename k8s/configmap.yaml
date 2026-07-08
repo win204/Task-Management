@@ -11,6 +11,5 @@ data:
   server-port: "8080"
   mail-host: "smtp.gmail.com"
   mail-port: "587"
-  mail-username: "phonghuuho204@gmail.com"
   app-reset-url: "http://taskmanagement.local"
   jpa-ddl-auto: "none"

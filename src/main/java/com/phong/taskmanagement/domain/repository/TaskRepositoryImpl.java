@@ -64,4 +64,3 @@ public class TaskRepositoryImpl implements TaskRepositoryCustom {
         return new PageImpl<>(tasks, pageable, total);
     }
 }
-

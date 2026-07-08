@@ -17,28 +17,21 @@ spec:
     spec:
       initContainers:
         - name: init-db
-          image: mcr.microsoft.com/mssql/server:2022-latest
-          env:
-            - name: SA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: taskapp-secret
-                  key: db-password
+          image: busybox:1.36
           command:
-            - /bin/bash
+            - /bin/sh
             - -c
             - |
-              echo "Waiting for SQL Server to be ready..."
-              until /opt/mssql-tools18/bin/sqlcmd -C -S sql-server -U sa -P "$SA_PASSWORD" -Q "SELECT 1" &> /dev/null; do
-                echo "SQL Server is unavailable - sleeping"
+              echo "Waiting for SQL Server (sql-server:1433) to be reachable..."
+              until nc -z sql-server 1433; do
+                echo "SQL Server is unavailable - sleeping 5s"
                 sleep 5
               done
-              echo "Creating database task_management if it does not exist..."
-              /opt/mssql-tools18/bin/sqlcmd -C -S sql-server -U sa -P "$SA_PASSWORD" -Q "IF NOT EXISTS(SELECT * FROM sys.databases WHERE name='task_management') CREATE DATABASE task_management;"
+              echo "SQL Server is up - proceeding to start taskapp"
       containers:
         - name: taskapp
-          image: taskmanagement:v10
-          imagePullPolicy: IfNotPresent
+          image: taskmanagement:v13
+          imagePullPolicy: Never
           ports:
             - containerPort: 8080
           envFrom:
@@ -77,8 +70,8 @@ spec:
                   key: app-reset-url
             - name: SPRING_MAIL_USERNAME
               valueFrom:
-                configMapKeyRef:
-                  name: taskapp-config
+                secretKeyRef:
+                  name: taskapp-secret
                   key: mail-username
             - name: SPRING_MAIL_HOST
               valueFrom:
