@@ -17,15 +17,15 @@ export interface AddProjectMemberRequest {
 
 export const ProjectMemberService = {
   getMembers: (projectId: number) => {
-    return api.get<ApiResponse<ProjectMemberResponse[]>>(`/projects/${projectId}/members`);
+    return api.get<ApiResponse<ProjectMemberResponse[]>>(`/api/projects/${projectId}/members`);
   },
   addMember: (projectId: number, request: AddProjectMemberRequest) => {
-    return api.post<ApiResponse<ProjectMemberResponse>>(`/projects/${projectId}/members`, request);
+    return api.post<ApiResponse<ProjectMemberResponse>>(`/api/projects/${projectId}/members`, request);
   },
   updateRole: (projectId: number, userId: number, role: string) => {
-    return api.put<ApiResponse<ProjectMemberResponse>>(`/projects/${projectId}/members/${userId}/role`, { role });
+    return api.put<ApiResponse<ProjectMemberResponse>>(`/api/projects/${projectId}/members/${userId}/role`, { role });
   },
   removeMember: (projectId: number, userId: number) => {
-    return api.delete<ApiResponse<void>>(`/projects/${projectId}/members/${userId}`);
+    return api.delete<ApiResponse<void>>(`/api/projects/${projectId}/members/${userId}`);
   }
 };
